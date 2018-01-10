@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/alert_logout" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/BTNcancel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            style="@style/AppPrimaryButton"
+            android:text="No"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/BTNok"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_weight="1"
+            android:background="@color/background"
+            android:text="Yes"
+            android:textAllCaps="false"
+            android:textColor="@color/selector_textprimary_to_primarycolor" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

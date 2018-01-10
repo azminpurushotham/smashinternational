@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.cloudsys.smashintl"
+        minSdkVersion "${MIN_SDK_VERSION}"
+        targetSdkVersion "${target}"
+        versionCode 1
+        versionName "${VERSION_NAME}"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile "junit:junit:$JUNIT_VERSION"
+    compile "com.google.android.gms:play-services-maps:${PLAYSERVICE_VERSION}"
+    compile "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
+//    compile 'com.android.support:multidex:1.0.1'
+
+    compile "uk.co.chrisjenx:calligraphy:${CALLIGRAPHY_VERSION}"
+
+    compile "com.jakewharton:butterknife:$BUTTER_KNIFE_VERSION"
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+
+
+    testCompile 'org.mockito:mockito-core:2.7.22'
+    androidTestCompile 'org.mockito:mockito-android:2.7.22'
+
+
+    compile project(':base')
+    compile project(':web_service_helper')
+    compile project(':circleimageview')
+}

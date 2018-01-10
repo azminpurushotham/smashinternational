@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">smash international</string>
+
+    <string name="login">login</string>
+    <string name="alert_logout">Are your sure you want to Logout ?</string>
+    <string name="Password">Password</string>
+    <string name="collection">Collection</string>
+    <string name="update_customer_location">Update customer location</string>
+    <string name="about_smash">About smash</string>
+    <string name="logout">Logout</string>
+    <string name="home">Home</string>
+    <string name="sheduled_work">Sheduled work</string>
+    <string name="new_lead">New lead</string>
+
+    <!-- alert-->
+    <string name="no_network_connection">No Network Connection</string>
+    <string name="alert_no_internet_please_check">Please check your network \\n connection and try again</string>
+    <string name="ok">ok</string>
+    <string name="do_you_want_logout">do you want logout</string>
+    <string name="cancel">cancel</string>
+
+
+    <!--drawer -->
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
+    <string name="customer_name">customer name</string>
+    <string name="location">location</string>
+    <string name="pending_amount">Pending Amount</string>
+    <string name="date">Date</string>
+    <string name="update_status">update status</string>
+
+</resources>

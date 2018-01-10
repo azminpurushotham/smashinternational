@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/ic_sheduled_work"
+            android:title="@string/sheduled_work" />
+
+        <item
+            android:id="@+id/ic_new_lead"
+            android:title="@string/new_lead" />
+
+        <item
+            android:id="@+id/ic_collection"
+            android:title="@string/collection" />
+
+        <item
+            android:id="@+id/ic_update_customer_location"
+            android:title="@string/update_customer_location" />
+
+        <item
+            android:id="@+id/ic_about_smash"
+            android:title="@string/about_smash" />
+
+        <item
+            android:id="@+id/ic_logout"
+            android:title="@string/logout" />
+
+
+    </group>
+</menu>
