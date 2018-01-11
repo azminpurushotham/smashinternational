@@ -28,5 +28,7 @@
     <string name="pending_amount">Pending Amount</string>
     <string name="date">Date</string>
     <string name="update_status">update status</string>
+    <string name="please_waite">please waite..</string>
+    <string name="authentication_failed">Authentication failed</string>
 
 </resources>

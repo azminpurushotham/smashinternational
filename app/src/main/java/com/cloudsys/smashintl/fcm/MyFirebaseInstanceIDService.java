@@ -9,7 +9,6 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 /**
  * Created by AzminPurushotham on 11/27/2017 time 15 : 13.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
@@ -37,6 +36,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // Instance ID token to your app server.
         sendRegistrationToServer(refreshedToken);
     }
+
     // [END refresh_token]
 
     /**

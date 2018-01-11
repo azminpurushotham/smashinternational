@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
-import com.cloudsys.smashintl.home.HomeFragment;
 import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
 

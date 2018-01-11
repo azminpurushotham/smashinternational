@@ -51,7 +51,10 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void getJson() {
         mView.showWait(mView.getLoading());
         if (Utilities.isInternet(mView.getViewContext())) {
-            mServiceCall.getServices();
+            mServiceCall.getJson(
+                    getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), "1"),
+                    getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null)
+            );
         } else {
             mView.removeWait(mView.getLoading());
             mView.showInternetAlertLogic(false);

@@ -8,18 +8,15 @@ import org.json.JSONObject;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 45.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public interface ServiceCallBack {
     ////////////DEFAULTS///////////////
     void onSuccess(JSONObject mJsonObject);
 
-    void onException(String message);
-
     void onFailer(String message);
 
-    void onCallfailerFromServerside();
+    void onCallfailerFromServerside(JSONObject mJsonObject);
 
     void showWait(String message);
 
@@ -29,7 +26,8 @@ public interface ServiceCallBack {
 
     Context getViewContext();
 
-    SharedPreferenceHelper getSharedPreferenceHelper();
+    String getStringRes(int string_id);
+
     ////////////DEFAULTS///////////////
-    void setServices(JSONObject mJsonObject);
+
 }

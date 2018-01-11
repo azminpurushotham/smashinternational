@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.scheduledwork.Presenter;
+import com.cloudsys.smashintl.scheduledwork.model.ScheduledWorkPojo;
 import com.cloudsys.smashintl.utiliti.Utilities;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.webservicehelper.retrofit.RetrofitHelper;
 
@@ -28,35 +30,39 @@ public class ServiceCall implements ServiceAction {
     }
 
     @Override
-    public void getJson() {
+    public void getJson(String user_id, String tocken) {
         mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks()
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks(user_id, tocken)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try {
                             JSONObject mJsonObject = new JSONObject(Utilities.getNullAsEmptyString(response));
-                            if (mJsonObject.getString("MessageType").equalsIgnoreCase("1")) {
-                                mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-                                mServiceCallBack.setServices(mJsonObject);
+                            if (mJsonObject.getBoolean("status")) {
+                                mServiceCallBack.showWait(mServiceCallBack.getStringRes(R.string.please_waite));
+                                mServiceCallBack.removeWait();
+                                mServiceCallBack.onSuccess(mJsonObject);
                             } else {
-                                mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-                                mServiceCallBack.showScnackBar(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
-                                mServiceCallBack.onCallfailerFromServerside();
+                                mServiceCallBack.showWait(mJsonObject.getString("message"));
+                                mServiceCallBack.showScnackBar(mJsonObject.getString("message"));
+                                mServiceCallBack.removeWait();
+                                mServiceCallBack.onCallfailerFromServerside(mJsonObject);
                             }
-                        } catch (JSONException e) {
+
+                        } catch (Exception e) {
                             if (e != null) {
                                 e.printStackTrace();
                             }
                             mServiceCallBack.showScnackBar(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
+                            mServiceCallBack.removeWait();
                         }
-                        mServiceCallBack.removeWait();
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
                         mServiceCallBack.showScnackBar(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
+                        mServiceCallBack.onFailer(t.getMessage());
                         mServiceCallBack.removeWait();
                     }
                 });
