@@ -102,7 +102,7 @@ public class MainActivity extends AppBaseActivity
 
         mPresenter = new Presenter(this, getBaseInstence());
 
-//        onFragmentSwitch(new ScheduledWorkFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
+//        onFragmentSwitch(new CompletdWorkFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
 
 //        mPresenter.checkRunTimePermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
 

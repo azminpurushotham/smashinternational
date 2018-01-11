@@ -9,16 +9,16 @@
         android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/LAYnodata"
         android:layout_marginTop="5dp" />
+
 
     <include
         android:id="@+id/LAYnodata"
         layout="@layout/layout_nodata"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 
     <include layout="@layout/layout_no_internet_connection" />
 

@@ -4,5 +4,5 @@
     <integer name="vertical_item_decorator">5</integer>
     <integer name="horizontal_item_decorator">5</integer>
     <integer name="grid_spacing">5</integer>
-    <integer name="item_spacing">2</integer>>
+    <integer name="item_spacing">6</integer>>
 </resources>

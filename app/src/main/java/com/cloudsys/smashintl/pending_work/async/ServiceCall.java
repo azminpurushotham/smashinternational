@@ -1,16 +1,13 @@
-package com.cloudsys.smashintl.scheduledwork.async;
+package com.cloudsys.smashintl.pending_work.async;
 
 import android.util.Log;
 
 import com.cloudsys.smashintl.R;
-import com.cloudsys.smashintl.scheduledwork.Presenter;
-import com.cloudsys.smashintl.scheduledwork.model.ScheduledWorkPojo;
+import com.cloudsys.smashintl.pending_work.Presenter;
 import com.cloudsys.smashintl.utiliti.Utilities;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.webservicehelper.retrofit.RetrofitHelper;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import retrofit2.Call;
