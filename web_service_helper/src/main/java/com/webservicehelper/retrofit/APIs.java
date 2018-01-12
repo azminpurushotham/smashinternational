@@ -4,7 +4,6 @@ package com.webservicehelper.retrofit;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import retrofit2.Call;
@@ -74,4 +73,7 @@ public interface APIs {
 
     @GET("api/work/work_list/{path}")
     Call<JsonObject> getScheduledWorks();
+
+    @GET("api/work/work_list/{path}")
+    Call<JsonObject> getScheduledWorksDetail(@Path("path") String path);
 }

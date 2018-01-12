@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical">
+
+        <!--<fragment-->
+            <!--android:id="@+id/map"-->
+            <!--class="com.google.android.gms.maps.SupportMapFragment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="150dp" />-->
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/MVmap"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_primary_bottom_strock"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:id="@+id/Lay1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/Lay2">
+
+                <TextView
+                    android:id="@+id/TVname"
+                    style="@style/AppTextViewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/customer_name" />
+
+                <TextView
+                    android:id="@+id/TVid"
+                    style="@style/AppTextViewSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/TVname"
+                    android:text="ID" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/TVdateL"
+                        style="@style/AppTextViewSubTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/date"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <TextView
+                        android:id="@+id/TVdate"
+                        style="@style/AppTextViewSubTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/TVdateL"
+                        android:layout_marginTop="2dp"
+                        android:text="12/12/2017" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/TVlocationT"
+                    style="@style/AppTextViewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/TVname"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/location" />
+
+                <TextView
+                    android:id="@+id/TVlocation"
+                    style="@style/AppTextViewSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/TVlocationT"
+                    android:layout_marginBottom="10dp"
+                    android:text="Location" />
+
+                <TextView
+                    android:id="@+id/TVEmailT"
+                    style="@style/AppTextViewSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/TVlocation"
+                    android:text="Email  : "
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/TVEmail"
+                    style="@style/AppTextViewSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TVlocation"
+                    android:layout_toRightOf="@+id/TVEmailT"
+                    android:text="sada@sf" />
+
+                <TextView
+                    android:id="@+id/TVMobileT"
+                    style="@style/AppTextViewSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/TVEmailT"
+                    android:text="Phone  : "
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/TVMobile"
+                    style="@style/AppTextViewSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TVEmailT"
+                    android:layout_toRightOf="@+id/TVMobileT"
+                    android:text="345436436" />
+
+                <TextView
+                    android:id="@+id/TVp"
+                    style="@style/AppTextViewSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/TVMobileT"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/pending_amount"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/TVamount"
+                    style="@style/AppTextViewSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/TVp"
+                    android:text="1000 INR" />
+
+                <RadioGroup
+                    android:id="@+id/RGstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TVamount"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RBpending"
+                        style="@style/AppTextViewSubTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pending"
+                        android:checked="true"
+                        android:buttonTint="@color/colorPrimary"/>
+
+                    <RadioButton
+                        android:id="@+id/RDcomplete"
+                        style="@style/AppTextViewSubTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Completed"
+                        android:buttonTint="@color/colorPrimary"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/Lay3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/RGstatus"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ETamount"
+                        style="@style/EdittextPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight=".5"
+                        android:background="@drawable/shape_gray_with_stroke"
+                        android:inputType="number"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Pending amount" />
+
+                    <EditText
+                        android:id="@+id/ETbillId"
+                        style="@style/EdittextPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight=".5"
+                        android:background="@drawable/shape_gray_with_stroke"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Bill ID" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/SPreason"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/Lay3"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_gray_with_stroke" />
+
+                <Button
+                    android:id="@+id/BTNupdateStatus"
+                    style="@style/AppAccentButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/item_button_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/SPreason"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="25dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/update_status" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/LAYnodata"
+        layout="@layout/layout_nodata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true" />
+
+    <include layout="@layout/layout_no_internet_connection" />
+</RelativeLayout>

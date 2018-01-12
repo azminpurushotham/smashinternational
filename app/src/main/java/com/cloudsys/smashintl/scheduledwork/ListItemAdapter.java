@@ -1,17 +1,13 @@
 package com.cloudsys.smashintl.scheduledwork;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.cloudsys.smashintl.R;
 
 import java.util.ArrayList;
@@ -72,7 +68,7 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            listner.onAdapterItemClick(list.get(getAdapterPosition()), getAdapterPosition());
+            listner.onAdapterItemClick(new ServicesPojo(),1);
         }
     }
 }

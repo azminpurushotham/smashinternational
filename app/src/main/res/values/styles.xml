@@ -258,6 +258,11 @@
         <item name="fontPath">"fonts/Knockout_HTF28_JuniorFeatherwt.otf"</item>
     </style>
 
+    <style name="EdittextPrimary" parent="android:Widget.EditText">
+        <item name="android:textColor">@color/textColorGrey</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="fontPath">"fonts/Knockout_HTF28_JuniorFeatherwt.otf"</item>
+    </style>
 
     <style name="SpinnerHeader" parent="android:Widget.TextView">
         <item name="android:textColor">@color/textColorNormal</item>

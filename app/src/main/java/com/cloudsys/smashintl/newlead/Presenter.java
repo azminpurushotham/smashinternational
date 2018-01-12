@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.scheduledwork;
+package com.cloudsys.smashintl.newlead;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
@@ -11,10 +11,8 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
-import com.cloudsys.smashintl.itemdecorator.SpacesItemDecoration;
-import com.cloudsys.smashintl.scheduledwork.async.ServiceCall;
-import com.cloudsys.smashintl.scheduledwork.async.ServiceCallBack;
-import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
+import com.cloudsys.smashintl.newlead.async.ServiceCall;
+import com.cloudsys.smashintl.newlead.async.ServiceCallBack;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
@@ -29,53 +27,30 @@ import java.util.ArrayList;
  * Mfluid Mobile Apps Pvt Ltd
  */
 
-public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack, ListItemAdapter.OnAdapterItemClick {
+public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack{
     ActionView mView;
     ServiceCall mServiceCall;
     ArrayList<ServicesPojo> list = new ArrayList<>();
-    private ListItemAdapter adapter;
-    private ListItemAdapter.OnAdapterItemClick listner;
-    AppBaseActivity.OnFragmentSwitchListener onFragmentSwitchListener;
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
         this.mView = mView;
         mServiceCall = new ServiceCall(this);
-        onFragmentSwitchListener = (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
     }
 
     public Presenter(ActionView mView, AppBaseFragment baseInstence) {
         super(mView, baseInstence);
         this.mView = mView;
         mServiceCall = new ServiceCall(this);
-        onFragmentSwitchListener = (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
-    }
-
-
-    @Override
-    public void getScheduledWork() {
-        mView.showWait(mView.getLoading());
-        if (Utilities.isInternet(mView.getViewContext())) {
-            mServiceCall.getJson();
-        } else {
-            mView.removeWait(mView.getLoading());
-            mView.showInternetAlertLogic(false);
-        }
-    }
-
-    @Override
-    public void initRecyclerView() {
-        mView.getRecyclerView().setLayoutManager(mView.getLinearLayoutManager());
-        listner = (ListItemAdapter.OnAdapterItemClick) this;
-        adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
-        mView.getRecyclerView().addItemDecoration(new SpacesItemDecoration(getViewContext().getResources().getInteger(R.integer.item_spacing)));
-        mView.getRecyclerView().setAdapter(adapter);
     }
 
     @Override
     public void setServiceData() {
-        adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
-        mView.getRecyclerView().setAdapter(adapter);
+    }
+
+    @Override
+    public void initDetails() {
+        mView.getIdTextView().setText("");
     }
 
     @Override
@@ -110,15 +85,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onAdapterItemClick(ServicesPojo servicesPojo, int position) {
-        onFragmentSwitchListener.onFragmentSwitch(new ScheduleWorkDetailFragment(),
-                true,
-                getViewContext().getString(R.string.tag_sheduled_work),
-                true,
-                getViewContext().getString(R.string.title_sheduled_work));
     }
 
     /////////////DEFAULTS///////////////////////
@@ -197,6 +163,17 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void checkRunTimePermission(AppBaseActivity activity, String permission) {
+    }
+
+    @Override
+    public void getScheduledWorkDetails() {
+        mView.showWait(mView.getLoading());
+        if (Utilities.isInternet(mView.getViewContext())) {
+            mServiceCall.getJson();
+        } else {
+            mView.removeWait(mView.getLoading());
+            mView.showInternetAlertLogic(false);
+        }
     }
 
     /////////////DEFAULTS///////////////////////
