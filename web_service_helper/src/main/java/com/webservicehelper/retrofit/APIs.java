@@ -4,17 +4,14 @@ package com.webservicehelper.retrofit;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by appzoc on 20/1/16.
@@ -84,4 +81,9 @@ public interface APIs {
     @GET("/api/smash/api/work/work_list/{user_id}/{token}")
     Call<JsonObject> getScheduledWorks(@Path("user_id") String user_id,
                                        @Path("token") String token);
+    @GET("api/work/work_list/{path}")
+    Call<JsonObject> getScheduledWorks();
+
+    @GET("api/smash/api/work/work_list/{id}/{user_id}/{token}")
+    Call<JsonObject> getScheduledWorksDetail(@Path("id") String id,@Path("user_id") String user_id,@Path("token") String token);
 }

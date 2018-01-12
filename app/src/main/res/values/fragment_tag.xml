@@ -3,6 +3,7 @@
     <string name="tag_home">home</string>
     <string name="tag_collection">collection</string>
     <string name="tag_sheduled_work">sheduled_work</string>
+    <string name="tag_sheduled_work_detail">sheduled_work_detail</string>
     <string name="tag_about_smash">about_smash</string>
     <string name="tag_new_lead">new_lead</string>
 </resources>

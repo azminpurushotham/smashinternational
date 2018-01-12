@@ -74,7 +74,7 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            listner.onAdapterItemClick(list.get(getAdapterPosition()), getAdapterPosition());
+            listner.onAdapterItemClick(list.get(getAdapterPosition()),getAdapterPosition());
         }
     }
 }

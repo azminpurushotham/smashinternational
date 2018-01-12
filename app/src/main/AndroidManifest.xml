@@ -59,6 +59,11 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
+        <!-- Goolge Maps API Key -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDDi5hs_OdkesAudyI61RdaZoRYK6JbrdE" />
+
     </application>
 
 

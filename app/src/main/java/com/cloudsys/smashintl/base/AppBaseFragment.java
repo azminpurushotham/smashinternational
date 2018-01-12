@@ -23,7 +23,6 @@ import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
  */
 public class AppBaseFragment extends BaseFragment implements AppBaseActionView {
 
-
     private SharedPreferenceHelper sharedPreferenceHelper;
     public AppBaseActivity.OnFragmentSwitchListener onFragmentSwitchListener;
     AppBasePresenter mPresenter;

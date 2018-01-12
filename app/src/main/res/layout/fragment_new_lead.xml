@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
+
+                <!--<fragment-->
+                <!--android:id="@+id/map"-->
+                <!--class="com.google.android.gms.maps.SupportMapFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="150dp" />-->
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/MVmap"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_primary_bottom_strock"
+                    android:padding="10dp">
+
+                    <RelativeLayout
+                        android:id="@+id/Lay1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/Lay2">
+
+                        <TextView
+                            android:id="@+id/TVname"
+                            style="@style/AppTextViewLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CURRENT STATUS" />
+
+                        <RadioGroup
+                            android:id="@+id/RGstatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@+id/TVname"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/RBpending"
+                                style="@style/AppTextViewSubTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimary"
+                                android:checked="true"
+                                android:text="Pending" />
+
+                            <RadioButton
+                                android:id="@+id/RBcomplete"
+                                style="@style/AppTextViewSubTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorPrimary"
+                                android:text="Completed" />
+                        </RadioGroup>
+
+                        <EditText
+                            android:id="@+id/ETCustomerName"
+                            style="@style/EdittextPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight=".5"
+                            android:background="@drawable/shape_gray_with_stroke"
+                            android:inputType="number"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:layout_below="@+id/RGstatus"
+                            android:paddingTop="5dp"
+                            android:text="Customer Name" />
+
+                        <LinearLayout
+                            android:id="@+id/Lay6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/ETCustomerName"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/ETCustomerId"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:inputType="number"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="Customer ID" />
+
+                            <EditText
+                                android:id="@+id/ETTelephone"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:paddingBottom="5dp"
+                                android:inputType="number"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="Telephone" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/Lay5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/Lay6"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/ETEmail"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:inputType="textEmailAddress"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="Email" />
+
+                            <EditText
+                                android:id="@+id/ETSms"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:inputType="number"
+                                android:text="SMS Number" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/Lay4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/Lay5"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/ETAddress"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:inputType="textMultiLine"
+                                android:minLines="4"
+                                android:gravity="top"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="Address 1" />
+
+                            <EditText
+                                android:id="@+id/ETAddress1"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:minLines="4"
+                                android:gravity="top"
+                                android:inputType="textMultiLine"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="Address 2" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/Lay3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/Lay4"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/ETamount"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:inputType="number"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="Pending amount" />
+
+                            <EditText
+                                android:id="@+id/ETbillId"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight=".5"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="Bill ID" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/BTNupdateStatus"
+                            style="@style/AppAccentButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/item_button_height"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/Lay3"
+                            android:layout_marginBottom="25dp"
+                            android:layout_marginTop="15dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:text="@string/update_status" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <include
+                android:id="@+id/LAYnodata"
+                layout="@layout/layout_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone" />
+
+            <include layout="@layout/layout_no_internet_connection" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

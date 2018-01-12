@@ -29,7 +29,9 @@ import android.widget.TextView;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.login.LoginActivity;
+import com.cloudsys.smashintl.newlead.NewLeadFragment;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
+import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -133,7 +135,6 @@ public class MainActivity extends AppBaseActivity
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -214,7 +215,11 @@ public class MainActivity extends AppBaseActivity
                 mPresenter.showLogoutDialouge();
                 break;
             case R.id.ic_new_lead:
-                mPresenter.showLogoutDialouge();
+                onFragmentSwitch(new NewLeadFragment(),
+                        true,
+                        getString(R.string.tag_new_lead),
+                        true,
+                        getString(R.string.tag_new_lead));
                 break;
             case R.id.ic_sheduled_work:
                 onFragmentSwitch(new ScheduledWorkFragment(),
@@ -224,7 +229,13 @@ public class MainActivity extends AppBaseActivity
                         getString(R.string.title_sheduled_work));
                 break;
             case R.id.ic_update_customer_location:
-                onFragmentSwitch(new ScheduledWorkFragment(),
+                ScheduleWorkDetailFragment fragment=new ScheduleWorkDetailFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("id","1");
+                bundle.putString("userId","1");
+                bundle.putString("token",getSharedPreferenceHelper().getString(getString(R.string.tocken), null));
+                fragment.setArguments(bundle);
+                onFragmentSwitch(fragment,
                         true,
                         getString(R.string.tag_sheduled_work),
                         true,
