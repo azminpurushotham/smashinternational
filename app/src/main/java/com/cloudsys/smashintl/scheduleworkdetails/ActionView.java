@@ -3,6 +3,7 @@ package com.cloudsys.smashintl.scheduleworkdetails;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,11 +39,26 @@ public interface ActionView extends AppBaseActionView {
     TextView getLocationTextView();
 
     TextView getDateTextView();
+
     TextView getEmailTextView();
+
     TextView getPhoneTextView();
+
     TextView getAmountTextView();
-    String getStatus();
+
+    RadioButton getPendingStatus();
+
+    RadioButton getCompleteStatus();
+
     String getPendingAmount();
+
     String getBillId();
+
     String getReason();
+
+    String getCustomerId();
+
+    String getUserId();
+
+    String getToken();
 }

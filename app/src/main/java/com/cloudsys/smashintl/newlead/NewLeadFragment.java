@@ -14,12 +14,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.utiliti.Utilities;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,30 +44,32 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     @BindView(R.id.LAYnodata)
     LinearLayout LAYnodatal;
 
-    @BindView(R.id.TVid)
-    TextView TVid;
-    @BindView(R.id.TVdate)
-    TextView TVdate;
-    @BindView(R.id.TVlocation)
-    TextView TVlocation;
-    @BindView(R.id.TVEmail)
-    TextView TVEmail;
-    @BindView(R.id.TVMobile)
-    TextView TVMobile;
-    @BindView(R.id.TVamount)
-    TextView TVamount;
+    @BindView(R.id.MVmap)
+    MapView MVmap;
+    @BindView(R.id.ETCustomerName)
+    EditText ETCustomerName;
+    @BindView(R.id.ETCustomerId)
+    EditText ETCustomerId;
+    @BindView(R.id.ETTelephone)
+    EditText ETTelephone;
+    @BindView(R.id.ETEmail)
+    EditText ETEmail;
+    @BindView(R.id.ETSms)
+    EditText ETSms;
+    @BindView(R.id.ETAddress)
+    EditText ETAddress;
+    @BindView(R.id.ETAddress1)
+    EditText ETAddress1;
     @BindView(R.id.RBpending)
     RadioButton RBpending;
-    @BindView(R.id.RDcomplete)
-    RadioButton RDcomplete;
     @BindView(R.id.ETamount)
     EditText ETamount;
     @BindView(R.id.ETbillId)
     EditText ETbillId;
-    @BindView(R.id.SPreason)
-    Spinner SPreason;
     @BindView(R.id.BTNupdateStatus)
     Button BTNupdateStatus;
+
+    private GoogleMap googleMap;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,12 +79,37 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return initView(inflater, container);
+        return initView(inflater, container,savedInstanceState);
     }
 
-    private View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        View mView = inflater.inflate(R.layout.fragment_schedule_work_detail, container, false);
+    private View initView(LayoutInflater inflater, @Nullable ViewGroup container,Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.fragment_new_lead, container, false);
         ButterKnife.bind(this, mView);
+
+        MVmap.onCreate(savedInstanceState);
+        MVmap.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        MVmap.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+
+                // For dropping a marker at a point on the Map
+                LatLng sydney = new LatLng(-34, 151);
+                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+
+                // For zooming automatically to the location of the marker
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+
         return mView;
     }
 
@@ -89,10 +121,10 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
 
     private void buscinessLogic() {
         mPresenter = new com.cloudsys.smashintl.newlead.Presenter(this,getBaseInstence());
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
-        }
-        mPresenter.setServiceData();
+//        if (mLoading == null) {
+//            mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
+//        }
+//        mPresenter.setServiceData();
         BTN_try.setOnClickListener(this);
     }
 
@@ -153,36 +185,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     }
 
     @Override
-    public TextView getIdTextView() {
-        return TVid;
-    }
-
-    @Override
-    public TextView getLocationTextView() {
-        return TVlocation;
-    }
-
-    @Override
-    public TextView getDateTextView() {
-        return TVdate;
-    }
-
-    @Override
-    public TextView getEmailTextView() {
-        return TVEmail;
-    }
-
-    @Override
-    public TextView getPhoneTextView() {
-        return TVMobile;
-    }
-
-    @Override
-    public TextView getAmountTextView() {
-        return TVamount;
-    }
-
-    @Override
     public String getStatus() {
         return null;
     }
@@ -195,11 +197,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     @Override
     public String getBillId() {
         return ETbillId.getText().toString().trim();
-    }
-
-    @Override
-    public String getReason() {
-        return "";
     }
 
     @Override

@@ -56,30 +56,18 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void setServices(JSONObject mJsonObject) {
         try {
-            JSONArray mJsonArray = mJsonObject.getJSONArray("Result");
+            JSONArray mJsonArray = mJsonObject.getJSONArray("result");
             if (mJsonArray.length() > 0) {
-                list = new ArrayList<>();
-                for (int i = 0; i < mJsonArray.length(); i++) {
-                    ServicesPojo item = new ServicesPojo();
-                    item.setId(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("$id"));
-                    item.setWorkOrderCategoryId(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("WorkOrderCategoryId"));
-                    item.setServiceTypeId(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("ServiceTypeId"));
-                    item.setServiceTypeName(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("ServiceTypeName"));
-                    item.setWorkOrderCategoryName(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("WorkOrderCategoryName"));
-                    item.setBriefDescription(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("BriefDescription"));
-                    item.setImageURL(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("ImageURL"));
-                    item.setActive(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("IsActive"));
-                    item.setProviderTimeOutSec(mJsonObject.getJSONArray("Result").getJSONObject(i).getLong("ProviderTimeOutSec"));
-                    item.setShowProviderAssigned(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("ShowProviderAssigned"));
-                    item.setMultipleResourcesAllowed(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("IsMultipleResourcesAllowed"));
-                    item.setHasMaterial(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("HasMaterial"));
-                    item.setSelected(false);
-                    list.add(item);
+                JSONObject jsonObject=mJsonArray.getJSONObject(0);
+                mView.getIdTextView().setText(jsonObject.getString("customer_id"));
+                mView.getLocationTextView().setText(jsonObject.getString("address"));
+                mView.getAmountTextView().setText(jsonObject.getString("amount"));
+                if(jsonObject.getString("status").equals("pending")){
+                    mView.getPendingStatus().setChecked(true);
+                }else{
+                    mView.getCompleteStatus().setChecked(true);
                 }
-            }
-
-            if (list.size() > 0) {
-                setServiceData();
+                mView.getDateTextView().setText(jsonObject.getString("date"));
             }
 
         } catch (JSONException e) {
@@ -169,7 +157,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void getScheduledWorkDetails() {
         mView.showWait(mView.getLoading());
         if (Utilities.isInternet(mView.getViewContext())) {
-            mServiceCall.getJson();
+            mServiceCall.getJson(mView.getUserId(),mView.getToken(),mView.getCustomerId());
         } else {
             mView.removeWait(mView.getLoading());
             mView.showInternetAlertLogic(false);

@@ -50,7 +50,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void initDetails() {
-        mView.getIdTextView().setText("");
     }
 
     @Override

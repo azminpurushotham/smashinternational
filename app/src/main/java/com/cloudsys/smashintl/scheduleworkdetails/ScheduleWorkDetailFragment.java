@@ -63,8 +63,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     TextView TVamount;
     @BindView(R.id.RBpending)
     RadioButton RBpending;
-    @BindView(R.id.RDcomplete)
-    RadioButton RDcomplete;
+    @BindView(R.id.RBcomplete)
+    RadioButton RBcomplete;
     @BindView(R.id.ETamount)
     EditText ETamount;
     @BindView(R.id.ETbillId)
@@ -75,6 +75,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     Button BTNupdateStatus;
 
     private GoogleMap googleMap;
+    private String userId,token,id;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,8 +91,12 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     private View initView(LayoutInflater inflater, @Nullable ViewGroup container,Bundle savedInstanceSate) {
         View mView = inflater.inflate(R.layout.fragment_schedule_work_detail, container, false);
         ButterKnife.bind(this, mView);
-        MVmap.onCreate(savedInstanceSate);
 
+        id=getArguments().getString("id");
+        userId=getArguments().getString("userId");
+        token=getArguments().getString("token");
+
+        MVmap.onCreate(savedInstanceSate);
         MVmap.onResume(); // needed to get the map to display immediately
 
         try {
@@ -128,7 +133,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
         }
-        mPresenter.setServiceData();
+        mPresenter.getScheduledWorkDetails();
         BTN_try.setOnClickListener(this);
     }
 
@@ -243,8 +248,13 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public String getStatus() {
-        return null;
+    public RadioButton getPendingStatus() {
+        return RBpending;
+    }
+
+    @Override
+    public RadioButton getCompleteStatus() {
+        return RBcomplete;
     }
 
     @Override
@@ -260,6 +270,21 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public String getReason() {
         return "";
+    }
+
+    @Override
+    public String getCustomerId() {
+        return id;
+    }
+
+    @Override
+    public String getUserId() {
+        return userId;
+    }
+
+    @Override
+    public String getToken() {
+        return token;
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.cloudsys.smashintl.base.AppBaseActionView;
 
@@ -33,16 +32,10 @@ public interface ActionView extends AppBaseActionView {
 
     Dialog getLoading();
 
-    TextView getIdTextView();
-
-    TextView getLocationTextView();
-
-    TextView getDateTextView();
-    TextView getEmailTextView();
-    TextView getPhoneTextView();
-    TextView getAmountTextView();
     String getStatus();
+
     String getPendingAmount();
+
     String getBillId();
-    String getReason();
+
 }

@@ -22,4 +22,5 @@ public interface UserActions {
     void setServiceData();
 
     void initDetails();
+
 }

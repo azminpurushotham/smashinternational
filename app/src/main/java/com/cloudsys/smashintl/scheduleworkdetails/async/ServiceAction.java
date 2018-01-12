@@ -5,5 +5,5 @@ package com.cloudsys.smashintl.scheduleworkdetails.async;
  */
 
 public interface ServiceAction {
-    void getJson();
+    void getJson(String userId,String token, String id);
 }
