@@ -2,7 +2,6 @@ package com.cloudsys.smashintl.scheduledwork;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.RelativeLayout;
@@ -16,9 +15,9 @@ import com.cloudsys.smashintl.base.AppBaseActionView;
 public interface ActionView extends AppBaseActionView {
     /////////////DEFAULTS///////////////////////
 
-    void showWait(Dialog mLoading);
+    void showWait(String message);
 
-    void removeWait(Dialog mLoading);
+    void removeWait();
 
     void onFailure(String appErrorMessage);
 
@@ -28,11 +27,11 @@ public interface ActionView extends AppBaseActionView {
 
     void showInternetAlertLogic(boolean isInternet);
 
-    void showSnackBar(Snackbar snackBar);
+    void showSnackBar(String message);
 
     void onFinishActivity();
 
-    Dialog getLoading();
+    String getStringRes(int string_id);
 
     /////////////DEFAULTS///////////////////////
     RecyclerView getRecyclerView();

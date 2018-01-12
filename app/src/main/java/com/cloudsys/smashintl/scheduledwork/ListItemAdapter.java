@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
+import com.cloudsys.smashintl.scheduledwork.model.Result;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by azmin on 11/30/2017.
@@ -18,15 +20,15 @@ import java.util.ArrayList;
 
 class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private OnAdapterItemClick listner;
-    ArrayList<ServicesPojo> list = new ArrayList<>();
+    List<Result> list = new ArrayList<>();
     Context mContext;
 
     public interface OnAdapterItemClick {
-        public void onAdapterItemClick(ServicesPojo servicesPojo, int adapterPosition);
+        public void onAdapterItemClick(Result Result, int adapterPosition);
     }
 
 
-    public ListItemAdapter(ArrayList<ServicesPojo> list, Context viewContext, OnAdapterItemClick listner) {
+    public ListItemAdapter(List<Result> list, Context viewContext, OnAdapterItemClick listner) {
         this.list = list;
         this.mContext = viewContext;
         this.listner = listner;
@@ -40,13 +42,17 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-
+            ((ViewHolder) holder).TVname.setText(list.get(position).getName());
+            ((ViewHolder) holder).TVid.setText(list.get(position).getCustomerId());
+            ((ViewHolder) holder).TVlocation.setText(list.get(position).getAddress());
+            ((ViewHolder) holder).TVamount.setText(list.get(position).getAmount());
+            ((ViewHolder) holder).TVdate.setText(list.get(position).getDate());
         }
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return list.size();
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

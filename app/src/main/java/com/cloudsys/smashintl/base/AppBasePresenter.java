@@ -31,6 +31,7 @@ public class AppBasePresenter implements AppBaseAction {
     }
 
 
+
     @Override
     public SharedPreferenceHelper getSharedPreference() {
         if (activity == null) {

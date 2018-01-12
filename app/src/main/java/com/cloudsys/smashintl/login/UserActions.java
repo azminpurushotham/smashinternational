@@ -13,4 +13,6 @@ public interface UserActions {
     void showNoInternetConnectionLayout(boolean isInternet);
 
     void showSnackBar(View parent, String message);
+
+
 }

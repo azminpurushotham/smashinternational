@@ -6,5 +6,5 @@ package com.cloudsys.smashintl.home.async;
  */
 
 public interface ServiceAction {
-    void getServices();
+    void getJson(String user_id, String tocken);
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseFragment;
@@ -77,7 +79,6 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
         }
         mPresenter.initRecyclerView();
-        mPresenter.setServiceData();
         mPresenter.getScheduledWork();
         BTN_try.setOnClickListener(this);
     }
@@ -101,12 +102,14 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     }
 
     @Override
-    public void showWait(Dialog mLoading) {
+    public void showWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
         mLoading.show();
     }
 
     @Override
-    public void removeWait(Dialog mLoading) {
+    public void removeWait() {
         mLoading.dismiss();
     }
 
@@ -136,8 +139,15 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     }
 
     @Override
-    public void showSnackBar(Snackbar snackBar) {
-        snackBar.show();
+    public void showSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
     }
 
     @Override
@@ -145,9 +155,10 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
         getActivity().finish();
     }
 
+
     @Override
-    public Dialog getLoading() {
-        return mLoading;
+    public String getStringRes(int string_id) {
+        return getString(string_id);
     }
 
     @Override

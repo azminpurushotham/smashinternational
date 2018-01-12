@@ -13,13 +13,11 @@ public interface ServiceCallBack {
 
     /////DEFAULT/////////
 
-    void onSuccess(JSONObject mJsonObject);
+    void onSuccess();
 
-    void onFailer(String message);
+    void onFailer();
 
     void onCallfailerFromServerside();
-
-    void onException();
 
     void showWait(String message);
 
@@ -28,6 +26,8 @@ public interface ServiceCallBack {
     void removeWait();
 
     Context getViewContext();
+
+    String getStringRes(int please_waite);
     /////DEFAULT/////////
 
 

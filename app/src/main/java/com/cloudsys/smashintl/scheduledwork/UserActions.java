@@ -1,19 +1,16 @@
 package com.cloudsys.smashintl.scheduledwork;
 
-import android.view.View;
-
 import com.cloudsys.smashintl.base.AppBaseActivity;
 
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public interface UserActions {
     void showNoInternetConnectionLayout(boolean isInternet);
 
-    void showSnackBar(View parent, String message);
+    void showSnackBar(String message);
 
     void checkRunTimePermission(AppBaseActivity activity, String permission);
 
@@ -21,5 +18,5 @@ public interface UserActions {
 
     void initRecyclerView();
 
-    void setServiceData();
+    void setData();
 }

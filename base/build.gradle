@@ -30,7 +30,6 @@ dependencies {
     compile "com.android.support:support-v4:$SUPPORT_LIB_VERSION"
     compile "com.android.support:recyclerview-v7:$SUPPORT_LIB_VERSION"
     compile "com.android.support:cardview-v7:$SUPPORT_LIB_VERSION"
-    compile "com.google.firebase:firebase-messaging:$PLAYSERVICE_VERSION"
     compile 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
 
     testCompile "junit:junit:$JUNIT_VERSION"

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.main.MainActivity;
 import com.cloudsys.smashintl.utiliti.Utilities;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +29,7 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppBaseActivity implements ActionView, View.OnClickListener {
 
+    private static final String TAG = "LoginActivity";
     @BindView(R.id.EDTUserName)
     EditText EDTUserName;
     @BindView(R.id.EDTPassword)
@@ -63,6 +66,13 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
 
     private void buscinessLogic() {
         mPresenter = new Presenter(this, getBaseInstence());
+
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
+        if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
+            getSharedPreferenceHelper().putString(getString(R.string.tocken), refreshedToken);
+        }
+
         BTNlogin.setOnClickListener(this);
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(LoginActivity.this, getString(R.string.loading));
@@ -72,25 +82,25 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
 
     @Override
     public void setErrorUserNameMissing(int message) {
-        EDTUserName.setText(getString(message));
+        EDTUserName.setError(getString(message));
         EDTUserName.requestFocus();
     }
 
     @Override
     public void setErrorPasswordMissing(int message) {
-        EDTPassword.setText(getString(message));
+        EDTPassword.setError(getString(message));
         EDTPassword.requestFocus();
     }
 
     @Override
     public void setErrorUserNameInvalid(int message) {
-        EDTUserName.setText(getString(message));
+        EDTUserName.setError(getString(message));
         EDTUserName.requestFocus();
     }
 
     @Override
     public void setErrorPassWordInvalid(int message) {
-        EDTPassword.setText(getString(message));
+        EDTPassword.setError(getString(message));
         EDTPassword.requestFocus();
     }
 
@@ -106,7 +116,7 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
 
     @Override
     public void loadHomePage() {
-        MainActivity.getStartIntent(LoginActivity.this);
+        startActivity(MainActivity.getStartIntent(LoginActivity.this));
         finish();
     }
 
@@ -138,7 +148,7 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     @Override
     protected void onPause() {
         super.onPause();
-        if(mLoading!=null) {
+        if (mLoading != null) {
             mLoading.dismiss();
         }
     }
@@ -188,12 +198,11 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.BTNlogin:
 //                mPresenter.onLoginClick();
-                startActivity(MainActivity.getStartIntent(LoginActivity.this));
-                finish();
+                loadHomePage();
                 break;
 
             case R.id.BTN_try:
