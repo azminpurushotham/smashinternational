@@ -46,6 +46,8 @@
 
     <style name="Toolbar.TitleText" parent="android:Widget.TextView">
         <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:padding">3dp</item>
     </style>
@@ -62,12 +64,13 @@
         <item name="android:height">@dimen/button_height</item>
         <item name="android:text">Button</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:background">@drawable/selector_primary_to_primarydark</item>
         <item name="fontPath">"fonts/HelveticaNeueLTPro_MdCn.otf"</item>
     </style>
 
 
-    <style name="AppAccentButton" parent="android:Widget.Button">
+    <style name="AppAccentButtonRadious" parent="android:Widget.Button">
         <item name="android:textColor">@color/selector_white_secondary_white</item>
         <item name="android:text">Button</item>
         <item name="android:radius">5dp</item>
@@ -75,6 +78,16 @@
         <item name="android:background">@drawable/selector_accent_to_dark_accent_radious</item>
         <item name="fontPath">"fonts/HelveticaNeueLTPro_MdCn.otf"</item>
     </style>
+
+    <style name="AppAccentButton" parent="android:Widget.Button">
+        <item name="android:textColor">@color/selector_white_secondary_white</item>
+        <item name="android:text">Button</item>
+        <item name="android:radius">5dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/selector_accent_to_dark_accent</item>
+        <item name="fontPath">"fonts/HelveticaNeueLTPro_MdCn.otf"</item>
+    </style>
+
 
     <style name="AppCheckedTextView" parent="android:Widget.TextView">
         <item name="android:textColor">@color/textColorNormal</item>
@@ -287,6 +300,29 @@
     <style name="AppNavigationView" parent="Widget.Design.NavigationView">
         <item name="android:listDivider">@color/shadow</item>
         <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTabLayoutModelProfile" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">4dp</item>
+        <item name="tabPaddingStart">6dp</item>
+        <item name="tabPaddingEnd">6dp</item>
+        <item name="tabBackground">@color/ash_light</item>
+        <item name="tabIndicatorColor">@color/black</item>
+        <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+    </style>
+
+    <!-- for text -->
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/ash_light</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="AppTabTextAppearanceModelProfile" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="textAllCaps">true</item>
     </style>
 
 </resources>

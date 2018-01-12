@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.scheduleworkdetails;
+package com.cloudsys.smashintl.newlead.model;
 
 /**
  * Created by User on 11/30/2017.

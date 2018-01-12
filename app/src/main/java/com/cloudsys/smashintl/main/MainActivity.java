@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
+import com.cloudsys.smashintl.collectionsviewpager.CollectionFragment;
 import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
@@ -66,12 +67,6 @@ public class MainActivity extends AppBaseActivity
     TextView TVtitle;
     private FragmentManager mFragmentManager;
     private ActionBarDrawerToggle mDrawerToggle;
-    private OnFilterMenuClick mFilterMenuClick;
-
-
-    public interface OnFilterMenuClick {
-        void onFilterMenuClick();
-    }
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -144,7 +139,6 @@ public class MainActivity extends AppBaseActivity
             case R.id.action_search:
                 break;
             case R.id.action_notification:
-                mFilterMenuClick.onFilterMenuClick();
                 break;
         }
 
@@ -209,7 +203,11 @@ public class MainActivity extends AppBaseActivity
                 mPresenter.showLogoutDialouge();
                 break;
             case R.id.ic_collection:
-                mPresenter.showLogoutDialouge();
+                onFragmentSwitch(new CollectionFragment(),
+                        true,
+                        getString(R.string.tag_collection),
+                        true,
+                        getString(R.string.tag_collection));
                 break;
             case R.id.ic_about_smash:
                 mPresenter.showLogoutDialouge();
@@ -219,7 +217,7 @@ public class MainActivity extends AppBaseActivity
                         true,
                         getString(R.string.tag_new_lead),
                         true,
-                        getString(R.string.tag_new_lead));
+                        getString(R.string.title_new_lead));
                 break;
             case R.id.ic_sheduled_work:
                 onFragmentSwitch(new ScheduledWorkFragment(),
@@ -229,11 +227,11 @@ public class MainActivity extends AppBaseActivity
                         getString(R.string.title_sheduled_work));
                 break;
             case R.id.ic_update_customer_location:
-                ScheduleWorkDetailFragment fragment=new ScheduleWorkDetailFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("id","1");
-                bundle.putString("userId","1");
-                bundle.putString("token",getSharedPreferenceHelper().getString(getString(R.string.tocken), null));
+                ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("id", "1");
+                bundle.putString("userId", "1");
+                bundle.putString("token", getSharedPreferenceHelper().getString(getString(R.string.tocken), null));
                 fragment.setArguments(bundle);
                 onFragmentSwitch(fragment,
                         true,

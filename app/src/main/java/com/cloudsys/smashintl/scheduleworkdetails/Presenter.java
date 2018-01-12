@@ -13,6 +13,7 @@ import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCall;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCallBack;
+import com.cloudsys.smashintl.scheduleworkdetails.model.ServicesPojo;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 

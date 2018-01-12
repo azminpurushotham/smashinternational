@@ -109,6 +109,13 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     }
 
     @Override
+    public void showWait(int string_id) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(string_id));
+        mLoading.show();
+    }
+
+    @Override
     public void removeWait() {
         mLoading.dismiss();
     }

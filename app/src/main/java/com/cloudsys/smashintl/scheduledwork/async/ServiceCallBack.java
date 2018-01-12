@@ -20,6 +20,8 @@ public interface ServiceCallBack {
 
     void showWait(String message);
 
+    void showWait(int message_id);
+
     void showScnackBar(String message);
 
     void removeWait();
@@ -27,6 +29,8 @@ public interface ServiceCallBack {
     Context getViewContext();
 
     String getStringRes(int string_id);
+
+    void showScnackBar(int string_id);
 
     ////////////DEFAULTS///////////////
 

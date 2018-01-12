@@ -91,6 +91,11 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
+    public void showScnackBar(int string_id) {
+
+    }
+
+    @Override
     public void onSuccess(JSONObject mJsonObject) {
         mPojo = new Gson().fromJson(mJsonObject.toString(), ScheduledWorkPojo.class);
         setData();
@@ -121,6 +126,11 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void showWait(String message) {
         mView.showWait(message);
+    }
+
+    @Override
+    public void showWait(int message_id) {
+        mView.showWait(message_id);
     }
 
     @Override

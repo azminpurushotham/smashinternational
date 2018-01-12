@@ -23,12 +23,24 @@
     <!--drawer -->
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
-    <string name="customer_name">customer name</string>
-    <string name="location">location</string>
+
+    <string name="customer_name">Customer Name</string>
+    <string name="location">Location</string>
     <string name="pending_amount">Pending Amount</string>
     <string name="date">Date</string>
-    <string name="update_status">update status</string>
+    <string name="update_status">Update Status</string>
     <string name="please_waite">please waite..</string>
     <string name="authentication_failed">Authentication failed</string>
+    <string name="customer_id">Customer ID</string>
+    <string name="telephone">Telephone</string>
+    <string name="email">Email</string>
+    <string name="sms_number">SMS Number</string>
+    <string name="address_1">Address 1</string>
+    <string name="address_2">Address 2</string>
+    <string name="bill_id">Bill ID</string>
+    <string name="completed">Completed</string>
+    <string name="Pending">Pending</string>
+    <string name="current_status">CURRENT STATUS</string>
+    <string name="phone_number">Phone No</string>
 
 </resources>

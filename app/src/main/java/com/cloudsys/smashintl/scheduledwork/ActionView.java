@@ -17,6 +17,8 @@ public interface ActionView extends AppBaseActionView {
 
     void showWait(String message);
 
+    void showWait(int string_id);
+
     void removeWait();
 
     void onFailure(String appErrorMessage);

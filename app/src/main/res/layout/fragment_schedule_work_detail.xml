@@ -123,7 +123,8 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/TVlocation"
-                            android:text="Email  : "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/email"
                             android:textColor="@color/colorPrimaryDark" />
 
                         <TextView
@@ -143,7 +144,8 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/TVEmailT"
-                            android:text="Phone  : "
+                            android:layout_marginRight="10dp"
+                            android:text="@string/phone_number"
                             android:textColor="@color/colorPrimaryDark" />
 
                         <TextView
@@ -219,12 +221,12 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_weight=".5"
                                 android:background="@drawable/shape_gray_with_stroke"
+                                android:hint="@string/pending_amount"
                                 android:inputType="number"
                                 android:paddingBottom="5dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="5dp"
-                                android:text="Pending amount" />
+                                android:paddingTop="5dp" />
 
                             <EditText
                                 android:id="@+id/ETbillId"
@@ -234,11 +236,11 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_weight=".5"
                                 android:background="@drawable/shape_gray_with_stroke"
+                                android:hint="@string/bill_id"
                                 android:paddingBottom="5dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:paddingTop="5dp"
-                                android:text="Bill ID" />
+                                android:paddingTop="5dp" />
                         </LinearLayout>
 
                         <Spinner
@@ -251,7 +253,7 @@
 
                         <Button
                             android:id="@+id/BTNupdateStatus"
-                            style="@style/AppAccentButton"
+                            style="@style/AppAccentButtonRadious"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/item_button_height"
                             android:layout_alignParentRight="true"

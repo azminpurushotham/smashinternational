@@ -12,6 +12,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by appzoc on 20/1/16.
@@ -26,17 +27,17 @@ public interface APIs {
     @GET("demo/api/users/registration_data")
     Call<JsonObject> getRegistrationDataOne();
 
-    @FormUrlEncoded
-    @POST("/api/smash/api/profile/login/")
-    Call<JsonObject> postLogin(@Field("username") String username,
-                               @Field("password") String password,
-                               @Field("token") String token);
+//    @FormUrlEncoded
+//    @POST("/api/smash/api/profile/login/")
+//    Call<JsonObject> postLogin(@Field("username") String username,
+//                               @Field("password") String password,
+//                               @Field("token") String token);
 
 ////    @FormUrlEncoded
-//    @POST("/api/smash/api/profile/login/")
-//    Call<JsonObject> postLogin(@Query("username") String username,
-//                               @Query("password") String password,
-//                               @Query("token") String token);
+    @POST("/api/smash/api/profile/login/")
+    Call<JsonObject> postLogin(@Query("username") String username,
+                               @Query("password") String password,
+                               @Query("token") String token);
 
     @GET("mobile/termsAndConditions")
     Call<JSONObject> getTermsAndConditions();

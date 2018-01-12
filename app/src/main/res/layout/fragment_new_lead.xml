@@ -53,7 +53,7 @@
                             style="@style/AppTextViewLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="CURRENT STATUS" />
+                            android:text="@string/current_status" />
 
                         <RadioGroup
                             android:id="@+id/RGstatus"
@@ -70,7 +70,7 @@
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/colorPrimary"
                                 android:checked="true"
-                                android:text="Pending" />
+                                android:text="@string/Pending" />
 
                             <RadioButton
                                 android:id="@+id/RBcomplete"
@@ -78,7 +78,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/colorPrimary"
-                                android:text="Completed" />
+                                android:text="@string/completed" />
                         </RadioGroup>
 
                         <EditText
@@ -95,7 +95,7 @@
                             android:paddingRight="10dp"
                             android:layout_below="@+id/RGstatus"
                             android:paddingTop="5dp"
-                            android:text="Customer Name" />
+                            android:hint="@string/customer_name" />
 
                         <LinearLayout
                             android:id="@+id/Lay6"
@@ -118,7 +118,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
-                                android:text="Customer ID" />
+                                android:hint="@string/customer_id" />
 
                             <EditText
                                 android:id="@+id/ETTelephone"
@@ -133,7 +133,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
-                                android:text="Telephone" />
+                                android:hint="@string/telephone" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/Lay5"
@@ -156,7 +156,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
-                                android:text="Email" />
+                                android:hint="@string/email" />
 
                             <EditText
                                 android:id="@+id/ETSms"
@@ -171,7 +171,7 @@
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
                                 android:inputType="number"
-                                android:text="SMS Number" />
+                                android:hint="@string/sms_number" />
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/Lay4"
@@ -196,7 +196,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
-                                android:text="Address 1" />
+                                android:hint="@string/address_1" />
 
                             <EditText
                                 android:id="@+id/ETAddress1"
@@ -213,7 +213,7 @@
                                 android:inputType="textMultiLine"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
-                                android:text="Address 2" />
+                                android:hint="@string/address_2"/>
                         </LinearLayout>
                         <LinearLayout
                             android:id="@+id/Lay3"
@@ -236,7 +236,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
-                                android:text="Pending amount" />
+                                android:hint="@string/pending_amount" />
 
                             <EditText
                                 android:id="@+id/ETbillId"
@@ -250,12 +250,12 @@
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
-                                android:text="Bill ID" />
+                                android:hint="@string/bill_id" />
                         </LinearLayout>
 
                         <Button
                             android:id="@+id/BTNupdateStatus"
-                            style="@style/AppAccentButton"
+                            style="@style/AppAccentButtonRadious"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/item_button_height"
                             android:layout_alignParentRight="true"

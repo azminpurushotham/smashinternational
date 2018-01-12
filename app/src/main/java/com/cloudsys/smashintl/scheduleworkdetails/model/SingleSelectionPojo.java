@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.newlead;
+package com.cloudsys.smashintl.scheduleworkdetails.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Azmin Purushotham on 12/1/2017.
  */
 
-public class SingleSelectionPojo implements Parcelable{
+public class SingleSelectionPojo implements Parcelable {
     int position;
     ServicesPojo mPojo;
 

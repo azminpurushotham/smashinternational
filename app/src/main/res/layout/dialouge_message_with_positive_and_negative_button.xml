@@ -9,7 +9,6 @@
         android:layout_width="@dimen/dialouge_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <TextView
@@ -18,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:paddingTop="5dp" />
 
         <TextView
             android:id="@+id/TVmessage"
@@ -36,13 +36,19 @@
             <Button
                 android:id="@+id/BTNclose"
                 style="@style/AppPrimaryButton"
-                android:layout_weight="14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/cancel" />
 
             <Button
                 android:id="@+id/BTNok"
                 style="@style/AppAccentButton"
-                android:layout_weight="14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/ok" />
 
         </LinearLayout>

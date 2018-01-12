@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.scheduleworkdetails;
+package com.cloudsys.smashintl.newlead.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
