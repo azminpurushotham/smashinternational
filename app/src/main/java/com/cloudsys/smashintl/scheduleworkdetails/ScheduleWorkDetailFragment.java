@@ -135,6 +135,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         }
         mPresenter.getScheduledWorkDetails();
         mPresenter.initSpinner();
+        BTNupdateStatus.setOnClickListener(this);
         BTN_try.setOnClickListener(this);
     }
 

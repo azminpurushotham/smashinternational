@@ -38,7 +38,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     ArrayList<ServicesPojo> list = new ArrayList<>();
     String customerId, name, branch_name, id, currency;
     CustomSpinnerAdapter customSpinnerAdapter;
-    ArrayList reasons=new ArrayList();
+    ArrayList<String> reasons=new ArrayList();
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -182,7 +182,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             showSnackBar(mView.getParentView(), "Pending amount cannot be blank");
         } else if (mView.getBillId().equals("")) {
             showSnackBar(mView.getParentView(), "Bill id cannot be blank");
-        } else if (mView.getReason().equals("")) {
+        } else if (mView.getReasonSpinner().getSelectedItemPosition()==0) {
             showSnackBar(mView.getParentView(), "Please select a reason");
         } else {
             if (Utilities.isInternet(getViewContext())) {
@@ -201,7 +201,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setAddress(mView.getLocationTextView().getText().toString().trim());
                 data.setTelephone_no(mView.getPhoneTextView().getText().toString().trim());
                 data.setCollection_amount(mView.getPendingAmount());
-                data.setReason(mView.getReason());
+                data.setReason(reasons.get(mView.getReasonSpinner().getSelectedItemPosition()));
                 data.setBill_id(mView.getBillId());
                 mServiceCall.sendData(data);
             } else {
@@ -219,6 +219,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     public void initReason(){
+        reasons.add("Select a reason");
         reasons.add("Reason 1");
         reasons.add("Reason 2");
         reasons.add("Reason 3");
