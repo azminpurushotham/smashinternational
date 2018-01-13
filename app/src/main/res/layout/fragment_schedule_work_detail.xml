@@ -90,7 +90,7 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_below="@+id/TVdateL"
                                 android:layout_marginTop="2dp"
-                                android:text="12/12/2017" />
+                                android:text="" />
                         </LinearLayout>
 
                         <TextView
@@ -134,7 +134,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/TVlocation"
                             android:layout_toRightOf="@+id/TVEmailT"
-                            android:text="sada@sf" />
+                            android:text="" />
 
                         <TextView
                             android:id="@+id/TVMobileT"
@@ -155,7 +155,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/TVEmailT"
                             android:layout_toRightOf="@+id/TVMobileT"
-                            android:text="345436436" />
+                            android:text="" />
 
                         <TextView
                             android:id="@+id/TVp"
@@ -177,7 +177,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/TVp"
-                            android:text="1000 INR" />
+                            android:text="" />
 
                         <RadioGroup
                             android:id="@+id/RGstatus"
@@ -249,6 +249,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/Lay3"
                             android:layout_marginTop="10dp"
+                            android:padding="2dp"
                             android:background="@drawable/shape_gray_with_stroke" />
 
                         <Button

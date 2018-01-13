@@ -1,5 +1,6 @@
 package com.cloudsys.smashintl.newlead;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -13,15 +14,14 @@ import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.newlead.async.ServiceCall;
 import com.cloudsys.smashintl.newlead.async.ServiceCallBack;
-import com.cloudsys.smashintl.newlead.model.ServicesPojo;
+import com.cloudsys.smashintl.newlead.model.newlead;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
@@ -31,7 +31,6 @@ import java.util.ArrayList;
 public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack{
     ActionView mView;
     ServiceCall mServiceCall;
-    ArrayList<ServicesPojo> list = new ArrayList<>();
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -46,45 +45,12 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void setServiceData() {
-    }
-
-    @Override
-    public void initDetails() {
-    }
-
-    @Override
     public void setServices(JSONObject mJsonObject) {
-        try {
-            JSONArray mJsonArray = mJsonObject.getJSONArray("Result");
-            if (mJsonArray.length() > 0) {
-                list = new ArrayList<>();
-                for (int i = 0; i < mJsonArray.length(); i++) {
-                    ServicesPojo item = new ServicesPojo();
-                    item.setId(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("$id"));
-                    item.setWorkOrderCategoryId(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("WorkOrderCategoryId"));
-                    item.setServiceTypeId(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("ServiceTypeId"));
-                    item.setServiceTypeName(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("ServiceTypeName"));
-                    item.setWorkOrderCategoryName(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("WorkOrderCategoryName"));
-                    item.setBriefDescription(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("BriefDescription"));
-                    item.setImageURL(mJsonObject.getJSONArray("Result").getJSONObject(i).getString("ImageURL"));
-                    item.setActive(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("IsActive"));
-                    item.setProviderTimeOutSec(mJsonObject.getJSONArray("Result").getJSONObject(i).getLong("ProviderTimeOutSec"));
-                    item.setShowProviderAssigned(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("ShowProviderAssigned"));
-                    item.setMultipleResourcesAllowed(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("IsMultipleResourcesAllowed"));
-                    item.setHasMaterial(mJsonObject.getJSONArray("Result").getJSONObject(i).getBoolean("HasMaterial"));
-                    item.setSelected(false);
-                    list.add(item);
-                }
-            }
+    }
 
-            if (list.size() > 0) {
-                setServiceData();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void completPosting() {
+        mView.returnToHome();
     }
 
     /////////////DEFAULTS///////////////////////
@@ -166,15 +132,90 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void getScheduledWorkDetails() {
-        mView.showWait(mView.getLoading());
-        if (Utilities.isInternet(mView.getViewContext())) {
-            mServiceCall.getJson();
+    public void submitData() {
+
+        Utilities.hideKeyboard((Activity) getViewContext());
+        if(mView.getCustomerName().equals("")){
+            Utilities.hideKeyboard((Activity) getViewContext());
+            showSnackBar(mView.getParentView(),"Customer Name cannot be blank");
+        }else if(mView.getCustomerId().equals("")){
+            showSnackBar(mView.getParentView(),"Customer id cannot be blank");
+        }else if(mView.getTelephoneNumber().length()==0){
+            showSnackBar(mView.getParentView(),"Telephone number cannot be blank");
+        }else if(!isValidMobile(mView.getTelephoneNumber())){
+            showSnackBar(mView.getParentView(),"Please enter a valid phone number");
+        }else if(mView.getEmail().equals("")){
+            showSnackBar(mView.getParentView(),"Email cannot be blank");
+        }else if(!isValidMail(mView.getEmail())){
+            showSnackBar(mView.getParentView(),"Please enter a valid email");
+        }else if(mView.getSMS().equals("")){
+            showSnackBar(mView.getParentView(),"SMS number cannot be blank");
+        }else if(!isValidMobile(mView.getSMS())){
+            showSnackBar(mView.getParentView(),"Please enter a valid SMS number");
+        }else if(mView.getAddress().equals("")){
+            showSnackBar(mView.getParentView(),"Address cannot be blank");
+        }else if(mView.getPendingAmount().equals("")){
+            showSnackBar(mView.getParentView(),"Pending amount cannot be blank");
+        }else if(mView.getBillId().equals("")){
+            showSnackBar(mView.getParentView(),"Bill id cannot be blank");
+        }else if(mView.getLat()==0||mView.getLon()==0){
+            showSnackBar(mView.getParentView(),"Please select a location");
         } else {
-            mView.removeWait(mView.getLoading());
-            mView.showInternetAlertLogic(false);
+            if (Utilities.isInternet(getViewContext())) {
+                newlead data=new newlead();
+                data.setUserId(mView.getCustomerId());
+                data.setToken( getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
+                data.setStatus(mView.getStatus());
+                data.setCustomerName(mView.getCustomerName());
+                data.setBranch("");
+                data.setTelephone(mView.getTelephoneNumber());
+                data.setEmail(mView.getEmail());
+                data.setSms(mView.getSMS());
+                data.setAddress(mView.getAddress());
+                data.setPending(mView.getPendingAmount());
+                data.setCollecting("");
+                data.setCurrency(mView.getCurrency());
+                data.setLat(mView.getLat()+"");
+                data.setLon(mView.getLon()+"");
+                data.setBill(mView.getBillId());
+                mServiceCall.postNewLead(data);
+            }else{
+                mView.showInternetAlertLogic(false);
+//                showSnackBar(mView.getParentView(),getViewContext().getString(R.string.no_internet));
+            }
         }
     }
 
-    /////////////DEFAULTS///////////////////////
+    /////////////VALIDATION///////////////////////
+
+    private boolean isValidMail(String email) {
+        boolean check;
+        Pattern p;
+        Matcher m;
+
+        String EMAIL_STRING = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        p = Pattern.compile(EMAIL_STRING);
+
+        m = p.matcher(email);
+        check = m.matches();
+
+        return check;
+    }
+
+    private boolean isValidMobile(String phone) {
+        boolean check=false;
+        if(!Pattern.matches("[a-zA-Z]+", phone)) {
+            if(phone.length() < 6 || phone.length() > 13) {
+                // if(phone.length() != 10) {
+                check = false;
+            } else {
+                check = true;
+            }
+        } else {
+            check=false;
+        }
+        return check;
+    }
 }

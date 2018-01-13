@@ -32,4 +32,6 @@ public interface ServiceCallBack {
     SharedPreferenceHelper getSharedPreferenceHelper();
     ////////////DEFAULTS///////////////
     void setServices(JSONObject mJsonObject);
+
+    void completPosting();
 }

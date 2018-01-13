@@ -19,8 +19,8 @@ public interface UserActions {
 
     void getScheduledWorkDetails();
 
-    void setServiceData();
+    void postData();
 
-    void initDetails();
+    void initSpinner();
 
 }

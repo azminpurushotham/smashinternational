@@ -4,19 +4,18 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -34,15 +33,9 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;
-    @Nullable
-    @BindView(R.id.LAYnointernet)
-    ConstraintLayout LAYnointernet;
-    @BindView(R.id.BTN_try)
-    Button BTN_try;
+
     Presenter mPresenter;
     Dialog mLoading;
-    @BindView(R.id.LAYnodata)
-    LinearLayout LAYnodatal;
 
     @BindView(R.id.MVmap)
     MapView MVmap;
@@ -70,6 +63,7 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     Button BTNupdateStatus;
 
     private GoogleMap googleMap;
+    private double lat=0.0,lon=0.0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,11 +96,21 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
 
                 // For dropping a marker at a point on the Map
                 LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        googleMap.clear();
+                        lat=latLng.latitude;
+                        lon=latLng.longitude;
+                        googleMap.addMarker(new MarkerOptions().position(latLng));
+                    }
+                });
             }
         });
 
@@ -120,12 +124,12 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     }
 
     private void buscinessLogic() {
+        BTNupdateStatus.setOnClickListener(this);
         mPresenter = new com.cloudsys.smashintl.newlead.Presenter(this,getBaseInstence());
-//        if (mLoading == null) {
-//            mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
-//        }
+        if (mLoading == null) {
+            mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.please_waite));
+        }
 //        mPresenter.setServiceData();
-        BTN_try.setOnClickListener(this);
     }
 
     /////////////DEFAULTS///////////////////////
@@ -161,12 +165,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
 
     @Override
     public void showInternetAlertLogic(boolean isInternet) {
-        if (isInternet == false) {
-            LAYnointernet.setVisibility(View.VISIBLE);
-        } else {
-            parent.setVisibility(View.VISIBLE);
-            LAYnointernet.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -186,7 +184,11 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
 
     @Override
     public String getStatus() {
-        return null;
+        if(RBpending.isChecked()){
+            return "pending";
+        }else{
+            return "completed";
+        }
     }
 
     @Override
@@ -200,13 +202,62 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     }
 
     @Override
+    public String getCustomerName() {
+        return ETCustomerName.getText().toString().trim();
+    }
+
+    @Override
+    public String getCustomerId() {
+        return ETCustomerId.getText().toString().trim();
+    }
+
+    @Override
+    public String getTelephoneNumber() {
+        return ETTelephone.getText().toString().trim();
+    }
+
+    @Override
+    public String getEmail() {
+        return ETEmail.getText().toString().trim();
+    }
+
+    @Override
+    public String getSMS() {
+        return ETSms.getText().toString().trim();
+    }
+
+    @Override
+    public String getAddress() {
+        return ETAddress.getText().toString().trim();
+    }
+
+    @Override
+    public Double getLat() {
+
+        return lat;
+    }
+
+    @Override
+    public Double getLon() {
+        return lon;
+    }
+
+    @Override
+    public String getCurrency() {
+        return "inr";
+    }
+
+    @Override
+    public void returnToHome() {
+//        getChildFragmentManager().popBackStack();
+        getActivity().onBackPressed();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.BTN_try:
-                mPresenter.showNoInternetConnectionLayout(true);
-                buscinessLogic();
-                break;
             case R.id.BTNupdateStatus:
+                mPresenter.submitData();
                 break;
         }
     }
