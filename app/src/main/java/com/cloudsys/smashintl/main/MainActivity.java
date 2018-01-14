@@ -35,10 +35,13 @@ import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
 import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
+import com.cloudsys.smashintl.utiliti.Utilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.cloudsys.smashintl.utiliti.Utilities.clearApplicationData;
 
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActionView, View.OnClickListener,
@@ -89,13 +92,14 @@ public class MainActivity extends AppBaseActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mToolbar.setNavigationIcon(R.drawable.menu_arrow_back_24dp);
         mToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.menu_icon));
-        
+
         nav_view.setNavigationItemSelectedListener(this);
         nav_view.bringToFront();
 
         mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,
                 drawer_layout, mToolbar, R.string.drawer_open, R.string.drawer_close);
         drawer_layout.addDrawerListener(mDrawerToggle);
+
         drawer_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -198,6 +202,7 @@ public class MainActivity extends AppBaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        drawer_layout.closeDrawers();
         Log.v(TAG, item.getItemId() + "");
         switch (item.getItemId()) {
             case R.id.ic_logout:
@@ -407,7 +412,11 @@ public class MainActivity extends AppBaseActivity
                 break;
 
             case R.id.BTNok:
-                mPresenter.logOut();
+//                mPresenter.logOut();
+                clearApplicationData(MainActivity.this);
+                mPresenter.dismissLogOut();
+                startActivity(LoginActivity.getStartIntent(MainActivity.this));
+                finish();
                 break;
 
         }
@@ -424,9 +433,11 @@ public class MainActivity extends AppBaseActivity
     public void onFragmentSwitch(Fragment mFragment, boolean isAddToBackStack, String backStackTag, boolean isReplace, String screenName) {
         String class_name = "";
         mFragmentManager = getSupportFragmentManager();
+
         class_name = getFragmentClassName();
         Log.v("tag", " class_name " + class_name);
         Log.v("tag", " mFragment.getClass().getSimpleName() " + mFragment.getClass().getSimpleName());
+
         if (!mFragment.getClass().getSimpleName().equalsIgnoreCase(class_name)) {
             if (mFragmentManager == null) {
                 mFragmentManager = getSupportFragmentManager();

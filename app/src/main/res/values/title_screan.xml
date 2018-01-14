@@ -5,4 +5,5 @@
     <string name="title_new_lead">New lead</string>
     <string name="title_pendingwoks">Pending Works</string>
     <string name="title_completed_works">Completed Works</string>
+    <string name="title_sheduled_work_detail">sheduled work detail</string>
 </resources>

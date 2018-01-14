@@ -37,14 +37,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         super(mView, baseInstence);
         this.mView = mView;
         mServiceCall = new ServiceCall(this);
-        onFragmentSwitchListener= (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
+        onFragmentSwitchListener = (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
     }
 
     public Presenter(ActionView mView, AppBaseFragment baseInstence) {
         super(mView, baseInstence);
         this.mView = mView;
         mServiceCall = new ServiceCall(this);
-        onFragmentSwitchListener= (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
+        onFragmentSwitchListener = (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
     }
 
 
@@ -54,7 +54,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         if (Utilities.isInternet(mView.getViewContext())) {
             mServiceCall.getJson(
                     getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), "1"),
-                    getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null)
+                    /*getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null)*/"1234"
             );
         } else {
             mView.removeWait();
@@ -155,17 +155,17 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onAdapterItemClick(Result Result, int adapterPosition) {
-        String userId=Result.getId();
-        ScheduleWorkDetailFragment fragment=new ScheduleWorkDetailFragment();
-        Bundle bundle=new Bundle();
-        bundle.putString("userId",userId);
-        bundle.putString("token",getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
+        String userId = Result.getId();
+        ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
+        bundle.putString("token", getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
         fragment.setArguments(bundle);
         onFragmentSwitchListener.onFragmentSwitch(fragment,
                 true,
                 getViewContext().getString(R.string.tag_sheduled_work_detail),
                 true,
-                getViewContext().getString(R.string.tag_sheduled_work_detail));
+                getViewContext().getString(R.string.title_sheduled_work_detail));
     }
 
     /////////////DEFAULTS///////////////////////

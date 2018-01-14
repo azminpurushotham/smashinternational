@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.cloudsys.smashintl.R;
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +35,7 @@ public class Utilities {
 
 
     public static final String API_PUBLIC_KEY = "zoccer";
+    private static final String TAG = "Utilities";
     String epocTime = generateEpochTime();
     String md5Value = generateMD5Hash(API_PUBLIC_KEY + epocTime);
 
@@ -143,6 +145,40 @@ public class Utilities {
     }
 
     /**
+     * Call this method to delete any cache created by app
+     *
+     * @param context context for your application
+     */
+    public static void clearApplicationData(Context context) {
+        SharedPreferenceHelper mSharedPreferenceHelper = new SharedPreferenceHelper(context);
+        mSharedPreferenceHelper.clearPreferences();
+        File cache = context.getCacheDir();
+        File appDir = new File(cache.getParent());
+        if (appDir.exists()) {
+            String[] children = appDir.list();
+            for (String s : children) {
+                File f = new File(appDir, s);
+                if (deleteDir(f))
+                    Log.i(TAG, String.format("**************** DELETED -> (%s) *******************", f.getAbsolutePath()));
+            }
+        }
+    }
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
+
+
+    /**
      * Get OS Version
      *
      * @return
@@ -245,7 +281,6 @@ public class Utilities {
         progress.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         return progress;
     }
-
 
 
     public static String getNullAsEmptyString(Response<JsonObject> data) {

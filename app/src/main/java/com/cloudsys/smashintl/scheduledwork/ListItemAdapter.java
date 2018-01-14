@@ -69,7 +69,7 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             TVdate = (TextView) inflate.findViewById(R.id.TVdate);
             BTNupdateStatus = (Button) inflate.findViewById(R.id.BTNupdateStatus);
             this.mView = inflate;
-            inflate.setOnClickListener(this);
+            BTNupdateStatus.setOnClickListener(this);
         }
 
         @Override
