@@ -1,5 +1,6 @@
 package com.cloudsys.smashintl.scheduleworkdetails;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -14,8 +15,11 @@ import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCall;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCallBack;
 import com.cloudsys.smashintl.scheduleworkdetails.model.ServicesPojo;
+import com.cloudsys.smashintl.scheduleworkdetails.model.scheduleWorkPojo;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,10 +32,13 @@ import java.util.ArrayList;
  * Mfluid Mobile Apps Pvt Ltd
  */
 
-public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack{
+public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack {
     ActionView mView;
     ServiceCall mServiceCall;
     ArrayList<ServicesPojo> list = new ArrayList<>();
+    String customerId, name, branch_name, id, currency;
+    CustomSpinnerAdapter customSpinnerAdapter;
+    ArrayList<String> reasons=new ArrayList();
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -46,34 +53,37 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void setServiceData() {
-    }
-
-    @Override
-    public void initDetails() {
-        mView.getIdTextView().setText("");
-    }
-
-    @Override
     public void setServices(JSONObject mJsonObject) {
         try {
             JSONArray mJsonArray = mJsonObject.getJSONArray("result");
             if (mJsonArray.length() > 0) {
-                JSONObject jsonObject=mJsonArray.getJSONObject(0);
-                mView.getIdTextView().setText(jsonObject.getString("customer_id"));
+                JSONObject jsonObject = mJsonArray.getJSONObject(0);
+                customerId = jsonObject.getString("customer_id");
+                mView.getIdTextView().setText(customerId);
                 mView.getLocationTextView().setText(jsonObject.getString("address"));
                 mView.getAmountTextView().setText(jsonObject.getString("amount"));
-                if(jsonObject.getString("status").equals("pending")){
+                if (jsonObject.getString("status").equals("pending")) {
                     mView.getPendingStatus().setChecked(true);
-                }else{
+                } else {
                     mView.getCompleteStatus().setChecked(true);
                 }
                 mView.getDateTextView().setText(jsonObject.getString("date"));
+                mView.getMap().addMarker(new MarkerOptions().position(
+                        new LatLng(Double.parseDouble(jsonObject.getString("lat")), Double.parseDouble(jsonObject.getString("lon")))));
+                name = jsonObject.getString("name");
+                branch_name = jsonObject.getString("branch_name");
+                currency = jsonObject.getString("currency");
+
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void completPosting() {
+
     }
 
     /////////////DEFAULTS///////////////////////
@@ -158,12 +168,60 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void getScheduledWorkDetails() {
         mView.showWait(mView.getLoading());
         if (Utilities.isInternet(mView.getViewContext())) {
-            mServiceCall.getJson(mView.getUserId(),mView.getToken(),mView.getCustomerId());
+            mServiceCall.getJson(mView.getUserId(), mView.getToken(), mView.getCustomerId());
         } else {
             mView.removeWait(mView.getLoading());
             mView.showInternetAlertLogic(false);
         }
     }
 
-    /////////////DEFAULTS///////////////////////
+    @Override
+    public void postData() {
+        Utilities.hideKeyboard((Activity) getViewContext());
+        if (mView.getPendingAmount().equals("")) {
+            showSnackBar(mView.getParentView(), "Pending amount cannot be blank");
+        } else if (mView.getBillId().equals("")) {
+            showSnackBar(mView.getParentView(), "Bill id cannot be blank");
+        } else if (mView.getReasonSpinner().getSelectedItemPosition()==0) {
+            showSnackBar(mView.getParentView(), "Please select a reason");
+        } else {
+            if (Utilities.isInternet(getViewContext())) {
+                scheduleWorkPojo data = new scheduleWorkPojo();
+                data.setUserId(mView.getCustomerId());
+                data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
+                if (mView.getCompleteStatus().isChecked()) {
+                    data.setStatus("pending");
+                } else {
+                    data.setStatus("completed");
+                }
+                data.setBranch_id("1");
+                data.setEmail(mView.getEmailTextView().getText().toString().trim());
+                data.setSms_no(mView.getPhoneTextView().getText().toString().trim());
+                data.setBranch_name(branch_name);
+                data.setAddress(mView.getLocationTextView().getText().toString().trim());
+                data.setTelephone_no(mView.getPhoneTextView().getText().toString().trim());
+                data.setCollection_amount(mView.getPendingAmount());
+                data.setReason(reasons.get(mView.getReasonSpinner().getSelectedItemPosition()));
+                data.setBill_id(mView.getBillId());
+                mServiceCall.sendData(data);
+            } else {
+                mView.showInternetAlertLogic(false);
+//                showSnackBar(mView.getParentView(),getViewContext().getString(R.string.no_internet));
+            }
+        }
+    }
+
+    @Override
+    public void initSpinner() {
+        initReason();
+        customSpinnerAdapter=new CustomSpinnerAdapter(getViewContext(),R.layout.item_reason_spinner,reasons);
+        mView.getReasonSpinner().setAdapter(customSpinnerAdapter);
+    }
+
+    public void initReason(){
+        reasons.add("Select a reason");
+        reasons.add("Reason 1");
+        reasons.add("Reason 2");
+        reasons.add("Reason 3");
+    }
 }

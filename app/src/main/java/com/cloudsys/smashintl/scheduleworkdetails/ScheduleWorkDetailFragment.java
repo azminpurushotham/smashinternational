@@ -27,12 +27,12 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ScheduleWorkDetailFragment extends AppBaseFragment implements ActionView, View.OnClickListener {
+public class ScheduleWorkDetailFragment extends AppBaseFragment implements ActionView, View.OnClickListener
+{
 
     //// DEFAULT///////
     @BindView(R.id.parent)
@@ -112,7 +112,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
                 // For dropping a marker at a point on the Map
                 LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
@@ -134,6 +134,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
         }
         mPresenter.getScheduledWorkDetails();
+        mPresenter.initSpinner();
+        BTNupdateStatus.setOnClickListener(this);
         BTN_try.setOnClickListener(this);
     }
 
@@ -288,6 +290,21 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
+    public GoogleMap getMap() {
+        return googleMap;
+    }
+
+    @Override
+    public void returnToHome() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public Spinner getReasonSpinner() {
+        return SPreason;
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.BTN_try:
@@ -295,6 +312,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                 buscinessLogic();
                 break;
             case R.id.BTNupdateStatus:
+                mPresenter.postData();
                 break;
         }
     }

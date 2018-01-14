@@ -38,4 +38,24 @@ public interface ActionView extends AppBaseActionView {
 
     String getBillId();
 
+    String getCustomerName();
+
+    String getCustomerId();
+
+    String getTelephoneNumber();
+
+    String getEmail();
+
+    String getSMS();
+
+    String getAddress();
+
+    Double getLat();
+
+    Double getLon();
+
+    String getCurrency();
+
+    void returnToHome();
+
 }

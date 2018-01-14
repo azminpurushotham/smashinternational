@@ -17,9 +17,5 @@ public interface UserActions {
 
     void checkRunTimePermission(AppBaseActivity activity, String permission);
 
-    void getScheduledWorkDetails();
-
-    void setServiceData();
-
-    void initDetails();
+    void submitData();
 }
