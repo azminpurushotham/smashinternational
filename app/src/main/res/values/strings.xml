@@ -44,5 +44,9 @@
     <string name="phone_number">Phone No</string>
     <string name="completed_amount">completed amount</string>
     <string name="total_amount">total amount</string>
+    <string name="pending_amount_cannot_be_blank">Pending amount cannot be blank\"</string>
+    <string name="billid_cannot_be_blank">Bill id cannot be blank</string>
+    <string name="please_select_a_reason">Please select a reason</string>
+    <string name="view">view</string>
 
 </resources>

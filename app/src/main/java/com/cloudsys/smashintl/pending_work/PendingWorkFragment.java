@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
+import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
@@ -92,6 +93,11 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
     @Override
     public LinearLayoutManager getLinearLayoutManager() {
         return new LinearLayoutManager(getActivity());
+    }
+
+    @Override
+    public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
+        return getFragmentSwitchListener();
     }
 
 

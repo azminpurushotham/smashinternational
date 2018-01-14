@@ -1,6 +1,7 @@
 package com.cloudsys.smashintl.completd_work;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.cloudsys.smashintl.R;
@@ -12,7 +13,9 @@ import com.cloudsys.smashintl.completd_work.async.ServiceCallBack;
 import com.cloudsys.smashintl.completd_work.model.Result;
 import com.cloudsys.smashintl.completd_work.model.ScheduledWorkPojo;
 import com.cloudsys.smashintl.itemdecorator.SpacesItemDecoration;
+import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
 import com.cloudsys.smashintl.utiliti.Utilities;
+import com.cloudsys.smashintl.workdetailview.WorkDetailViewFragment;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -141,6 +144,17 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void onAdapterItemClick(Result Result, int adapterPosition) {
 
+        String userId = Result.getId();
+        WorkDetailViewFragment fragment = new WorkDetailViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
+        bundle.putString("token", getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
+        fragment.setArguments(bundle);
+        mView.getFragmentSwitch().onFragmentSwitch(fragment,
+                true,
+                getViewContext().getString(R.string.tag_sheduled_work_detail),
+                true,
+                getViewContext().getString(R.string.title_sheduled_work_detail));
     }
 
     /////////////DEFAULTS///////////////////////

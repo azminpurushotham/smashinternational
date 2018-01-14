@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.scheduleworkdetails;
+package com.cloudsys.smashintl.workdetailview;
 
 import android.app.Dialog;
 import android.content.Context;

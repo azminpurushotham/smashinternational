@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.scheduleworkdetails;
+package com.cloudsys.smashintl.workdetailview;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,12 +12,12 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
-import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCall;
-import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCallBack;
-import com.cloudsys.smashintl.scheduleworkdetails.model.ServicesPojo;
-import com.cloudsys.smashintl.scheduleworkdetails.model.scheduleWorkPojo;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
+import com.cloudsys.smashintl.workdetailview.async.ServiceCall;
+import com.cloudsys.smashintl.workdetailview.async.ServiceCallBack;
+import com.cloudsys.smashintl.workdetailview.model.ServicesPojo;
+import com.cloudsys.smashintl.workdetailview.model.scheduleWorkPojo;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
