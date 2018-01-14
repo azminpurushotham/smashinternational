@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mToolbar"
-    style="@style/Toolbar"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/toolbar_height"
-    android:orientation="vertical">
+    android:layout_height="?attr/actionBarSize">
 
     <TextView
         android:id="@+id/TVtitle"
-        style="@style/Toolbar.TitleText"
+        style="@style/AppToolBarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
