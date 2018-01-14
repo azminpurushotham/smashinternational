@@ -149,6 +149,8 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.showLogoutDialouge();
     }
 
+    public void checkRunTimePermission(MainActivity mainActivity, String accessCoarseLocation) {    }
+
 
     /////////////DEFAULTS///////////////////////
 }

@@ -1,11 +1,9 @@
 package com.cloudsys.smashintl.main;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 
 import com.cloudsys.smashintl.base.AppBaseActionView;
 import com.cloudsys.smashintl.base.AppBaseActivity;
@@ -26,7 +24,7 @@ public interface ActionView extends AppBaseActionView {
 
     Context getViewContext();
 
-    LinearLayout getParentView();
+    RelativeLayout getParentView();
 
     void showInternetAlertLogic(boolean isInternet);
 

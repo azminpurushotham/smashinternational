@@ -42,5 +42,7 @@
     <string name="Pending">Pending</string>
     <string name="current_status">CURRENT STATUS</string>
     <string name="phone_number">Phone No</string>
+    <string name="completed_amount">completed amount</string>
+    <string name="total_amount">total amount</string>
 
 </resources>

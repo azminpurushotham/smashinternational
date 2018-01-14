@@ -1,5 +1,6 @@
 package com.cloudsys.smashintl.main;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,7 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
@@ -48,7 +50,7 @@ public class MainActivity extends AppBaseActivity
     @BindView(R.id.mToolbar)
     Toolbar mToolbar;
     @BindView(R.id.parent)
-    LinearLayout parent;
+    RelativeLayout parent;
     @Nullable
     @BindView(R.id.LAYnointernet)
     ConstraintLayout LAYnointernet;
@@ -82,10 +84,14 @@ public class MainActivity extends AppBaseActivity
 
     private void buscinessLogic() {
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24px);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu);
+        mToolbar.setNavigationIcon(R.drawable.menu_arrow_back_24dp);
+        mToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.menu_icon));
+        
+        nav_view.setNavigationItemSelectedListener(this);
+        nav_view.bringToFront();
 
         mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,
                 drawer_layout, mToolbar, R.string.drawer_open, R.string.drawer_close);
@@ -98,18 +104,13 @@ public class MainActivity extends AppBaseActivity
         });
 
         mPresenter = new Presenter(this, getBaseInstence());
-
-//        onFragmentSwitch(new CompletdWorkFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
-
-//        mPresenter.checkRunTimePermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
-
+        onFragmentSwitch(new CollectionFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
+        mPresenter.checkRunTimePermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
     private void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        nav_view.setNavigationItemSelectedListener(this);
-        nav_view.bringToFront();
     }
 
 
@@ -240,7 +241,6 @@ public class MainActivity extends AppBaseActivity
                         getString(R.string.title_sheduled_work));
                 break;
         }
-        drawer_layout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -341,7 +341,7 @@ public class MainActivity extends AppBaseActivity
     }
 
     @Override
-    public LinearLayout getParentView() {
+    public RelativeLayout getParentView() {
         return parent;
     }
 

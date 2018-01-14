@@ -28,7 +28,7 @@ public class CollectionFragment extends AppBaseFragment implements ActionView {
     //// DEFAULT///////
 
     @BindView(R.id.mViewPager)
-    CustomViewPager mViewPager;
+    ViewPager mViewPager;
 
     @BindView(R.id.tab)
     TabLayout tab;
