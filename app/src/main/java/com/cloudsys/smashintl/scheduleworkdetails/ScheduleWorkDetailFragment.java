@@ -31,8 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ScheduleWorkDetailFragment extends AppBaseFragment implements ActionView, View.OnClickListener
-{
+public class ScheduleWorkDetailFragment extends AppBaseFragment implements ActionView, View.OnClickListener {
 
     //// DEFAULT///////
     @BindView(R.id.parent)
@@ -75,7 +74,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     Button BTNupdateStatus;
 
     private GoogleMap googleMap;
-    private String userId,token,id;
+    private String id;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,16 +84,14 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return initView(inflater, container,savedInstanceState);
+        return initView(inflater, container, savedInstanceState);
     }
 
-    private View initView(LayoutInflater inflater, @Nullable ViewGroup container,Bundle savedInstanceSate) {
+    private View initView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceSate) {
         View mView = inflater.inflate(R.layout.fragment_schedule_work_detail, container, false);
         ButterKnife.bind(this, mView);
 
-        id=getArguments().getString("id");
-        userId=getArguments().getString("userId");
-        token=getArguments().getString("token");
+        id = getArguments().getString("id");
 
         MVmap.onCreate(savedInstanceSate);
         MVmap.onResume(); // needed to get the map to display immediately
@@ -129,7 +126,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     private void buscinessLogic() {
-        mPresenter = new Presenter(this,getBaseInstence());
+        mPresenter = new Presenter(this, getBaseInstence());
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
         }
@@ -281,12 +278,12 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public String getUserId() {
-        return userId;
+        return getSharedPreferenceHelper().getString(getString(R.string.user_id), null);
     }
 
     @Override
     public String getToken() {
-        return token;
+        return getSharedPreferenceHelper().getString(getString(R.string.tocken), null);
     }
 
     @Override

@@ -1,11 +1,10 @@
 package com.cloudsys.smashintl.scheduleworkdetails.model;
 
 /**
- * Created by Nazif on 13-01-2018.
+ * Created by azmin on 18/1/18.
  */
-
 public class scheduleWorkPojo {
-    String userId,token,branch_id,email,sms_no,branch_name,address,telephone_no,status,collection_amount,reason,bill_id;
+    String userId, token, branch_id, email, sms_no, branch_name, address, telephone_no, status, collection_amount, reason, bill_id;
 
     public String getUserId() {
         return userId;

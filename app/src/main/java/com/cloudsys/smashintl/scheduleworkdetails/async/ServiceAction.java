@@ -7,7 +7,7 @@ import com.cloudsys.smashintl.scheduleworkdetails.model.scheduleWorkPojo;
  */
 
 public interface ServiceAction {
-    void getJson(String userId,String token, String id);
+    void getJson(String userId, String token, String id);
 
     void sendData(scheduleWorkPojo data);
 }

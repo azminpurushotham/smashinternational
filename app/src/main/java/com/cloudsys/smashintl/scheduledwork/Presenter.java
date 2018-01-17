@@ -54,8 +54,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         if (Utilities.isInternet(mView.getViewContext())) {
             mServiceCall.getJson(
                     getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), "1"),
-                    /*getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null)*/"1234"
-            );
+                    getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
         } else {
             mView.removeWait();
             mView.showInternetAlertLogic(false);
@@ -155,10 +154,10 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onAdapterItemClick(Result Result, int adapterPosition) {
-        String userId = Result.getId();
+        String id = Result.getId();
         ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("userId", userId);
+        bundle.putString("id", id);
         bundle.putString("token", getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
         fragment.setArguments(bundle);
         onFragmentSwitchListener.onFragmentSwitch(fragment,

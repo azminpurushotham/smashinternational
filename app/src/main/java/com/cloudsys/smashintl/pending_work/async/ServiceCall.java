@@ -29,7 +29,7 @@ public class ServiceCall implements ServiceAction {
     @Override
     public void getJson(String user_id, String tocken) {
         mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks(user_id, /*tocken*/"1234")
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks(user_id, tocken)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

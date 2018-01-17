@@ -64,6 +64,24 @@ public class ServiceCall implements ServiceAction {
                         mServiceCallBack.showScnackBar(R.string.api_default_error);
                         mServiceCallBack.onFailer(t.getMessage());
                         mServiceCallBack.removeWait();
+
+                        try {
+                            JSONObject mJsonObject = new JSONObject("{\"result\":[{\"customer_id\":\"3\",\"name\":\"more\",\"id\":\"1\",\"address\":\"near highcourt,ernakulam\",\"lat\":\"55.54\",\"lon\":\"0.1\",\"status\":\"pending\",\"date\":\"2018-01-17 00:04:00\",\"amount\":\"3000\",\"currency\":\"INR\"}],\"status\":true,\"message\":\"Success\",\"error_code\":\"200\"}\"");
+                            if (mJsonObject.getBoolean("status")) {
+                                mServiceCallBack.showWait(R.string.please_waite);
+                                mServiceCallBack.removeWait();
+                                mServiceCallBack.onSuccess(mJsonObject);
+                            } else {
+                                mServiceCallBack.showWait(mJsonObject.getString("message"));
+                                mServiceCallBack.showScnackBar(mJsonObject.getString("message"));
+                                mServiceCallBack.removeWait();
+                                mServiceCallBack.onCallfailerFromServerside(mJsonObject);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+
                     }
                 });
 

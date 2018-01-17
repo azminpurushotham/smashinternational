@@ -21,15 +21,48 @@
                 android:layout_marginRight="15dp"
                 android:orientation="vertical">
 
-                <!--<fragment-->
-                <!--android:id="@+id/map"-->
-                <!--class="com.google.android.gms.maps.SupportMapFragment"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="150dp" />-->
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/MVmap"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/MVmap"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/map_size" />
+
+                    <Button
+                        android:id="@+id/BTNSelectPlace"
+                        style="@style/AppAccentButtonRadious"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/small_button_height"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/selector_primary_to_primarydark_strock"
+                        android:drawableLeft="@drawable/place_picker"
+                        android:drawablePadding="5dp"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="3dp"
+                        android:text="@string/pic_place"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text_size" />
+
+                    <Button
+                        android:id="@+id/BTNnavigate"
+                        style="@style/AppAccentButtonRadious"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/navigate_map"
+                        android:text="" />
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -249,8 +282,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/Lay3"
                             android:layout_marginTop="10dp"
-                            android:padding="2dp"
-                            android:background="@drawable/shape_gray_with_stroke" />
+                            android:background="@drawable/shape_gray_with_stroke"
+                            android:padding="2dp" />
 
                         <Button
                             android:id="@+id/BTNupdateStatus"
@@ -264,6 +297,7 @@
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:text="@string/update_status" />
+
                     </RelativeLayout>
 
                 </RelativeLayout>

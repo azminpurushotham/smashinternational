@@ -14,29 +14,26 @@ import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCall;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCallBack;
-import com.cloudsys.smashintl.scheduleworkdetails.model.ServicesPojo;
+import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 import com.cloudsys.smashintl.scheduleworkdetails.model.scheduleWorkPojo;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack {
     ActionView mView;
     ServiceCall mServiceCall;
-    ArrayList<ServicesPojo> list = new ArrayList<>();
-    String customerId, name, branch_name, id, currency;
+    WorkDetailsPojo mPojo = new WorkDetailsPojo();
     CustomSpinnerAdapter customSpinnerAdapter;
     ArrayList<String> reasons = new ArrayList();
 
@@ -54,31 +51,19 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void setServices(JSONObject mJsonObject) {
-        try {
-            JSONArray mJsonArray = mJsonObject.getJSONArray("result");
-            if (mJsonArray.length() > 0) {
-                JSONObject jsonObject = mJsonArray.getJSONObject(0);
-                customerId = jsonObject.getString("customer_id");
-                mView.getIdTextView().setText(customerId);
-                mView.getLocationTextView().setText(jsonObject.getString("address"));
-                mView.getAmountTextView().setText(jsonObject.getString("amount"));
-                if (jsonObject.getString("status").equals("pending")) {
-                    mView.getPendingStatus().setChecked(true);
-                } else {
-                    mView.getCompleteStatus().setChecked(true);
-                }
-                mView.getDateTextView().setText(jsonObject.getString("date"));
-                mView.getMap().addMarker(new MarkerOptions().position(
-                        new LatLng(Double.parseDouble(jsonObject.getString("lat")), Double.parseDouble(jsonObject.getString("lon")))));
-                name = jsonObject.getString("name");
-                branch_name = jsonObject.getString("branch_name");
-                currency = jsonObject.getString("currency");
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        mPojo = new Gson().fromJson(mJsonObject.toString(), WorkDetailsPojo.class);
+        mView.getIdTextView().setText(mPojo.getResult().getCustomerId());
+        mView.getLocationTextView().setText(mPojo.getResult().getAddress());
+        mView.getAmountTextView().setText(mPojo.getResult().getAmount());
+        if (mPojo.getResult().getStatus().equals("pending")) {
+            mView.getPendingStatus().setChecked(true);
+        } else {
+            mView.getCompleteStatus().setChecked(true);
         }
+        mView.getDateTextView().setText(mPojo.getResult().getDate());
+        mView.getMap().addMarker(new MarkerOptions().position(
+                new LatLng(Double.parseDouble(mPojo.getResult().getLat()), Double.parseDouble(mPojo.getResult().getLon()))));
+
     }
 
     @Override
@@ -197,7 +182,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setBranch_id("1");
                 data.setEmail(mView.getEmailTextView().getText().toString().trim());
                 data.setSms_no(mView.getPhoneTextView().getText().toString().trim());
-                data.setBranch_name(branch_name);
+                data.setBranch_name(mPojo.getResult().getName());
                 data.setAddress(mView.getLocationTextView().getText().toString().trim());
                 data.setTelephone_no(mView.getPhoneTextView().getText().toString().trim());
                 data.setCollection_amount(mView.getPendingAmount());

@@ -66,13 +66,6 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
 
     private void buscinessLogic() {
         mPresenter = new Presenter(this, getBaseInstence());
-
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
-        if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
-            getSharedPreferenceHelper().putString(getString(R.string.tocken), refreshedToken);
-        }
-
         BTNlogin.setOnClickListener(this);
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(LoginActivity.this, getString(R.string.loading));
@@ -201,8 +194,7 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
         switch (view.getId()) {
 
             case R.id.BTNlogin:
-//                mPresenter.onLoginClick();
-                loadHomePage();
+                mPresenter.onLoginClick();
                 break;
 
             case R.id.BTN_try:

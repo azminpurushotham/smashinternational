@@ -25,6 +25,13 @@ public class SplashActivity extends AppBaseActivity {
     }
 
     private void buscinessLoagic() {
+//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//        Log.d(TAG, "Refreshed token: " + refreshedToken);
+//        if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
+//            getSharedPreferenceHelper().putString(getString(R.string.tocken), refreshedToken);
+//        }
+        getSharedPreferenceHelper().putString(getString(R.string.tocken), "1234");
+        getSharedPreferenceHelper().putString(getString(R.string.user_id), "1");
 
         new Handler().postDelayed(new Runnable() {
             @Override
