@@ -42,6 +42,7 @@
     <string name="Pending">Pending</string>
     <string name="current_status">CURRENT STATUS</string>
     <string name="phone_number">Phone No</string>
+    <string name="sms_phone_number">Sms Phone No</string>
     <string name="completed_amount">completed amount</string>
     <string name="total_amount">total amount</string>
     <string name="pending_amount_cannot_be_blank">Pending amount cannot be blank\"</string>
@@ -49,5 +50,19 @@
     <string name="please_select_a_reason">Please select a reason</string>
     <string name="view">view</string>
     <string name="pic_place">find place</string>
+    <string name="username_or_password_incorrect">Username or password is incorrect</string>
+    <string name="user_name">user_name</string>
+    <string name="user_image">user_image</string>
+    <string name="fetching_current_location">Fetching current location</string>
+    <string name="location_updated">Location Updated</string>
+    <string name="no_location_detected">
+        No location detected. Make sure location is enabled on the device.
+    </string>
+    <string name="remove_location_updates">remove location updates</string>
+    <string name="currency">Currency</string>
+    <string name="gps_network_not_enabled">Gps network not enabled</string>
+    <string name="open_location_settings">Open location settings</string>
+    <string name="permission_required">Permission required</string>
+    <string name="enabe_gps">Enabe gps</string>
 
 </resources>

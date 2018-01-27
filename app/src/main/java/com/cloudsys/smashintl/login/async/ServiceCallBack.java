@@ -2,6 +2,8 @@ package com.cloudsys.smashintl.login.async;
 
 import android.content.Context;
 
+import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
+
 import org.json.JSONObject;
 
 /**
@@ -35,4 +37,5 @@ public interface ServiceCallBack {
 
     String getPassword();
 
+    SharedPreferenceHelper getSharedPreference();
 }

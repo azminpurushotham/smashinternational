@@ -19,9 +19,11 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,8 +36,13 @@ import retrofit2.Response;
 public class Utilities {
 
 
-    public static final String API_PUBLIC_KEY = "zoccer";
+    public static final String API_PUBLIC_KEY = "azmin";
     private static final String TAG = "Utilities";
+
+    public static final String REQ_FORMAT = "dd MMM yyyy";
+    public static final String CURENT_FORMAT = "yyyy-MM-dd";
+    public static final String SERVER_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";//2017-12-20 12:00 PM
+
     String epocTime = generateEpochTime();
     String md5Value = generateMD5Hash(API_PUBLIC_KEY + epocTime);
 
@@ -259,6 +266,20 @@ public class Utilities {
             e.printStackTrace();
         }
         return _24HourSDF.format(_12HourDt);
+    }
+
+    public static String getFormatedDate(String parse_date, String reqFormat, String curentFormat) {
+        String formattedDate = "";
+        try {
+            DateFormat originalFormat = new SimpleDateFormat(curentFormat, Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat(reqFormat);
+            Date date = originalFormat.parse(parse_date);
+            formattedDate = targetFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Log.v("date", "getFormatedDate : " + formattedDate + "parse_date : " + parse_date + "reqFormat : " + curentFormat + "reqFormat : " + curentFormat);
+        return formattedDate;
     }
 
 

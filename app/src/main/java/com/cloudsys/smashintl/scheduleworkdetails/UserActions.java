@@ -1,21 +1,28 @@
 package com.cloudsys.smashintl.scheduleworkdetails;
 
+import android.location.Location;
 import android.view.View;
 
 import com.cloudsys.smashintl.base.AppBaseActivity;
+import com.cloudsys.smashintl.base.AppBaseFragment;
 
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public interface UserActions {
     void showNoInternetConnectionLayout(boolean isInternet);
 
-    void showSnackBar(View parent, String message);
+    void showSnackBar(String message);
 
-    void checkRunTimePermission(AppBaseActivity activity, String permission);
+    void showSnackBar(int message);
+
+    void showWait(String message);
+
+    void showWait(int message);
+
+    void checkRunTimePermission(AppBaseFragment activity, String permission);
 
     void getScheduledWorkDetails();
 
@@ -23,4 +30,9 @@ public interface UserActions {
 
     void initSpinner();
 
+    void selectLocationPlacePicker();
+
+    void setLocation(Location location);
+
+    void setLocationOfShop();
 }

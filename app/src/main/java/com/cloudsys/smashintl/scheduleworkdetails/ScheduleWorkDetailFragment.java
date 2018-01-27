@@ -1,11 +1,23 @@
 package com.cloudsys.smashintl.scheduleworkdetails;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +30,27 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
+import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.cloudsys.smashintl.main.MainActivity;
 import com.cloudsys.smashintl.utiliti.Utilities;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ScheduleWorkDetailFragment extends AppBaseFragment implements ActionView, View.OnClickListener {
 
@@ -41,10 +62,11 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     ConstraintLayout LAYnointernet;
     @BindView(R.id.BTN_try)
     Button BTN_try;
-    com.cloudsys.smashintl.scheduleworkdetails.Presenter mPresenter;
+    @BindView(R.id.BTNSelectPlace)
+    Button BTNSelectPlace;
     Dialog mLoading;
     @BindView(R.id.LAYnodata)
-    LinearLayout LAYnodatal;
+    LinearLayout LAYnodata;
 
     @BindView(R.id.MVmap)
     MapView MVmap;
@@ -72,9 +94,31 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     Spinner SPreason;
     @BindView(R.id.BTNupdateStatus)
     Button BTNupdateStatus;
+    @BindView(R.id.BTNnavigate)
+    Button BTNnavigate;
+    @BindView(R.id.Layreason)
+    LinearLayout Layreason;
+    @BindView(R.id.EDTreason)
+    EditText EDTreason;
+    @BindView(R.id.TVSmsMobile)
+    TextView TVSmsMobile;
+    @BindView(R.id.ETcurrency)
+    EditText ETcurrency;
+
 
     private GoogleMap googleMap;
     private String id;
+    Presenter mPresenter;
+
+
+    LatLng latLngCurrent;
+    private Location mLocationCurrent;
+    LatLng latLngSelected;
+    private Location mLocationSelected;
+
+    public static final int REQUEST_PLACE_PICKER = 666;
+    private static final int REQUEST_PERMISSIONS_LOCATION = 6;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,7 +136,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         ButterKnife.bind(this, mView);
 
         id = getArguments().getString("id");
-
         MVmap.onCreate(savedInstanceSate);
         MVmap.onResume(); // needed to get the map to display immediately
 
@@ -102,43 +145,45 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
             e.printStackTrace();
         }
 
-        MVmap.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-
-                // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-
-                // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
         return mView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        buscinessLogic();
+        checkPermission();
     }
 
     private void buscinessLogic() {
-        mPresenter = new Presenter(this, getBaseInstence());
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
         }
+        mPresenter = new Presenter(this, getBaseInstence());
         mPresenter.getScheduledWorkDetails();
         mPresenter.initSpinner();
         BTNupdateStatus.setOnClickListener(this);
         BTN_try.setOnClickListener(this);
+        BTNnavigate.setOnClickListener(this);
+        BTNSelectPlace.setOnClickListener(this);
+    }
+
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(getViewActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_PERMISSIONS_LOCATION);
+        } else {
+            buscinessLogic();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.enableLocation();
         MVmap.onResume();
     }
 
@@ -167,12 +212,26 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public void showWait(Dialog mLoading) {
+    public AppBaseFragment getViewBaseContext() {
+        return ScheduleWorkDetailFragment.this;
+    }
+
+    @Override
+    public void showWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
         mLoading.show();
     }
 
     @Override
-    public void removeWait(Dialog mLoading) {
+    public void showWait(int string_id) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(string_id));
+        mLoading.show();
+    }
+
+    @Override
+    public void removeWait() {
         mLoading.dismiss();
     }
 
@@ -202,8 +261,15 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public void showSnackBar(Snackbar snackBar) {
-        snackBar.show();
+    public void showSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
     }
 
     @Override
@@ -292,6 +358,169 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
+    public EditText getCurrencyEditText() {
+        return ETcurrency;
+    }
+
+    @Override
+    public void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker) {
+        startActivityForResult(intent, requestPlacePicker);
+    }
+
+    @Override
+    public void setCurrentLocation(Location mLocation) {
+        mLocationCurrent = mLocation;
+        setGoogleMapMarker(mLocationCurrent, true);
+    }
+
+    private void setGoogleMapMarker(final Location location, final boolean isCurrentLocation) {
+        MVmap.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+                // For zooming automatically to the location of the marker
+                mPresenter.setLocationOfShop();
+
+                if (isCurrentLocation) {
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.current_location_24dp)));
+                } else {
+
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .icon(
+                                    getBitmapFromVectorDrawable(
+                                            getActivity(), R.drawable.shop_24dp)));
+                }
+
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+    }
+
+    public BitmapDescriptor getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable vectorDrawable = null;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            vectorDrawable = context.getDrawable(drawableId);
+        }
+
+        int h = 42;
+        int w = 42;
+        vectorDrawable.setBounds(0, 0, w, h);
+        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bm);
+    }
+
+    private void setGoogleMapMarker(final LatLng location) {
+        MVmap.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+                // For zooming automatically to the location of the marker
+                mPresenter.setLocationOfShop();
+                googleMap.addMarker(new MarkerOptions().position(
+                        new LatLng(24.2282003, 55.7466362)));
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(location.latitude, location.longitude)).zoom(12).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+    }
+
+    @Override
+    public void setPlacePickerLocation(Location mLocation) {
+        this.mLocationSelected = mLocation;
+        setGoogleMapMarker(mLocationSelected, false);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    buscinessLogic();
+                } else {
+                    showSnackBar(getString(R.string.permission_required));
+                    getFragmentManager().popBackStack();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+
+
+    }
+
+    @Override
+    public void setCurrentLocation(LatLng mLocation) {
+        latLngCurrent = mLocation;
+    }
+
+    @Override
+    public void setPlacePickerLocation(LatLng mLocation) {
+        latLngSelected = mLocation;
+        setGoogleMapMarker(latLngSelected);
+    }
+
+    @Override
+    public TextView getSmsPhoneTextView() {
+        return TVSmsMobile;
+    }
+
+    @Override
+    public EditText getReasonEditText() {
+        return EDTreason;
+    }
+
+    @Override
+    public LinearLayout getReasonLinearLay() {
+        return Layreason;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PLACE_PICKER) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(getActivity(), data);
+                String toastMsg = String.format("Place: %s", place.getName());
+                mPresenter.showSnackBar(toastMsg);
+                mLocationSelected = new Location("dummyprovider");
+                mLocationSelected.setLongitude(place.getLatLng().longitude);
+                mLocationSelected.setLatitude(place.getLatLng().latitude);
+                setShopLocation(mLocationSelected);
+
+//                TVlocation.setText(place.getName());
+                TVlocation.setText(place.getAddress());
+            }
+        }
+    }
+
+    private void setShopLocation(Location mLocationSelected) {
+        this.mLocationSelected = mLocationSelected;
+        setGoogleMapMarker(mLocationCurrent, false);
+    }
+
+
+    @Override
     public void returnToHome() {
         getActivity().onBackPressed();
     }
@@ -299,6 +528,11 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public Spinner getReasonSpinner() {
         return SPreason;
+    }
+
+    @Override
+    public AppBaseActivity getViewActivity() {
+        return (MainActivity) getActivity();
     }
 
     @Override
@@ -310,6 +544,29 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                 break;
             case R.id.BTNupdateStatus:
                 mPresenter.postData();
+                break;
+            case R.id.BTNSelectPlace:
+                mPresenter.selectLocationPlacePicker();
+                break;
+            case R.id.BTNnavigate:
+                Uri gmmIntentUri = null;
+                String google_nav = "google.navigation:q=";
+
+                if (latLngCurrent != null && latLngSelected != null) {
+                    gmmIntentUri = Uri.parse(google_nav +
+                            +latLngSelected.latitude + "," + latLngSelected.longitude);
+                } else if (mLocationCurrent != null && mLocationSelected != null) {
+                    gmmIntentUri = Uri.parse(google_nav
+                            + mLocationSelected.getLatitude() + "," + mLocationSelected.getLongitude());
+                }
+
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+
+                if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
+
                 break;
         }
     }

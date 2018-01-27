@@ -46,7 +46,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 showWait(mView.getViewContext().getString(R.string.loading));
                 mServiceCall.postLogin(mView.getUserName(),
                         mView.getPassword(),
-                        getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
+                      /*  getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), "1234")*/"1234");
             }
         } else {
             mView.showNoInternetConnectionLayout(false);

@@ -37,17 +37,23 @@ public class ServiceCall implements ServiceAction {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
-                    LoginPojo mPojo = new Gson().fromJson(response.toString(),LoginPojo.class);
+                    LoginPojo mPojo = new Gson().fromJson(response.body().toString(), LoginPojo.class);
                     if (mPojo.getStatus()) {
                         mServiceCallBack.showWait(mServiceCallBack.getStringRes(R.string.please_waite));
+                        mServiceCallBack.getSharedPreference().putString(mServiceCallBack.getStringRes(R.string.user_id),
+                                mPojo.getResult().getUserId());
+                        mServiceCallBack.getSharedPreference().putString(mServiceCallBack.getStringRes(R.string.user_name),
+                                mPojo.getResult().getName());
+                        mServiceCallBack.getSharedPreference().putString(mServiceCallBack.getStringRes(R.string.user_image),
+                                mPojo.getResult().getImage());
                         mServiceCallBack.onSuccess();
                     } else {
-                        mServiceCallBack.showWait(mServiceCallBack.getStringRes(R.string.authentication_failed));
-                        mServiceCallBack.showScnackBar(mServiceCallBack.getStringRes(R.string.authentication_failed));
+                        mServiceCallBack.showWait(mServiceCallBack.getStringRes(R.string.username_or_password_incorrect));
+                        mServiceCallBack.showScnackBar(mServiceCallBack.getStringRes(R.string.username_or_password_incorrect));
                         mServiceCallBack.onCallfailerFromServerside();
                     }
 
-                }catch (Exception e) {
+                } catch (Exception e) {
                     if (e != null) {
                         e.printStackTrace();
                     }

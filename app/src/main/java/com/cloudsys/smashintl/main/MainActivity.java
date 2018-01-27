@@ -25,9 +25,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.collectionsviewpager.CollectionFragment;
@@ -40,7 +42,9 @@ import com.cloudsys.smashintl.utiliti.Utilities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.cloudsys.smashintl.scheduleworkdetails.Presenter.REQUEST_PLACE_PICKER;
 import static com.cloudsys.smashintl.utiliti.Utilities.clearApplicationData;
 
 public class MainActivity extends AppBaseActivity
@@ -61,6 +65,11 @@ public class MainActivity extends AppBaseActivity
     Button BTN_try;
     Presenter mPresenter;
     //// DEFAULT///////
+
+
+    TextView TVname;
+    CircleImageView IMGuser;
+
 
     private Dialog dialougeLogout;
     boolean doubleBackToExitPressedOnce = false;
@@ -93,6 +102,20 @@ public class MainActivity extends AppBaseActivity
         mToolbar.setNavigationIcon(R.drawable.menu_arrow_back_24dp);
         mToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.menu_icon));
 
+        View headerLayout = nav_view.getHeaderView(0);
+        TVname = (TextView) headerLayout.findViewById(R.id.TVname);
+        IMGuser = (CircleImageView) headerLayout.findViewById(R.id.IMGuser);
+        TVname.setText(getSharedPreferenceHelper().getString(getString(R.string.user_name), ""));
+
+        Log.v("image", getSharedPreferenceHelper().getString(getString(R.string.user_image), "image"));
+
+        Glide.with(MainActivity.this)
+                .load(getSharedPreferenceHelper().getString(getString(R.string.user_image), ""))
+                .centerCrop()
+                .placeholder(R.drawable.user_placeholder).dontAnimate()
+                .error(R.drawable.user_placeholder).dontAnimate()
+                .into(IMGuser);
+
         nav_view.setNavigationItemSelectedListener(this);
         nav_view.bringToFront();
 
@@ -108,7 +131,9 @@ public class MainActivity extends AppBaseActivity
         });
 
         mPresenter = new Presenter(this, getBaseInstence());
-        onFragmentSwitch(new CollectionFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
+//        onFragmentSwitch(new CollectionFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
+        onFragmentSwitch(new ScheduledWorkFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
+
         mPresenter.checkRunTimePermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
@@ -424,8 +449,15 @@ public class MainActivity extends AppBaseActivity
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != REQUEST_PLACE_PICKER) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 

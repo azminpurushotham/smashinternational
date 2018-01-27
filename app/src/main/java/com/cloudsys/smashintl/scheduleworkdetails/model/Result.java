@@ -10,8 +10,6 @@ public class Result {
 
     @SerializedName("address")
     private String mAddress;
-    @SerializedName("agent_id")
-    private String mAgentId;
     @SerializedName("amount")
     private String mAmount;
     @SerializedName("currency")
@@ -22,6 +20,8 @@ public class Result {
     private String mDate;
     @SerializedName("email")
     private String mEmail;
+    @SerializedName("id")
+    private String mId;
     @SerializedName("lat")
     private String mLat;
     @SerializedName("lon")
@@ -39,14 +39,6 @@ public class Result {
 
     public void setAddress(String address) {
         mAddress = address;
-    }
-
-    public String getAgentId() {
-        return mAgentId;
-    }
-
-    public void setAgentId(String agentId) {
-        mAgentId = agentId;
     }
 
     public String getAmount() {
@@ -87,6 +79,14 @@ public class Result {
 
     public void setEmail(String email) {
         mEmail = email;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
     }
 
     public String getLat() {

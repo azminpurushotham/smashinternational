@@ -1,6 +1,7 @@
 
 package com.cloudsys.smashintl.scheduleworkdetails.model;
 
+import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,7 +14,7 @@ public class WorkDetailsPojo {
     @SerializedName("message")
     private String mMessage;
     @SerializedName("result")
-    private Result mResult;
+    private List<Result> mResult;
     @SerializedName("status")
     private Boolean mStatus;
 
@@ -33,11 +34,11 @@ public class WorkDetailsPojo {
         mMessage = message;
     }
 
-    public Result getResult() {
+    public List<Result> getResult() {
         return mResult;
     }
 
-    public void setResult(Result result) {
+    public void setResult(List<Result> result) {
         mResult = result;
     }
 

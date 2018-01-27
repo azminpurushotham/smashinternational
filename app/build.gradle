@@ -9,7 +9,7 @@ android {
         minSdkVersion "${MIN_SDK_VERSION}"
         targetSdkVersion "${target}"
         versionCode 1
-        versionName "${VERSION_NAME}"
+        versionName '1.1.2'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -32,20 +32,16 @@ dependencies {
     })
     testCompile "junit:junit:$JUNIT_VERSION"
     compile "com.google.android.gms:play-services-maps:${PLAYSERVICE_VERSION}"
+    compile "com.google.android.gms:play-services-places:${PLAYSERVICE_VERSION}"
+    compile "com.google.android.gms:play-services-location:${PLAYSERVICE_VERSION}"
     compile "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
     compile "com.google.firebase:firebase-messaging:$PLAYSERVICE_VERSION"
-//    compile 'com.android.support:multidex:1.0.1'
-
+    //    compile 'com.android.support:multidex:1.0.1'
     compile "uk.co.chrisjenx:calligraphy:${CALLIGRAPHY_VERSION}"
-
     compile "com.jakewharton:butterknife:$BUTTER_KNIFE_VERSION"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-
-
     testCompile 'org.mockito:mockito-core:2.7.22'
     androidTestCompile 'org.mockito:mockito-android:2.7.22'
-
-
     compile project(':base')
     compile project(':web_service_helper')
     compile project(':circleimageview')

@@ -1,15 +1,23 @@
 package com.cloudsys.smashintl.scheduleworkdetails;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
 import android.support.design.widget.Snackbar;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.base.AppBaseActionView;
+import com.cloudsys.smashintl.base.AppBaseActivity;
+import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
@@ -18,9 +26,11 @@ import com.google.android.gms.maps.GoogleMap;
 public interface ActionView extends AppBaseActionView {
     /////////////DEFAULTS///////////////////////
 
-    void showWait(Dialog mLoading);
+    void showWait(String message);
 
-    void removeWait(Dialog mLoading);
+    void showWait(int message);
+
+    void removeWait();
 
     void onFailure(String appErrorMessage);
 
@@ -30,11 +40,14 @@ public interface ActionView extends AppBaseActionView {
 
     void showInternetAlertLogic(boolean isInternet);
 
-    void showSnackBar(Snackbar snackBar);
+    void showSnackBar(String snackBar);
 
     void onFinishActivity();
 
     Dialog getLoading();
+
+    /////////////////////////////////////
+
 
     TextView getIdTextView();
 
@@ -48,8 +61,13 @@ public interface ActionView extends AppBaseActionView {
 
     TextView getAmountTextView();
 
+    String getString(int string);
 
-    String getString(int pending_amount_cannot_be_blank);
+    AppBaseActivity getViewActivity();
+
+    AppBaseFragment getViewBaseContext();
+
+    ////////////////////////////////////////////
 
     RadioButton getPendingStatus();
 
@@ -72,5 +90,24 @@ public interface ActionView extends AppBaseActionView {
     void returnToHome();
 
     Spinner getReasonSpinner();
+
+    void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker);
+
+
+    void setCurrentLocation(Location mLocation);
+
+    void setPlacePickerLocation(Location mLocation);
+
+    void setCurrentLocation(LatLng mLocation);
+
+    void setPlacePickerLocation(LatLng mLocation);
+
+    TextView getSmsPhoneTextView();
+
+    EditText getReasonEditText();
+
+    LinearLayout getReasonLinearLay();
+
+    EditText getCurrencyEditText();
 
 }

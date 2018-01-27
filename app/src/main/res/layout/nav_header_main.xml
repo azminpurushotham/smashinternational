@@ -4,23 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/header"
-    android:gravity="center_vertical"
-    android:backgroundTintMode="screen"
     android:backgroundTint="@color/colorPrimaryDark"
+    android:backgroundTintMode="screen"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingTop="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/IMGuser"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="20dp"
         android:src="@drawable/user_placeholder" />
 
     <TextView
+        android:id="@+id/TVname"
         style="@style/AppTextViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
+        android:textAllCaps="true"
         android:textColor="@color/white"
         android:textStyle="bold" />
 

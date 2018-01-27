@@ -12,6 +12,8 @@ public class LoginPojo {
     private String mErrorCode;
     @SerializedName("message")
     private String mMessage;
+    @SerializedName("result")
+    private Result mResult;
     @SerializedName("status")
     private Boolean mStatus;
 
@@ -29,6 +31,14 @@ public class LoginPojo {
 
     public void setMessage(String message) {
         mMessage = message;
+    }
+
+    public Result getResult() {
+        return mResult;
+    }
+
+    public void setResult(Result result) {
+        mResult = result;
     }
 
     public Boolean getStatus() {

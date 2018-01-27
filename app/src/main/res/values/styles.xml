@@ -124,7 +124,7 @@
         <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:lineSpacingExtra">@dimen/line_spacing</item>
-        <item name="fontPath">"fonts/Knockout_HTF28_JuniorFeatherwt.otf"</item>
+        <item name="fontPath">"fonts/HelveticaNeueLTPro_MdCn.otf"</item>
     </style>
 
 
@@ -150,7 +150,7 @@
         <item name="android:textSize">@dimen/subtitle_text_size</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:lineSpacingExtra">@dimen/line_spacing</item>
-        <item name="fontPath">"fonts/HelveticaNeueLTPro_MdCn.otf"</item>
+        <item name="fontPath">"fonts/Knockout_HTF28_JuniorFeatherwt.otf"</item>
     </style>
 
     <style name="AppTextViewFadeText" parent="android:Widget.TextView">
