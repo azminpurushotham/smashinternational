@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.cloudsys.smashintl.base.AppBaseActionView;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -60,6 +61,8 @@ public interface ActionView extends AppBaseActionView {
     TextView getPhoneTextView();
 
     TextView getAmountTextView();
+
+    int getAmount();
 
     String getString(int string);
 
@@ -109,5 +112,9 @@ public interface ActionView extends AppBaseActionView {
     LinearLayout getReasonLinearLay();
 
     EditText getCurrencyEditText();
+
+    WorkDetailsPojo getPojo();
+
+    void setPojo(WorkDetailsPojo mPojo);
 
 }

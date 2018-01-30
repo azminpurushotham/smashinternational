@@ -22,7 +22,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:indeterminateDrawable="@drawable/custom_progress_dialouge"
+            android:progress="@color/colorAccentDark"
             android:toDegrees="2160"
             android:layout_marginLeft="10dp"
             app:layout_constraintLeft_toLeftOf="parent"

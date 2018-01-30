@@ -10,14 +10,14 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +33,7 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.main.MainActivity;
+import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -118,6 +119,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     public static final int REQUEST_PLACE_PICKER = 666;
     private static final int REQUEST_PERMISSIONS_LOCATION = 6;
+    WorkDetailsPojo mPojo = new WorkDetailsPojo();
 
 
     @Override
@@ -158,6 +160,34 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
         }
+
+        ETamount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                try {
+                    if (Integer.parseInt(getPojo().getResult().get(0).getAmount()) > Integer.parseInt(ETamount.getText().toString())) {
+                        SPreason.setVisibility(View.VISIBLE);
+                    } else {
+                        SPreason.setVisibility(View.GONE);
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    SPreason.setVisibility(View.GONE);
+                }
+            }
+        });
+
         mPresenter = new Presenter(this, getBaseInstence());
         mPresenter.getScheduledWorkDetails();
         mPresenter.initSpinner();
@@ -183,8 +213,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.enableLocation();
         MVmap.onResume();
+        mPresenter.enableLocation();
     }
 
     @Override
@@ -203,6 +233,11 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     public void onLowMemory() {
         super.onLowMemory();
         MVmap.onLowMemory();
+    }
+
+    @Override
+    public int getAmount() {
+        return Integer.parseInt(ETamount.getText().toString());
     }
 
     /////////////DEFAULTS///////////////////////
@@ -363,6 +398,16 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
+    public WorkDetailsPojo getPojo() {
+        return mPojo;
+    }
+
+    @Override
+    public void setPojo(WorkDetailsPojo mPojo) {
+        this.mPojo = mPojo;
+    }
+
+    @Override
     public void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker) {
         startActivityForResult(intent, requestPlacePicker);
     }
@@ -384,7 +429,9 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                 if (isCurrentLocation) {
                     googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.current_location_24dp)));
+                            .icon(
+                                    getBitmapFromVectorDrawable(
+                                            getActivity(), R.drawable.current_location_24dp)));
                 } else {
 
                     googleMap.addMarker(new MarkerOptions()
@@ -402,6 +449,38 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         });
     }
 
+    private void setGoogleMapMarker(final LatLng location, final boolean isCurrentLocation) {
+        MVmap.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+                // For zooming automatically to the location of the marker
+                mPresenter.setLocationOfShop();
+
+                if (isCurrentLocation) {
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(location.latitude, location.longitude))
+                            .icon(
+                                    getBitmapFromVectorDrawable(
+                                            getActivity(), R.drawable.current_location_24dp)));
+                } else {
+
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(location.latitude, location.longitude))
+                            .icon(
+                                    getBitmapFromVectorDrawable(
+                                            getActivity(), R.drawable.shop_24dp)));
+                }
+
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(location.latitude, location.longitude)).zoom(12).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
+    }
+
+
     public BitmapDescriptor getBitmapFromVectorDrawable(Context context, int drawableId) {
         Drawable vectorDrawable = null;
 
@@ -409,8 +488,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
             vectorDrawable = context.getDrawable(drawableId);
         }
 
-        int h = 42;
-        int w = 42;
+        int h = 80;
+        int w = 80;
         vectorDrawable.setBounds(0, 0, w, h);
         Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bm);
@@ -476,7 +555,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public void setPlacePickerLocation(LatLng mLocation) {
         latLngSelected = mLocation;
-        setGoogleMapMarker(latLngSelected);
+        setGoogleMapMarker(latLngSelected, false);
     }
 
     @Override

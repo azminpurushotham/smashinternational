@@ -12,12 +12,8 @@ import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.scheduleworkdetails.Presenter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-
-import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 
 /**
@@ -44,7 +40,6 @@ public class LocationPresenter implements LocationAction {
 
     @Override
     public void initLocation() {
-        mView.showWait(R.string.fetching_current_location);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mView.getViewBaseContext().getContext());
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(mView.getViewBaseContext().getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -52,27 +47,7 @@ public class LocationPresenter implements LocationAction {
             // Should we show an explanation?
 
         } else {
-
-//            mFusedLocationClient.getLastLocation()
-//                    .addOnCompleteListener(mView.getViewActivity(), new OnCompleteListener<Location>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Location> task) {
-//                            if (task.isSuccessful() && task.getResult() != null) {
-//                                mLocation = task.getResult();
-//                                Log.v("Location", mLocation.getLatitude() + "" + mLocation.getLongitude());
-//                                if (mLocation != null) {
-//                                    mView.setCurrentLocation(mLocation);
-//                                } else {
-//                                    mView.setCurrentLocation(LocationUtilities.getLastLocation(mFusedLocationClient, mView.getViewActivity()));
-//                                }
-//                            } else {
-//                                Log.w("LocationUtilities", "getLastLocation:exception", task.getException());
-//                                mView.showSnackBar(R.string.no_location_detected);
-//                                mView.enableLocation();
-//                            }
-//                        }
-//                    });
-
+            mView.showWait(R.string.fetching_current_location);
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
@@ -83,8 +58,10 @@ public class LocationPresenter implements LocationAction {
                                 Log.v("Location", mLocation.getLatitude() + "" + mLocation.getLongitude());
                                 if (mLocation != null) {
                                     mView.setCurrentLocation(mLocation);
+                                    mView.removeWaiteLocation();
                                 } else {
                                     mView.setCurrentLocation(LocationUtilities.getLastLocation(mFusedLocationClient, mView.getViewActivity()));
+                                    mView.removeWaiteLocation();
                                 }
                             }
                         }
@@ -96,6 +73,7 @@ public class LocationPresenter implements LocationAction {
                             e.printStackTrace();
                             mView.showSnackBar(R.string.no_location_detected);
                             mView.enableLocation();
+                            mView.removeWaiteLocation();
                         }
                     });
 

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 
 
 /**
@@ -35,4 +36,5 @@ public interface UserActions {
     void setLocation(Location location);
 
     void setLocationOfShop();
+
 }

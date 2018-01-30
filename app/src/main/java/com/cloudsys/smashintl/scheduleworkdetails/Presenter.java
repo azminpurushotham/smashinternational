@@ -34,6 +34,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -82,11 +83,23 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.getAmountTextView().setText(mPojo.getResult().get(0).getAmount() + " " + mPojo.getResult().get(0).getCurrency());
         mView.getCurrencyEditText().setText(mPojo.getResult().get(0).getCurrency());
 
+        mView.setPlacePickerLocation(new LatLng(
+                Double.parseDouble(mPojo.getResult().get(0).getLat()),
+                Double.parseDouble(mPojo.getResult().get(0).getLon())));
+
+        Location mLocation = new Location("");
+        mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
+        mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
+
+        mView.setPlacePickerLocation(mLocation);
+
         if (mPojo.getResult().get(0).getStatus().equals("pending")) {
             mView.getPendingStatus().setChecked(true);
         } else {
             mView.getCompleteStatus().setChecked(true);
         }
+
+        mView.setPojo(mPojo);
 
         mView.getDateTextView().setText(
                 Utilities.getFormatedDate(
@@ -213,9 +226,11 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             showSnackBar(mView.getString(R.string.pending_amount_cannot_be_blank));
         } else if (mView.getBillId().equals("")) {
             showSnackBar(mView.getString(R.string.billid_cannot_be_blank));
-        } else if (mView.getReasonSpinner().getSelectedItemPosition() == 0) {
+        } else if (mView.getReasonSpinner().getSelectedItemPosition() == 0
+                && Integer.parseInt(mView.getPojo().getResult().get(0).getAmount()) > mView.getAmount()) {
             showSnackBar(mView.getString(R.string.please_select_a_reason));
         } else {
+
             if (Utilities.isInternet(getViewContext())) {
                 scheduleWorkPojo data = new scheduleWorkPojo();
                 data.setUserId(mView.getCustomerId());
@@ -225,7 +240,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 } else {
                     data.setStatus("completed");
                 }
-                data.setBranch_id("1");
+                data.setBranch_id(mPojo.getResult().get(0).getCustomerId());
                 data.setEmail(mView.getEmailTextView().getText().toString().trim());
                 data.setSms_no(mView.getPhoneTextView().getText().toString().trim());
                 data.setBranch_name(mPojo.getResult().get(0).getName());
@@ -340,16 +355,19 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             dialougeGps.setCancelable(false);
             dialougeGps.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialougeGps.show();
-        }else {
-            if(dialougeGps!= null && dialougeGps.isShowing()){
+        } else {
+            if (dialougeGps != null && dialougeGps.isShowing()) {
                 dialougeGps.dismiss();
+                mLocationPresenter.initLocation();
+            } else {
+                mLocationPresenter.initLocation();
             }
         }
     }
 
     @Override
     public void removeWaiteLocation() {
-
+        mView.removeWait();
     }
 
     public void initReason() {

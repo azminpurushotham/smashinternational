@@ -44,9 +44,15 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         if (Utilities.isInternet(mView.getViewContext())) {
             if (isValidate()) {
                 showWait(mView.getViewContext().getString(R.string.loading));
+                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                Log.d(TAG, "Refreshed token: " + refreshedToken);
+                if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
+                    getSharedPreference().putString(mView.getViewContext().getString(R.string.tocken), refreshedToken);
+                }
+
                 mServiceCall.postLogin(mView.getUserName(),
                         mView.getPassword(),
-                      /*  getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), "1234")*/"1234");
+                        getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
             }
         } else {
             mView.showNoInternetConnectionLayout(false);

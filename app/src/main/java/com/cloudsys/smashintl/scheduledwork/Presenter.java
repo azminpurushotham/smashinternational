@@ -53,7 +53,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.showWait(mView.getStringRes(R.string.loading));
         if (Utilities.isInternet(mView.getViewContext())) {
             mServiceCall.getJson(
-                    getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), "1"),
+                    getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null),
                     getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
         } else {
             mView.removeWait();
