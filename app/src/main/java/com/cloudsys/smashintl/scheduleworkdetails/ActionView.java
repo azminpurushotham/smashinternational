@@ -70,6 +70,8 @@ public interface ActionView extends AppBaseActionView {
 
     AppBaseFragment getViewBaseContext();
 
+    String getToken();
+
     ////////////////////////////////////////////
 
     RadioButton getPendingStatus();
@@ -86,7 +88,6 @@ public interface ActionView extends AppBaseActionView {
 
     String getUserId();
 
-    String getToken();
 
     GoogleMap getMap();
 

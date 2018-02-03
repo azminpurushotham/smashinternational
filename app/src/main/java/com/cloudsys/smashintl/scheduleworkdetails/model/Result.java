@@ -30,8 +30,10 @@ public class Result {
     private String mName;
     @SerializedName("phone_number")
     private String mPhoneNumber;
-    @SerializedName("status")
-    private String mStatus;
+    @SerializedName("sms_number")
+    private String mSmsNumber;
+    @SerializedName("workstatus")
+    private String mWorkstatus;
 
     public String getAddress() {
         return mAddress;
@@ -121,12 +123,20 @@ public class Result {
         mPhoneNumber = phoneNumber;
     }
 
-    public String getStatus() {
-        return mStatus;
+    public String getSmsNumber() {
+        return mSmsNumber;
     }
 
-    public void setStatus(String status) {
-        mStatus = status;
+    public void setSmsNumber(String smsNumber) {
+        mSmsNumber = smsNumber;
+    }
+
+    public String getWorkstatus() {
+        return mWorkstatus;
+    }
+
+    public void setWorkstatus(String workstatus) {
+        mWorkstatus = workstatus;
     }
 
 }

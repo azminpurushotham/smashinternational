@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.location_service;
+package com.cloudsys.smashintl.newlead.location_service;
 
 import android.content.Context;
 import android.location.Location;

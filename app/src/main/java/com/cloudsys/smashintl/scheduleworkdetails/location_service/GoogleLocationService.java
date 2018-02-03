@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.location_service;
+package com.cloudsys.smashintl.scheduleworkdetails.location_service;
 
 import android.app.ActivityManager;
 import android.app.Notification;

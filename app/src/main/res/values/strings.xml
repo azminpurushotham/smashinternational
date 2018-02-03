@@ -64,5 +64,7 @@
     <string name="open_location_settings">Open location settings</string>
     <string name="permission_required">Permission required</string>
     <string name="enabe_gps">Enabe gps</string>
+    <string name="pending_">pending</string>
+    <string name="completed_">completed</string>
 
 </resources>

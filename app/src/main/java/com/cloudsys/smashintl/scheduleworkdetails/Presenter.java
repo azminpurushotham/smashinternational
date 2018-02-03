@@ -22,8 +22,8 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
-import com.cloudsys.smashintl.location_service.LocationPresenter;
-import com.cloudsys.smashintl.location_service.LocationView;
+import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationPresenter;
+import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationView;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCall;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCallBack;
 import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
@@ -93,7 +93,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
         mView.setPlacePickerLocation(mLocation);
 
-        if (mPojo.getResult().get(0).getStatus().equals("pending")) {
+        if (mPojo.getResult().get(0).getWorkstatus().equals("pending")) {
             mView.getPendingStatus().setChecked(true);
         } else {
             mView.getCompleteStatus().setChecked(true);
@@ -110,102 +110,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void completPosting() {
 
-    }
-
-    /////////////DEFAULTS///////////////////////
-
-    @Override
-    public Context getViewContext() {
-        return mView.getViewContext();
-    }
-
-    @Override
-    public AppBaseFragment getViewBaseContext() {
-        return mView.getViewBaseContext();
-    }
-
-    @Override
-    public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return getSharedPreference();
-    }
-
-    @Override
-    public void onSuccess(JSONObject mJsonObject) {
-
-    }
-
-    @Override
-    public void onFailer(String message) {
-        Log.v("exception", message);
-        showSnackBar(message);
-    }
-
-    @Override
-    public void onCallfailerFromServerside() {
-
-    }
-
-    @Override
-    public void onException(String message) {
-        mView.removeWait();
-    }
-
-    @Override
-    public void showScnackBar(String message) {
-        showSnackBar(message);
-    }
-
-    @Override
-    public void removeWait() {
-        mView.removeWait();
-    }
-
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-
-    @Override
-    public void showWait(int message) {
-        showWait(mView.getViewActivity().getString(message));
-    }
-
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        mView.showSnackBar(message);
-    }
-
-
-    @Override
-    public void checkRunTimePermission(AppBaseFragment activity, String permission) {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(activity.getContext(), permission)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity.getActivity(), permission)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(activity.getActivity(),
-                        new String[]{permission},
-                        REQUEST_PERMISSIONS_REQUEST_CODE);
-                // REQUEST_PERMISSIONS_REQUEST_CODE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        } else {
-
-        }
     }
 
     @Override
@@ -292,6 +196,104 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 //                new LatLng(Double.parseDouble(mPojo.getResult().getLat()), Double.parseDouble(mPojo.getResult().getLon()))));
 
     }
+
+    /////////////DEFAULTS///////////////////////
+
+    @Override
+    public Context getViewContext() {
+        return mView.getViewContext();
+    }
+
+    @Override
+    public AppBaseFragment getViewBaseContext() {
+        return mView.getViewBaseContext();
+    }
+
+    @Override
+    public SharedPreferenceHelper getSharedPreferenceHelper() {
+        return getSharedPreference();
+    }
+
+    @Override
+    public void onSuccess(JSONObject mJsonObject) {
+
+    }
+
+    @Override
+    public void onFailer(String message) {
+        Log.v("exception", message);
+        showSnackBar(message);
+    }
+
+    @Override
+    public void onCallfailerFromServerside() {
+
+    }
+
+    @Override
+    public void onException(String message) {
+        mView.removeWait();
+    }
+
+    @Override
+    public void showScnackBar(String message) {
+        showSnackBar(message);
+    }
+
+    @Override
+    public void removeWait() {
+        mView.removeWait();
+    }
+
+
+    @Override
+    public void showWait(String message) {
+        mView.showWait(message);
+    }
+
+
+    @Override
+    public void showWait(int message) {
+        showWait(mView.getViewActivity().getString(message));
+    }
+
+    @Override
+    public void showNoInternetConnectionLayout(boolean isInternet) {
+        mView.showInternetAlertLogic(isInternet);
+    }
+
+    @Override
+    public void showSnackBar(String message) {
+        mView.showSnackBar(message);
+    }
+
+    @Override
+    public void checkRunTimePermission(AppBaseFragment activity, String permission) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(activity.getContext(), permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity.getActivity(), permission)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(activity.getActivity(),
+                        new String[]{permission},
+                        REQUEST_PERMISSIONS_REQUEST_CODE);
+                // REQUEST_PERMISSIONS_REQUEST_CODE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+
+        }
+    }
+
+    /////////////DEFAULTS///////////////////////
+
 
     @Override
     public AppBaseActivity getViewActivity() {

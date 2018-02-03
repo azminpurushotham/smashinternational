@@ -57,7 +57,7 @@ public interface APIs {
     @FormUrlEncoded
     @POST("mobile/termsAndConditions")
     Call<JsonObject> postLogout(@Field("user_id") String user_id,
-                                @Field("tocken") String tocken);
+                                @Field("token") String token);
 
 
     @FormUrlEncoded

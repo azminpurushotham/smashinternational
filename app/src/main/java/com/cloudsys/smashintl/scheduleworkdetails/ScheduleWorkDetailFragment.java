@@ -214,7 +214,9 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     public void onResume() {
         super.onResume();
         MVmap.onResume();
-        mPresenter.enableLocation();
+       if(mPresenter!=null){
+           mPresenter.enableLocation();
+       }
     }
 
     @Override
@@ -238,78 +240,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public int getAmount() {
         return Integer.parseInt(ETamount.getText().toString());
-    }
-
-    /////////////DEFAULTS///////////////////////
-
-    public AppBaseFragment getBaseInstence() {
-        return ScheduleWorkDetailFragment.this;
-    }
-
-    @Override
-    public AppBaseFragment getViewBaseContext() {
-        return ScheduleWorkDetailFragment.this;
-    }
-
-    @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
-    public Context getViewContext() {
-        return getActivity();
-    }
-
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
-    }
-
-    @Override
-    public void onFailure(String appErrorMessage) {
-        getSnackBar(parent, appErrorMessage).show();
-    }
-
-    @Override
-    public void showInternetAlertLogic(boolean isInternet) {
-        if (isInternet == false) {
-            LAYnointernet.setVisibility(View.VISIBLE);
-        } else {
-            parent.setVisibility(View.VISIBLE);
-            LAYnointernet.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void onFinishActivity() {
-        getActivity().finish();
     }
 
     @Override
@@ -380,11 +310,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public String getUserId() {
         return getSharedPreferenceHelper().getString(getString(R.string.user_id), null);
-    }
-
-    @Override
-    public String getToken() {
-        return getSharedPreferenceHelper().getString(getString(R.string.tocken), null);
     }
 
     @Override
@@ -520,6 +445,128 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
+    public void setCurrentLocation(LatLng mLocation) {
+        latLngCurrent = mLocation;
+    }
+
+    @Override
+    public void setPlacePickerLocation(LatLng mLocation) {
+        latLngSelected = mLocation;
+        setGoogleMapMarker(latLngSelected, false);
+    }
+
+    @Override
+    public TextView getSmsPhoneTextView() {
+        return TVSmsMobile;
+    }
+
+    @Override
+    public EditText getReasonEditText() {
+        return EDTreason;
+    }
+
+    @Override
+    public LinearLayout getReasonLinearLay() {
+        return Layreason;
+    }
+
+
+
+    private void setShopLocation(Location mLocationSelected) {
+        this.mLocationSelected = mLocationSelected;
+        setGoogleMapMarker(mLocationCurrent, false);
+    }
+
+
+    @Override
+    public void returnToHome() {
+        getActivity().onBackPressed();
+    }
+
+    @Override
+    public Spinner getReasonSpinner() {
+        return SPreason;
+    }
+
+    /////////////DEFAULTS///////////////////////
+
+    public AppBaseFragment getBaseInstence() {
+        return ScheduleWorkDetailFragment.this;
+    }
+
+    @Override
+    public AppBaseFragment getViewBaseContext() {
+        return ScheduleWorkDetailFragment.this;
+    }
+
+    @Override
+    public void showWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
+        mLoading.show();
+    }
+
+    @Override
+    public void showWait(int string_id) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(string_id));
+        mLoading.show();
+    }
+
+    @Override
+    public void removeWait() {
+        mLoading.dismiss();
+    }
+
+    @Override
+    public Context getViewContext() {
+        return getActivity();
+    }
+
+    @Override
+    public RelativeLayout getParentView() {
+        return parent;
+    }
+
+    @Override
+    public void onFailure(String appErrorMessage) {
+        getSnackBar(parent, appErrorMessage).show();
+    }
+
+    @Override
+    public void showInternetAlertLogic(boolean isInternet) {
+        if (isInternet == false) {
+            LAYnointernet.setVisibility(View.VISIBLE);
+        } else {
+            parent.setVisibility(View.VISIBLE);
+            LAYnointernet.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+    }
+
+    @Override
+    public void onFinishActivity() {
+        getActivity().finish();
+    }
+
+
+    @Override
+    public String getToken() {
+        return getSharedPreferenceHelper().getString(getString(R.string.tocken), null);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -547,32 +594,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     }
 
-    @Override
-    public void setCurrentLocation(LatLng mLocation) {
-        latLngCurrent = mLocation;
-    }
-
-    @Override
-    public void setPlacePickerLocation(LatLng mLocation) {
-        latLngSelected = mLocation;
-        setGoogleMapMarker(latLngSelected, false);
-    }
-
-    @Override
-    public TextView getSmsPhoneTextView() {
-        return TVSmsMobile;
-    }
-
-    @Override
-    public EditText getReasonEditText() {
-        return EDTreason;
-    }
-
-    @Override
-    public LinearLayout getReasonLinearLay() {
-        return Layreason;
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -593,26 +614,13 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         }
     }
 
-    private void setShopLocation(Location mLocationSelected) {
-        this.mLocationSelected = mLocationSelected;
-        setGoogleMapMarker(mLocationCurrent, false);
-    }
-
-
-    @Override
-    public void returnToHome() {
-        getActivity().onBackPressed();
-    }
-
-    @Override
-    public Spinner getReasonSpinner() {
-        return SPreason;
-    }
-
     @Override
     public AppBaseActivity getViewActivity() {
         return (MainActivity) getActivity();
     }
+    /////////////DEFAULTS///////////////////////
+
+
 
     @Override
     public void onClick(View v) {

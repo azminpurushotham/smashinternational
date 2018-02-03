@@ -2,7 +2,7 @@ package com.cloudsys.smashintl.newlead;
 
 import android.view.View;
 
-import com.cloudsys.smashintl.base.AppBaseActivity;
+import com.cloudsys.smashintl.base.AppBaseFragment;
 
 
 /**
@@ -15,7 +15,7 @@ public interface UserActions {
 
     void showSnackBar(View parent, String message);
 
-    void checkRunTimePermission(AppBaseActivity activity, String permission);
+    void checkRunTimePermission(AppBaseFragment activity, String permission);
 
     void submitData();
 }

@@ -2,10 +2,13 @@ package com.cloudsys.smashintl.newlead;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.location.Location;
 import android.support.design.widget.Snackbar;
 import android.widget.RelativeLayout;
 
 import com.cloudsys.smashintl.base.AppBaseActionView;
+import com.cloudsys.smashintl.base.AppBaseActivity;
+import com.cloudsys.smashintl.base.AppBaseFragment;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
@@ -14,9 +17,21 @@ import com.cloudsys.smashintl.base.AppBaseActionView;
 public interface ActionView extends AppBaseActionView {
     /////////////DEFAULTS///////////////////////
 
-    void showWait(Dialog mLoading);
-
     void removeWait(Dialog mLoading);
+
+    void showSnackBar(Snackbar snackBar);
+
+    String getString(int string);
+
+    AppBaseActivity getViewActivity();
+
+    AppBaseFragment getViewBaseContext();
+
+    void showWait(String message);
+
+    void showWait(int message);
+
+    void removeWait();
 
     void onFailure(String appErrorMessage);
 
@@ -26,11 +41,17 @@ public interface ActionView extends AppBaseActionView {
 
     void showInternetAlertLogic(boolean isInternet);
 
-    void showSnackBar(Snackbar snackBar);
+    void showSnackBar(String snackBar);
 
     void onFinishActivity();
 
     Dialog getLoading();
+
+    String getToken();
+
+    /////////////DEFAULTS///////////////////////
+
+    void setCurrentLocation(Location mLocation);
 
     String getStatus();
 

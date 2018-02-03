@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.location_service;
+package com.cloudsys.smashintl.newlead.location_service;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.scheduleworkdetails.Presenter;
+import com.cloudsys.smashintl.newlead.Presenter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;

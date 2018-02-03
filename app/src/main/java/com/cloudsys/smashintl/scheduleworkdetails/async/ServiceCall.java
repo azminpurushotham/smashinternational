@@ -61,26 +61,6 @@ public class ServiceCall implements ServiceAction {
                         Log.v("onFailure", t.getMessage());
                         mServiceCallBack.showScnackBar(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
                         mServiceCallBack.removeWait();
-
-                        try {
-                            JSONObject mJsonObject = new JSONObject("{\"result\":{\"customer_id\":\"1\",\"name\":\"anu\",\"agent_id\":\"1\",\"address\":\"near lulu,edapally\",\"lat\":\"51.2\",\"lon\":\"0.12\",\"status\":\"pending\",\"date\":\"2018-01-08 03:00:00\",\"amount\":\"6000\",\"currency\":\"inr\",\"email\":\"anu2gmail.com\",\"phone_number\":\"4842096487\"},\"status\":true,\"message\":\"Success\",\"error_code\":\"200\"}");
-                            if (mJsonObject.getBoolean("status")) {
-                                mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.please_waite));
-                                mServiceCallBack.removeWait();
-                                mServiceCallBack.setServices(mJsonObject);
-                            } else {
-                                mServiceCallBack.showWait(mJsonObject.getString("message"));
-                                mServiceCallBack.showScnackBar(mJsonObject.getString("message"));
-                                mServiceCallBack.removeWait();
-                                mServiceCallBack.onCallfailerFromServerside();
-                            }
-                        } catch (JSONException e) {
-                            if (e != null) {
-                                e.printStackTrace();
-                            }
-                            mServiceCallBack.showScnackBar(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
-                        }
-
                     }
                 });
 

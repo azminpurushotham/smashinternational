@@ -1,10 +1,9 @@
-package com.cloudsys.smashintl.location_service;
+package com.cloudsys.smashintl.scheduleworkdetails.location_service;
 
 import android.location.Location;
 
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.google.android.gms.maps.model.LatLng;
 
 
 /**

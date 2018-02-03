@@ -25,11 +25,14 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
+        String refreshedToken = null;
         mSharedPreferenceHelper = new SharedPreferenceHelper(getApplicationContext());
-        if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
-            mSharedPreferenceHelper.putString(getString(R.string.tocken), refreshedToken);
+        if (mSharedPreferenceHelper.getString(getString(R.string.tocken), null) == null) {
+            refreshedToken = FirebaseInstanceId.getInstance().getToken();
+            Log.d(TAG, "Refreshed token: " + refreshedToken);
+            if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
+                mSharedPreferenceHelper.putString(getString(R.string.tocken), refreshedToken);
+            }
         }
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
