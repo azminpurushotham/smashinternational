@@ -2,6 +2,7 @@ package com.cloudsys.smashintl.newlead;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.support.design.widget.Snackbar;
 import android.widget.RelativeLayout;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.cloudsys.smashintl.base.AppBaseActionView;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
@@ -20,6 +22,8 @@ public interface ActionView extends AppBaseActionView {
     void removeWait(Dialog mLoading);
 
     void showSnackBar(Snackbar snackBar);
+
+    void showSnackBar(int message);
 
     String getString(int string);
 
@@ -69,7 +73,9 @@ public interface ActionView extends AppBaseActionView {
 
     String getSMS();
 
-    String getAddress();
+    String getAddress1();
+
+    String getAddress2();
 
     Double getLat();
 
@@ -77,6 +83,17 @@ public interface ActionView extends AppBaseActionView {
 
     String getCurrency();
 
+    String getCompletedAmount();
+
     void returnToHome();
+
+    void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker);
+
+    void setPlacePickerLocation(Location mLocation);
+
+    void setCurrentLocation(LatLng mLocation);
+
+    void setPlacePickerLocation(LatLng mLocation);
+
 
 }

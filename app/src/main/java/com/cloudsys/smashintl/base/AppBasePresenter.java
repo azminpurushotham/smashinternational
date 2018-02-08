@@ -6,7 +6,6 @@ import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 
 /**
  * Created by AzminPurushotham on 11/15/2017 time 15 : 39.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public class AppBasePresenter implements AppBaseAction {
@@ -31,7 +30,6 @@ public class AppBasePresenter implements AppBaseAction {
     }
 
 
-
     @Override
     public SharedPreferenceHelper getSharedPreference() {
         if (activity == null) {
@@ -39,6 +37,26 @@ public class AppBasePresenter implements AppBaseAction {
         } else {
             return activity.getSharedPreferenceHelper();
         }
+    }
+
+    @Override
+    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
+
+    }
+
+    @Override
+    public void permissionGranded(String permission) {
+
+    }
+
+    @Override
+    public void permissionDenaid(String permission) {
+
+    }
+
+    @Override
+    public String getStringRec(int string_id) {
+        return mView.getStringRes(string_id);
     }
 
 

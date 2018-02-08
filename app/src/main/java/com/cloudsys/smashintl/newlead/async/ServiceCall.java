@@ -31,9 +31,21 @@ public class ServiceCall implements ServiceAction {
     @Override
     public void postNewLead(newlead data) {
         mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().postNewLead(data.getUserId(),data.getToken(),data.getStatus(),
-                data.getCustomerName(),data.getBranch(),data.getTelephone(),data.getEmail(),data.getSms(),data.getAddress(),
-                data.getPending(),data.getCollecting(),data.getCurrency(),data.getLat(),data.getLon(),data.getBill()).enqueue(new Callback<JsonObject>() {
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().postNewLead(
+                data.getUserId(),
+                data.getCustomerName(),
+                data.getEmail(),
+                data.getSms(),
+                data.getAddress1(),
+                data.getAddress2(),
+                data.getTelephone(),
+                data.getPending(),
+                data.getCurrency(),
+                data.getCollecting(),
+                data.getBill(),
+                data.getToken(),
+                data.getLat(),
+                data.getLon()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {

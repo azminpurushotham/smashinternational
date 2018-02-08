@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
@@ -29,6 +30,10 @@ import com.cloudsys.smashintl.newlead.location_service.LocationView;
 import com.cloudsys.smashintl.newlead.model.newlead;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.json.JSONObject;
 
@@ -150,7 +155,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return getSharedPreference();
+        return super.getSharedPreference();
     }
 
     @Override
@@ -207,10 +212,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.removeWait(mView.getLoading());
     }
 
-    @Override
-    public void showScnackBar(String message) {
-        showSnackBar(mView.getParentView(), message);
-    }
 
     @Override
     public void removeWait() {
@@ -282,18 +283,20 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             showSnackBar(mView.getParentView(), "SMS number cannot be blank");
         } else if (!isValidMobile(mView.getSMS())) {
             showSnackBar(mView.getParentView(), "Please enter a valid SMS number");
-        } else if (mView.getAddress().equals("")) {
+        } else if (mView.getAddress1().equals("")) {
             showSnackBar(mView.getParentView(), "Address cannot be blank");
         } else if (mView.getPendingAmount().equals("")) {
             showSnackBar(mView.getParentView(), "Pending amount cannot be blank");
         } else if (mView.getBillId().equals("")) {
             showSnackBar(mView.getParentView(), "Bill id cannot be blank");
+        } else if (mView.getCompletedAmount().equals("")) {
+            showSnackBar(mView.getParentView(), "Completed cannot be blank");
         } else if (mView.getLat() == 0 || mView.getLon() == 0) {
             showSnackBar(mView.getParentView(), "Please select a location");
         } else {
             if (Utilities.isInternet(getViewContext())) {
                 newlead data = new newlead();
-                data.setUserId(mView.getCustomerId());
+                data.setUserId(getSharedPreferenceHelper().getString(getStringRec(R.string.user_id), null));
                 data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
                 data.setStatus(mView.getStatus());
                 data.setCustomerName(mView.getCustomerName());
@@ -301,9 +304,10 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setTelephone(mView.getTelephoneNumber());
                 data.setEmail(mView.getEmail());
                 data.setSms(mView.getSMS());
-                data.setAddress(mView.getAddress());
+                data.setAddress1(mView.getAddress1());
+                data.setAddress2(mView.getAddress2());
                 data.setPending(mView.getPendingAmount());
-                data.setCollecting("");
+                data.setCollecting(mView.getCompletedAmount());
                 data.setCurrency(mView.getCurrency());
                 data.setLat(mView.getLat() + "");
                 data.setLon(mView.getLon() + "");
@@ -311,11 +315,39 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 mServiceCall.postNewLead(data);
             } else {
                 mView.showInternetAlertLogic(false);
-//                showSnackBar(mView.getParentView(),getViewContext().getString(R.string.no_internet));
             }
         }
     }
 
+    @Override
+    public void setLocationOfShop() {
+//        mView.getMap().addMarker(new MarkerOptions().position(
+//                new LatLng(Double.parseDouble(mPojo.getResult().getLat()), Double.parseDouble(mPojo.getResult().getLon()))));
+
+    }
+
+    @Override
+    public void selectLocationPlacePicker() {
+        try {
+            PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+            Intent intent = intentBuilder.build(mView.getViewActivity());
+            // Start the Intent by requesting a result, identified by a request code.
+            mView.startActivityForResultPlacePicker(intent, REQUEST_PLACE_PICKER);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            GooglePlayServicesUtil
+                    .getErrorDialog(e.getConnectionStatusCode(), mView.getViewActivity(), 0);
+        } catch (GooglePlayServicesNotAvailableException e) {
+            Toast.makeText(mView.getViewActivity(), "Google Play Services is not available.",
+                    Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
+
+    @Override
+    public void setLocation(Location location) {
+
+    }
     /////////////VALIDATION///////////////////////
 
     private boolean isValidMail(String email) {

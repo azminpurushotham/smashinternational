@@ -1,9 +1,13 @@
 package com.cloudsys.smashintl.newlead;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,8 +35,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.BindView;
@@ -40,7 +47,7 @@ import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
-public class NewLeadFragment extends AppBaseFragment implements ActionView, View.OnClickListener {
+public class NewLeadFragment extends AppBaseFragment implements ActionView, View.OnClickListener, OnMapReadyCallback {
 
     //// DEFAULT///////
     @BindView(R.id.parent)
@@ -59,18 +66,23 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     EditText ETEmail;
     @BindView(R.id.ETSms)
     EditText ETSms;
-    @BindView(R.id.ETAddress)
-    EditText ETAddress;
     @BindView(R.id.ETAddress1)
     EditText ETAddress1;
+    @BindView(R.id.ETAddress2)
+    EditText ETAddress2;
     @BindView(R.id.RBpending)
     RadioButton RBpending;
     @BindView(R.id.ETamount)
     EditText ETamount;
     @BindView(R.id.ETbillId)
     EditText ETbillId;
+    @BindView(R.id.ETcompletedAmount)
+    EditText ETcompletedAmount;
     @BindView(R.id.BTNupdateStatus)
     Button BTNupdateStatus;
+    @BindView(R.id.BTNSelectPlace)
+    Button BTNSelectPlace;
+
 
     private GoogleMap googleMap;
     private String id;
@@ -111,30 +123,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
             e.printStackTrace();
         }
 
-        MVmap.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-
-                // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-
-                // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        googleMap.clear();
-                        lat = latLng.latitude;
-                        lon = latLng.longitude;
-                        googleMap.addMarker(new MarkerOptions().position(latLng));
-                    }
-                });
-            }
-        });
 
         return mView;
     }
@@ -142,17 +130,96 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        buscinessLogic();
+        checkPermission();
+    }
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(getViewActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_PERMISSIONS_LOCATION);
+        } else {
+            buscinessLogic();
+        }
     }
 
     private void buscinessLogic() {
-        BTNupdateStatus.setOnClickListener(this);
-        mPresenter = new com.cloudsys.smashintl.newlead.Presenter(this, getBaseInstence());
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.please_waite));
         }
-//        mPresenter.setServiceData();
+
+        BTNupdateStatus.setOnClickListener(this);
+        BTNSelectPlace.setOnClickListener(this);
+        mPresenter = new Presenter(this, getBaseInstence());
+
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MVmap.onResume();
+        if (mPresenter != null) {
+            mPresenter.enableLocation();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MVmap.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MVmap.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        MVmap.onLowMemory();
+    }
+
+
+    @Override
+    public void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker) {
+        startActivityForResult(intent, requestPlacePicker);
+    }
+
+    @Override
+    public void setPlacePickerLocation(Location mLocation) {
+        this.mLocationSelected = mLocation;
+        setGoogleMapMarker(mLocationSelected, false);
+    }
+
+    @Override
+    public void setCurrentLocation(LatLng mLocation) {
+        latLngCurrent = mLocation;
+    }
+
+    @Override
+    public void setPlacePickerLocation(LatLng mLocation) {
+        latLngSelected = mLocation;
+        setGoogleMapMarker(latLngSelected, false);
+    }
+
+
+    @Override
+    public void setCurrentLocation(Location mLocation) {
+        mLocationCurrent = mLocation;
+        setGoogleMapMarker(mLocationCurrent, true);
+    }
+
 
     @Override
     public String getPendingAmount() {
@@ -190,29 +257,60 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     }
 
     @Override
-    public String getAddress() {
-        return ETAddress.getText().toString().trim();
+    public String getAddress1() {
+        return ETAddress1.getText().toString().trim();
+    }
+
+    @Override
+    public String getAddress2() {
+        return ETAddress2.getText().toString();
+    }
+
+    @Override
+    public String getCompletedAmount() {
+        return ETcompletedAmount.getText().toString();
     }
 
     @Override
     public Double getLat() {
-        return lat;
+        return mLocationCurrent.getLatitude();
     }
 
     @Override
     public Double getLon() {
-        return lon;
+        return mLocationCurrent.getLongitude();
     }
 
     @Override
     public String getCurrency() {
-        return "inr";
+        return "INR";
     }
 
     @Override
     public void returnToHome() {
 //        getChildFragmentManager().popBackStack();
         getActivity().onBackPressed();
+    }
+
+
+    @Override
+    public void removeWait(Dialog mLoading) {
+        mLoading.dismiss();
+    }
+
+    @Override
+    public void showSnackBar(Snackbar snackBar) {
+        snackBar.show();
+    }
+
+    @Override
+    public void showSnackBar(int message) {
+        mPresenter.showSnackBar(parent, getString(message));
+    }
+
+    @Override
+    public Dialog getLoading() {
+        return mLoading;
     }
 
     @Override
@@ -290,6 +388,22 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
+    }
+
+    public BitmapDescriptor getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable vectorDrawable = null;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            vectorDrawable = context.getDrawable(drawableId);
+        }
+
+        int h = 80;
+        int w = 80;
+        vectorDrawable.setBounds(0, 0, w, h);
+        Bitmap bm = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
     /////////////DEFAULTS///////////////////////
@@ -403,13 +517,13 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(getActivity(), data);
                 String toastMsg = String.format("Place: %s", place.getName());
-                mPresenter.showSnackBar(toastMsg);
+                mPresenter.showSnackBar(parent, toastMsg);
                 mLocationSelected = new Location("dummyprovider");
                 mLocationSelected.setLongitude(place.getLatLng().longitude);
                 mLocationSelected.setLatitude(place.getLatLng().latitude);
                 setShopLocation(mLocationSelected);
 
-                ETAddress.setText(place.getAddress());
+                ETAddress1.setText(place.getAddress());
             }
         }
     }
@@ -426,7 +540,39 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
             case R.id.BTNupdateStatus:
                 mPresenter.submitData();
                 break;
+
+            case R.id.BTNSelectPlace:
+                mPresenter.selectLocationPlacePicker();
+                break;
+
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        // Do other setup activities here too, as described elsewhere in this tutorial.
+        googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            // Return null here, so that getInfoContents() is called next.
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                // Inflate the layouts for the info window, title and snippet.
+                View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
+
+                TextView title = ((TextView) infoWindow.findViewById(R.id.title));
+                title.setText(marker.getTitle());
+
+                TextView snippet = ((TextView) infoWindow.findViewById(R.id.snippet));
+                snippet.setText(marker.getSnippet());
+
+                return infoWindow;
+            }
+        });
     }
 
     /////////////DEFAULTS///////////////////////

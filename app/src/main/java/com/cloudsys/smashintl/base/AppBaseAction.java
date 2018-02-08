@@ -1,4 +1,6 @@
 package com.cloudsys.smashintl.base;
+
+
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 
 /**
@@ -6,7 +8,15 @@ import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
  */
 
 public interface AppBaseAction {
-    public SharedPreferenceHelper getSharedPreference();
+    SharedPreferenceHelper getSharedPreference();
+
+    void checkRunTimePermission(AppBaseActivity activity, String permission);
+
+    void permissionGranded(String permission);
+
+    void permissionDenaid(String permission);
+
+    String getStringRec(int string_id);
 }
 
 

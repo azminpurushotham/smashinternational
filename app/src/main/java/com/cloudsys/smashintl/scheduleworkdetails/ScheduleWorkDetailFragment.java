@@ -238,6 +238,12 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
+    public GoogleMap getMap() {
+        return googleMap;
+    }
+
+
+    @Override
     public int getAmount() {
         return Integer.parseInt(ETamount.getText().toString());
     }
@@ -310,11 +316,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public String getUserId() {
         return getSharedPreferenceHelper().getString(getString(R.string.user_id), null);
-    }
-
-    @Override
-    public GoogleMap getMap() {
-        return googleMap;
     }
 
     @Override

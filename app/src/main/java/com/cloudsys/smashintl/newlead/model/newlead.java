@@ -5,7 +5,7 @@ package com.cloudsys.smashintl.newlead.model;
  */
 
 public class newlead {
-    String userId,token,customerName,branch,status,telephone,email,sms,address,pending,collecting,currency,lat,lon,bill;
+    String userId,token,customerName,branch,status,telephone,email,sms, address1,pending,collecting,currency,lat,lon,bill,address2;
 
     public String getUserId() {
         return userId;
@@ -71,12 +71,12 @@ public class newlead {
         this.sms = sms;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddress1() {
+        return address1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress1(String address1) {
+        this.address1 = address1;
     }
 
     public String getPending() {
@@ -125,5 +125,13 @@ public class newlead {
 
     public void setBill(String bill) {
         this.bill = bill;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
     }
 }

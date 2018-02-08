@@ -14,8 +14,10 @@ import static com.webservicehelper.retrofit.APIs.BASE_URL;
  * Created by azmin on 20/1/16.
  */
 public class RetrofitHelper {
-    Context mContext;
     static APIs apis;
+
+    public RetrofitHelper() {
+    }
 
     public static APIs getApis() {
         return apis;
@@ -26,7 +28,6 @@ public class RetrofitHelper {
     }
 
     public RetrofitHelper(Context mContext) {
-        this.mContext = mContext;
         initRestAdapter();
     }
 

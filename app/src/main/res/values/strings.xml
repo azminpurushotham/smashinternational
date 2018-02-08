@@ -43,7 +43,7 @@
     <string name="current_status">CURRENT STATUS</string>
     <string name="phone_number">Phone No</string>
     <string name="sms_phone_number">Sms Phone No</string>
-    <string name="completed_amount">completed amount</string>
+    <string name="completed_amount">Completed amount</string>
     <string name="total_amount">total amount</string>
     <string name="pending_amount_cannot_be_blank">Pending amount cannot be blank\"</string>
     <string name="billid_cannot_be_blank">Bill id cannot be blank</string>
@@ -66,5 +66,9 @@
     <string name="enabe_gps">Enabe gps</string>
     <string name="pending_">pending</string>
     <string name="completed_">completed</string>
+    <string name="submit">submit</string>
+    <string name="pic_shop_location">pic shop location</string>
+    <string name="existing_customer">existing customer</string>
+    <string name="new_customer">new customer</string>
 
 </resources>

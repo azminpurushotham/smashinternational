@@ -1,5 +1,6 @@
 package com.cloudsys.smashintl.newlead;
 
+import android.location.Location;
 import android.view.View;
 
 import com.cloudsys.smashintl.base.AppBaseFragment;
@@ -18,4 +19,11 @@ public interface UserActions {
     void checkRunTimePermission(AppBaseFragment activity, String permission);
 
     void submitData();
+
+    void setLocationOfShop();
+
+    void selectLocationPlacePicker();
+
+    void setLocation(Location location);
+
 }

@@ -22,10 +22,10 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
-import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationPresenter;
-import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationView;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCall;
 import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCallBack;
+import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationPresenter;
+import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationView;
 import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 import com.cloudsys.smashintl.scheduleworkdetails.model.scheduleWorkPojo;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
@@ -137,7 +137,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
             if (Utilities.isInternet(getViewContext())) {
                 scheduleWorkPojo data = new scheduleWorkPojo();
-                data.setUserId(mView.getCustomerId());
+                data.setUserId(getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null));
                 data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
                 if (mView.getCompleteStatus().isChecked()) {
                     data.setStatus("pending");
@@ -145,15 +145,16 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                     data.setStatus("completed");
                 }
                 data.setBranch_id(mPojo.getResult().get(0).getCustomerId());
-                data.setEmail(mView.getEmailTextView().getText().toString().trim());
-                data.setSms_no(mView.getPhoneTextView().getText().toString().trim());
+                data.setEmail(mPojo.getResult().get(0).getEmail());
+                data.setSms_no(mPojo.getResult().get(0).getSmsNumber());
                 data.setBranch_name(mPojo.getResult().get(0).getName());
-                data.setAddress(mView.getLocationTextView().getText().toString().trim());
-                data.setTelephone_no(mView.getPhoneTextView().getText().toString().trim());
-                data.setCollection_amount(mView.getPendingAmount());
-                data.setReason(reasons.get(mView.getReasonSpinner().getSelectedItemPosition()));
+                data.setAddress1(mPojo.getResult().get(0).getAddress());
+                data.setAddress2(mPojo.getResult().get(0).getAddress());
+                data.setTelephone_no(mPojo.getResult().get(0).getPhoneNumber());
+                data.setCollection_amount(mView.getAmount()+"");
+                data.setReason(mView.getReason());
                 data.setBill_id(mView.getBillId());
-                mServiceCall.sendData(data);
+                mServiceCall.postUpdateWorkStatus(data);
             } else {
                 mView.showInternetAlertLogic(false);
             }

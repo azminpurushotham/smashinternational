@@ -29,9 +29,9 @@ public class ServiceCall implements ServiceAction {
     }
 
     @Override
-    public void getJson(String userId,String token,String id) {
+    public void getJson(String userId, String token, String id) {
         mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorksDetail(id,userId,token)
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorksDetail(id, userId, token)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -67,11 +67,23 @@ public class ServiceCall implements ServiceAction {
     }
 
     @Override
-    public void sendData(scheduleWorkPojo data) {
+    public void postUpdateWorkStatus(scheduleWorkPojo data) {
         mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().updateWorkStatus(data.getUserId(),data.getToken(),data.getBranch_id(),
-                data.getEmail(),data.getSms_no(),data.getBranch_name(),data.getAddress(),data.getTelephone_no(),
-                data.getStatus(),data.getCollection_amount(),data.getReason(),data.getBill_id()).enqueue(new Callback<JsonObject>() {
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().updateWorkStatus(
+                data.getUserId(),
+                data.getToken(),
+                data.getBranch_id(),
+                data.getBranch_name(),
+                data.getAddress1(),
+                data.getAddress2(),
+                data.getEmail(),
+                data.getSms_no(),
+                data.getTelephone_no(),
+                data.getStatus(),
+                data.getCollection_amount(),
+                data.getPendingAmount(),
+                data.getReason(),
+                data.getBill_id()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
@@ -87,7 +99,10 @@ public class ServiceCall implements ServiceAction {
                         mServiceCallBack.removeWait();
                         mServiceCallBack.onCallfailerFromServerside();
                     }
-                } catch (JSONException e) {
+                } catch (
+                        JSONException e)
+
+                {
                     if (e != null) {
                         e.printStackTrace();
                     }

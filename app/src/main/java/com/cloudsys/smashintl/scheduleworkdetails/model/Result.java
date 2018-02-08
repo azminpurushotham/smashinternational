@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 @SuppressWarnings("unused")
 public class Result {
 
-    @SerializedName("address")
+    @SerializedName("address1")
     private String mAddress;
     @SerializedName("amount")
     private String mAmount;

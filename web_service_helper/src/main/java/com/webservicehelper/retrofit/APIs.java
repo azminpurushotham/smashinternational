@@ -87,22 +87,35 @@ public interface APIs {
     @GET("api/smash/api/work/work_details/{id}/{user_id}/{token}")
     Call<JsonObject> getScheduledWorksDetail(@Path("id") String id, @Path("user_id") String user_id, @Path("token") String token);
 
-    @FormUrlEncoded
     @POST("api/smash/api/lead/add_lead/")
-    Call<JsonObject> postNewLead(@Field("user_id") String user_id, @Field("token") String token, @Field("status") String status,
-                                 @Field("customer_name") String customer_name, @Field("branch_name") String branch_name,
-                                 @Field("telephone_number") String telephone_number, @Field("email") String email,
-                                 @Field("sms_no") String sms_no, @Field("address") String address,
-                                 @Field("pending_amount") String pending_amount, @Field("collection_amount") String collection_amount,
-                                 @Field("currency") String currency, @Field("latitude") String latitude,
-                                 @Field("longtitude") String longitude, @Field("bill_id") String bill_id);
+    Call<JsonObject> postNewLead(@Query("user_id") String user_id,
+                                 @Query("customer_name") String customer_name,
+                                 @Query("email") String email,
+                                 @Query("sms_no") String sms_no,
+                                 @Query("address1") String address1,
+                                 @Query("address2") String address2,
+                                 @Query("telephone_number") String telephone_number,
+                                 @Query("pending_amount") String pending_amount,
+                                 @Query("currency") String currency,
+                                 @Query("collection_amount") String collection_amount,
+                                 @Query("bill_id") String bill_id,
+                                 @Query("token") String token,
+                                 @Query("lat") String lat,
+                                 @Query("lon") String lon);
 
-    @FormUrlEncoded
     @POST("api/smash/api/work/work_update/")
-    Call<JsonObject> updateWorkStatus(@Field("user_id") String user_id, @Field("token") String token, @Field("branch_id") String branch_id,
-                                      @Field("email") String email, @Field("sms_no") String sms_no,
-                                      @Field("branch_name") String branch_name, @Field("address") String address,
-                                      @Field("telephone_number") String telephone_number, @Field("status") String status,
-                                      @Field("collection_amount") String collection_amount,
-                                      @Field("reason") String reason, @Field("bill_id") String bill_id);
+    Call<JsonObject> updateWorkStatus(@Query("user_id") String user_id, 
+                                      @Query("token") String token,
+                                      @Query("customer_id") String customer_id,
+                                      @Query("customer_name") String branch_name,
+                                      @Query("address1") String address1,
+                                      @Query("address2") String address2,
+                                      @Query("email") String email,
+                                      @Query("sms_no") String sms_no,
+                                      @Query("telephone_number") String telephone_number,
+                                      @Query("status") String status,
+                                      @Query("collection_amount") String collection_amount,
+                                      @Query("pending_amount") String pending_amount,
+                                      @Query("reason") String reason, 
+                                      @Query("bill_id") String bill_id);
 }
