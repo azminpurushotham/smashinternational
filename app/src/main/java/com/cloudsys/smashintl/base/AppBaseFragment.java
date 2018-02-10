@@ -22,7 +22,7 @@ import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 /**
  * Created by azmin purushotham on 22/8/15.
  */
-public class AppBaseFragment extends BaseFragment implements AppBaseActionView {
+public class AppBaseFragment extends BaseFragment {
 
 
     private SharedPreferenceHelper sharedPreferenceHelper;
@@ -142,96 +142,6 @@ public class AppBaseFragment extends BaseFragment implements AppBaseActionView {
         textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.snack_bar_text_color));
         snackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.snack_bar_text_color));
         return snackbar;
-    }
-
-    @Override
-    public void showWait(String mesage) {
-
-    }
-
-    @Override
-    public void showWait(int mesage) {
-
-    }
-
-    @Override
-    public void removeWait(String message) {
-
-    }
-
-    @Override
-    public void removeWait(int message) {
-
-    }
-
-    @Override
-    public void removeWait() {
-
-    }
-
-    @Override
-    public void onFailure(String appErrorMessage) {
-
-    }
-
-    @Override
-    public void onFailure(int appErrorMessage) {
-
-    }
-
-    @Override
-    public void onFailure() {
-
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-
-    }
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
-    }
-
-    @Override
-    public Context getViewContext() {
-        return getActivity();
-    }
-
-    @Override
-    public AppBaseActivity getViewActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return AppBaseFragment.this;
-    }
-
-    @Override
-    public void onFinishActivity() {
-        getActivity().finish();
-    }
-
-    @Override
-    public void showInternetAlertLogic(boolean isInternet) {
-
-    }
-
-    @Override
-    public void showNodataAlertLogic(boolean isDataPresent) {
-
-    }
-
-    @Override
-    public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
-        return null;
     }
 }
 

@@ -14,24 +14,29 @@ import com.cloudsys.smashintl.scheduledwork.async.ServiceCallBack;
 import com.cloudsys.smashintl.scheduledwork.model.Result;
 import com.cloudsys.smashintl.scheduledwork.model.ScheduledWorkPojo;
 import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
+import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
  */
 
-public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack, ListItemAdapter.OnAdapterItemClick {
+public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack,
+        ListItemAdapter.OnAdapterItemClick {
     ActionView mView;
     ServiceCall mServiceCall;
     private ListItemAdapter adapter;
     private ListItemAdapter.OnAdapterItemClick listner;
     ScheduledWorkPojo mPojo = new ScheduledWorkPojo();
     AppBaseActivity.OnFragmentSwitchListener onFragmentSwitchListener;
+    List<Result> list = new ArrayList<Result>();
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -65,91 +70,31 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void initRecyclerView() {
         mView.getRecyclerView().setLayoutManager(mView.getLinearLayoutManager());
         listner = (ListItemAdapter.OnAdapterItemClick) this;
-        adapter = new ListItemAdapter(new ArrayList<Result>(), mView.getViewContext(), listner);
+        adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
         mView.getRecyclerView().addItemDecoration(new SpacesItemDecoration(getViewContext().getResources().getInteger(R.integer.item_spacing)));
         mView.getRecyclerView().setAdapter(adapter);
     }
 
     @Override
     public void setData() {
-        adapter = new ListItemAdapter(mPojo.getResult(), mView.getViewContext(), listner);
+        list = mPojo.getResult();
+        adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
         mView.getRecyclerView().setAdapter(adapter);
     }
 
-
-    /////////////DEFAULTS///////////////////////
-
     @Override
-    public Context getViewContext() {
-        return mView.getViewContext();
-    }
-
-    @Override
-    public String getStringRes(int string_id) {
-        return mView.getStringRes(string_id);
-    }
-
-    @Override
-    public void showScnackBar(int string_id) {
-
-    }
-
-    @Override
-    public void onSuccess(JSONObject mJsonObject) {
-        mPojo = new Gson().fromJson(mJsonObject.toString(), ScheduledWorkPojo.class);
-        setData();
-    }
-
-    @Override
-    public void onFailer(String message) {
-        Log.v("exception", message);
-        showSnackBar(message);
-    }
-
-    @Override
-    public void onCallfailerFromServerside(JSONObject mJsonObject) {
-
-    }
-
-    @Override
-    public void showScnackBar(String message) {
-        showSnackBar(message);
-    }
-
-    @Override
-    public void removeWait() {
-        mView.removeWait();
-    }
-
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-    @Override
-    public void showWait(int message_id) {
-        mView.showWait(message_id);
-    }
-
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        mView.showSnackBar(message);
-    }
-
-
-    private boolean checkAndRequestPermissions() {
-        return true;
-    }
-
-
-    @Override
-    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
+    public void searchItems(String query) {
+        mView.showWait(mView.getStringRes(R.string.searching));
+        if (Utilities.isInternet(mView.getViewContext())) {
+            mServiceCall.getSearchScheduledWorks(
+                    getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null),
+                    getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null),
+                    mView.getViewContext().getString(R.string.worktype_pending),
+                    query);
+        } else {
+            mView.removeWait();
+            mView.showSnackBar(R.string.no_network_connection);
+        }
     }
 
     @Override
@@ -167,5 +112,155 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 getViewContext().getString(R.string.title_sheduled_work_detail));
     }
 
-    /////////////DEFAULTS///////////////////////
+    @Override
+    public void onCallfailerSearch(JSONObject mJsonObject) {
+        list = new ArrayList<Result>();
+        adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
+        mView.getRecyclerView().setAdapter(adapter);
+    }
+
+
+    @Override
+    public Context getViewContext() {
+        return mView.getViewContext();
+    }
+
+
+    @Override
+    public void setJson(JSONObject mJsonObject) {
+
+    }
+
+    @Override
+    public void onSuccessCallBack(JSONObject mJsonObject) {
+        mView.removeWait();
+        mPojo = new Gson().fromJson(mJsonObject.toString(), ScheduledWorkPojo.class);
+        setData();
+    }
+
+    @Override
+    public void onSuccessCallBack(int message) {
+
+    }
+
+    @Override
+    public void onSuccessCallBack() {
+
+    }
+
+    @Override
+    public void onExceptionCallBack(String message) {
+
+    }
+
+    @Override
+    public void onExceptionCallBack(int message) {
+
+    }
+
+    @Override
+    public void onExceptionCallBack() {
+
+    }
+
+    @Override
+    public void onFailerCallBack(String message) {
+        Log.v("exception", message);
+        mView.showSnackBar(message);
+    }
+
+    @Override
+    public void onFailerCallBack(int message) {
+
+    }
+
+    @Override
+    public void onFailerCallBack() {
+
+    }
+
+    @Override
+    public void onCallfailerFromServerside() {
+
+    }
+
+    @Override
+    public void onCallfailerFromServerside(String message) {
+
+    }
+
+    @Override
+    public void onCallfailerFromServerside(int message) {
+
+    }
+
+    @Override
+    public SharedPreferenceHelper getSharedPreferenceHelper() {
+        return super.getSharedPreference();
+    }
+
+    @Override
+    public void onCallfailerFromServerside(JSONObject mJsonObject) {
+        mView.removeWait();
+        try {
+            mView.showSnackBar(mJsonObject.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void showWait(String message) {
+        mView.showWait(message);
+    }
+
+    @Override
+    public void showWait(JSONObject message) {
+        try {
+            mView.showWait(message.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSuccessCallBack(String message) {
+
+    }
+
+    @Override
+    public void showWait(int message_id) {
+        mView.showWait(message_id);
+    }
+
+    @Override
+    public void showNoInternetConnectionLayout(boolean isInternet) {
+        mView.showInternetAlertLogic(isInternet);
+    }
+
+    @Override
+    public void showNoDataLayout(boolean isNodata) {
+        mView.showNodataAlertLogic(isNodata);
+    }
+
+    @Override
+    public String getStringRec(int string_id) {
+        return mView.getStringRes(string_id);
+    }
+
+    @Override
+    public void permissionGranded(String permission) {
+
+    }
+
+    @Override
+    public void permissionDenaid(String permission) {
+
+    }
+
+    @Override
+    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
+    }
+
 }

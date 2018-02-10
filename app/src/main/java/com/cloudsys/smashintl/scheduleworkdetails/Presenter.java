@@ -37,6 +37,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void setServices(JSONObject mJsonObject) {
+        mView.removeWait();
         mPojo = new Gson().fromJson(mJsonObject.toString(), WorkDetailsPojo.class);
         mView.getIdTextView().setText(mPojo.getResult().get(0).getCustomerId());
         mView.getLocationTextView().setText(mPojo.getResult().get(0).getAddress());
@@ -108,8 +110,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void completPosting() {
-
+    public void completPosting(JSONObject mJsonObject) {
+        mView.showWait(R.string.please_waite);
+        mView.removeWait();
+        try {
+            mView.showSnackBar(mJsonObject.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -127,12 +135,12 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void postData() {
         Utilities.hideKeyboard((Activity) getViewContext());
         if (mView.getPendingAmount().equals("")) {
-            showSnackBar(mView.getString(R.string.pending_amount_cannot_be_blank));
+            mView.showSnackBar(R.string.pending_amount_cannot_be_blank);
         } else if (mView.getBillId().equals("")) {
-            showSnackBar(mView.getString(R.string.billid_cannot_be_blank));
+            mView.showSnackBar(R.string.billid_cannot_be_blank);
         } else if (mView.getReasonSpinner().getSelectedItemPosition() == 0
                 && Integer.parseInt(mView.getPojo().getResult().get(0).getAmount()) > mView.getAmount()) {
-            showSnackBar(mView.getString(R.string.please_select_a_reason));
+            mView.showSnackBar(R.string.please_select_a_reason);
         } else {
 
             if (Utilities.isInternet(getViewContext())) {
@@ -151,9 +159,10 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setAddress1(mPojo.getResult().get(0).getAddress());
                 data.setAddress2(mPojo.getResult().get(0).getAddress());
                 data.setTelephone_no(mPojo.getResult().get(0).getPhoneNumber());
-                data.setCollection_amount(mView.getAmount()+"");
+                data.setCollection_amount(mView.getAmount() + "");
                 data.setReason(mView.getReason());
                 data.setBill_id(mView.getBillId());
+                mView.showWait(R.string.loading);
                 mServiceCall.postUpdateWorkStatus(data);
             } else {
                 mView.showInternetAlertLogic(false);
@@ -200,105 +209,15 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     /////////////DEFAULTS///////////////////////
 
-    @Override
-    public Context getViewContext() {
-        return mView.getViewContext();
-    }
-
-    @Override
-    public AppBaseFragment getViewBaseContext() {
-        return mView.getViewBaseContext();
-    }
-
-    @Override
-    public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return getSharedPreference();
-    }
-
-    @Override
-    public void onSuccess(JSONObject mJsonObject) {
-
-    }
-
-    @Override
-    public void onFailer(String message) {
-        Log.v("exception", message);
-        showSnackBar(message);
-    }
-
-    @Override
-    public void onCallfailerFromServerside() {
-
-    }
-
-    @Override
-    public void onException(String message) {
-        mView.removeWait();
-    }
-
-    @Override
-    public void showScnackBar(String message) {
-        showSnackBar(message);
-    }
-
-    @Override
-    public void removeWait() {
-        mView.removeWait();
-    }
-
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-
-    @Override
-    public void showWait(int message) {
-        showWait(mView.getViewActivity().getString(message));
-    }
-
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        mView.showSnackBar(message);
-    }
-
-    @Override
-    public void checkRunTimePermission(AppBaseFragment activity, String permission) {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(activity.getContext(), permission)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity.getActivity(), permission)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(activity.getActivity(),
-                        new String[]{permission},
-                        REQUEST_PERMISSIONS_REQUEST_CODE);
-                // REQUEST_PERMISSIONS_REQUEST_CODE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        } else {
-
-        }
-    }
-
-    /////////////DEFAULTS///////////////////////
-
 
     @Override
     public AppBaseActivity getViewActivity() {
         return mView.getViewActivity();
+    }
+
+    @Override
+    public AppBaseFragment getViewBaseContext() {
+        return mView.getBaseFragment();
     }
 
     @Override
@@ -308,7 +227,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void showSnackBar(int message) {
-        showScnackBar(mView.getViewActivity().getString(message));
+        mView.showSnackBar(message);
     }
 
 
@@ -342,9 +261,9 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
             BTNclose.setVisibility(View.GONE);
 
-            BTNok.setText(mView.getString(R.string.open_location_settings));
-            TVtitle.setText(mView.getString(R.string.enabe_gps));
-            TVmessage.setText(mView.getString(R.string.gps_network_not_enabled));
+            BTNok.setText(mView.getStringRes(R.string.open_location_settings));
+            TVtitle.setText(mView.getStringRes(R.string.enabe_gps));
+            TVmessage.setText(mView.getStringRes(R.string.gps_network_not_enabled));
 
             BTNok.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -379,4 +298,171 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         reasons.add("Reason 2");
         reasons.add("Reason 3");
     }
+
+
+    //////////********************
+
+
+    @Override
+    public Context getViewContext() {
+        return mView.getViewContext();
+    }
+
+
+    @Override
+    public void setJson(JSONObject mJsonObject) {
+
+    }
+
+    @Override
+    public void onSuccessCallBack(JSONObject mJsonObject) {
+
+    }
+
+    @Override
+    public void onSuccessCallBack(int message) {
+
+    }
+
+    @Override
+    public void onSuccessCallBack() {
+
+    }
+
+    @Override
+    public void onExceptionCallBack(String message) {
+
+    }
+
+    @Override
+    public void onExceptionCallBack(int message) {
+
+    }
+
+    @Override
+    public void onExceptionCallBack() {
+        mView.removeWait();
+    }
+
+    @Override
+    public void onFailerCallBack(String message) {
+        Log.v("exception", message);
+        mView.showSnackBar(message);
+    }
+
+    @Override
+    public void onFailerCallBack(int message) {
+
+    }
+
+    @Override
+    public void onFailerCallBack() {
+
+    }
+
+    @Override
+    public void onCallfailerFromServerside() {
+
+    }
+
+    @Override
+    public void onCallfailerFromServerside(String message) {
+
+    }
+
+    @Override
+    public void onCallfailerFromServerside(int message) {
+
+    }
+
+    @Override
+    public SharedPreferenceHelper getSharedPreferenceHelper() {
+        return super.getSharedPreference();
+    }
+
+    @Override
+    public void onCallfailerFromServerside(JSONObject mJsonObject) {
+        mView.removeWait();
+        try {
+            mView.showSnackBar(mJsonObject.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void showWait(String message) {
+        mView.showWait(message);
+    }
+
+    @Override
+    public void showWait(JSONObject message) {
+        try {
+            mView.showWait(message.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSuccessCallBack(String message) {
+
+    }
+
+    @Override
+    public void showWait(int message_id) {
+        mView.showWait(message_id);
+    }
+
+    @Override
+    public void showNoInternetConnectionLayout(boolean isInternet) {
+        mView.showInternetAlertLogic(isInternet);
+    }
+
+    @Override
+    public void showNoDataLayout(boolean isNodata) {
+        mView.showNodataAlertLogic(isNodata);
+    }
+
+    @Override
+    public String getStringRec(int string_id) {
+        return mView.getStringRes(string_id);
+    }
+
+    @Override
+    public void permissionGranded(String permission) {
+
+    }
+
+    @Override
+    public void permissionDenaid(String permission) {
+
+    }
+
+    @Override
+    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(activity, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity ,permission)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{permission},
+                        REQUEST_PERMISSIONS_REQUEST_CODE);
+                // REQUEST_PERMISSIONS_REQUEST_CODE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+
+        }
+    }
+
 }

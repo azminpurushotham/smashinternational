@@ -26,9 +26,38 @@ public class Presenter extends AppBasePresenter implements UserActions {
 
     @Override
     public void setData() {
-        adapter = new ViewPagerAdapter(mView.getAppBaseFragment().getFragmentManager(), mView.getViewContext());
+        adapter = new ViewPagerAdapter(mView.getBaseFragment().getFragmentManager(), mView.getViewContext());
         mView.getViewPager().setAdapter(adapter);
         mView.getTabLayOut().setupWithViewPager(mView.getViewPager());
     }
 
+    @Override
+    public String getStringRec(int string_id) {
+        return mView.getStringRes(string_id);
+    }
+
+    @Override
+    public void permissionGranded(String permission) {
+
+    }
+
+    @Override
+    public void permissionDenaid(String permission) {
+
+    }
+
+    @Override
+    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
+
+    }
+
+    @Override
+    public void showNoInternetConnectionLayout(boolean isInternet) {
+
+    }
+
+    @Override
+    public void showNoDataLayout(boolean isNodata) {
+
+    }
 }

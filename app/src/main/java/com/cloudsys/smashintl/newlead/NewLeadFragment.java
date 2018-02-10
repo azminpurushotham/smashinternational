@@ -294,26 +294,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
 
 
     @Override
-    public void removeWait(Dialog mLoading) {
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void showSnackBar(Snackbar snackBar) {
-        snackBar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        mPresenter.showSnackBar(parent, getString(message));
-    }
-
-    @Override
-    public Dialog getLoading() {
-        return mLoading;
-    }
-
-    @Override
     public String getStatus() {
         if (RBpending.isChecked()) {
             return getString(R.string.pending_);
@@ -406,80 +386,12 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
         return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
-    /////////////DEFAULTS///////////////////////
-
-    public AppBaseFragment getBaseInstence() {
-        return NewLeadFragment.this;
-    }
-
-    @Override
-    public AppBaseFragment getViewBaseContext() {
-        return NewLeadFragment.this;
-    }
-
-    @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
-    public Context getViewContext() {
-        return getActivity();
-    }
-
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
-    }
-
-    @Override
-    public void onFailure(String appErrorMessage) {
-        getSnackBar(parent, appErrorMessage).show();
-    }
-
-    @Override
-    public void showInternetAlertLogic(boolean isInternet) {
-        if (isInternet == false) {
-            showSnackBar(getString(R.string.no_internet));
-        }
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void onFinishActivity() {
-        getActivity().finish();
-    }
-
 
     @Override
     public String getToken() {
         return getSharedPreferenceHelper().getString(getString(R.string.tocken), null);
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -517,7 +429,7 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(getActivity(), data);
                 String toastMsg = String.format("Place: %s", place.getName());
-                mPresenter.showSnackBar(parent, toastMsg);
+                showSnackBar(toastMsg);
                 mLocationSelected = new Location("dummyprovider");
                 mLocationSelected.setLongitude(place.getLatLng().longitude);
                 mLocationSelected.setLatitude(place.getLatLng().latitude);
@@ -526,11 +438,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
                 ETAddress1.setText(place.getAddress());
             }
         }
-    }
-
-    @Override
-    public AppBaseActivity getViewActivity() {
-        return (MainActivity) getActivity();
     }
 
 
@@ -546,6 +453,128 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
                 break;
 
         }
+    }
+//////////////////////******************
+
+
+    public AppBaseFragment getBaseInstence() {
+        return NewLeadFragment.this;
+    }
+
+    @Override
+    public void showWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
+        mLoading.show();
+    }
+
+    @Override
+    public void showWait(int string_id) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(string_id));
+        mLoading.show();
+    }
+
+    @Override
+    public void removeWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
+        mLoading.dismiss();
+    }
+
+    @Override
+    public void removeWait(int message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(message));
+        mLoading.dismiss();
+    }
+
+    @Override
+    public void removeWait() {
+        mLoading.dismiss();
+    }
+
+    @Override
+    public Context getViewContext() {
+        return getActivity();
+    }
+
+    @Override
+    public AppBaseActivity getViewActivity() {
+        return (AppBaseActivity) getActivity();
+    }
+
+    @Override
+    public AppBaseFragment getViewFragment() {
+        return NewLeadFragment.this;
+    }
+
+    @Override
+    public AppBaseFragment getBaseFragment() {
+        return this;
+    }
+
+    @Override
+    public AppBaseActivity getBaseActivity() {
+        return (AppBaseActivity) getActivity();
+    }
+
+    @Override
+    public RelativeLayout getParentView() {
+        return parent;
+    }
+
+    @Override
+    public void showInternetAlertLogic(boolean isInternet) {
+        if (isInternet == false) {
+            showSnackBar(R.string.no_internet);
+        }
+    }
+
+    @Override
+    public void showNodataAlertLogic(boolean isDataPresent) {
+
+    }
+
+    @Override
+    public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
+        return null;
+    }
+
+    @Override
+    public void showSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+    }
+
+    @Override
+    public void showSnackBar(int message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+
+    }
+
+    @Override
+    public void onFinishActivity() {
+        getActivity().finish();
+    }
+
+
+    @Override
+    public String getStringRes(int string_id) {
+        return getString(string_id);
     }
 
     @Override
@@ -574,8 +603,5 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
             }
         });
     }
-
-    /////////////DEFAULTS///////////////////////
-
 
 }

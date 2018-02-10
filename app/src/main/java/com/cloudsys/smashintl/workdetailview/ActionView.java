@@ -1,40 +1,26 @@
 package com.cloudsys.smashintl.workdetailview;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
+import android.location.Location;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.base.AppBaseActionView;
+import com.cloudsys.smashintl.workdetailview.model.WorkDetailsPojo;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
  */
 
 public interface ActionView extends AppBaseActionView {
-    /////////////DEFAULTS///////////////////////
-
-    void showWait(Dialog mLoading);
-
-    void removeWait(Dialog mLoading);
-
-    void onFailure(String appErrorMessage);
-
-    Context getViewContext();
 
     RelativeLayout getParentView();
-
-    void showInternetAlertLogic(boolean isInternet);
-
-    void showSnackBar(Snackbar snackBar);
-
-    void onFinishActivity();
-
-    Dialog getLoading();
 
     TextView getIdTextView();
 
@@ -48,8 +34,9 @@ public interface ActionView extends AppBaseActionView {
 
     TextView getAmountTextView();
 
+    int getAmount();
 
-    String getString(int pending_amount_cannot_be_blank);
+    String getToken();
 
     RadioButton getPendingStatus();
 
@@ -65,12 +52,34 @@ public interface ActionView extends AppBaseActionView {
 
     String getUserId();
 
-    String getToken();
 
     GoogleMap getMap();
 
     void returnToHome();
 
     Spinner getReasonSpinner();
+
+    void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker);
+
+
+    void setCurrentLocation(Location mLocation);
+
+    void setPlacePickerLocation(Location mLocation);
+
+    void setCurrentLocation(LatLng mLocation);
+
+    void setPlacePickerLocation(LatLng mLocation);
+
+    TextView getSmsPhoneTextView();
+
+    EditText getReasonEditText();
+
+    LinearLayout getReasonLinearLay();
+
+    EditText getCurrencyEditText();
+
+    WorkDetailsPojo getPojo();
+
+    void setPojo(WorkDetailsPojo mPojo);
 
 }

@@ -16,44 +16,10 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
  */
 
-public interface ActionView extends AppBaseActionView {
-    /////////////DEFAULTS///////////////////////
-
-    void removeWait(Dialog mLoading);
-
-    void showSnackBar(Snackbar snackBar);
-
-    void showSnackBar(int message);
-
-    String getString(int string);
-
-    AppBaseActivity getViewActivity();
-
-    AppBaseFragment getViewBaseContext();
-
-    void showWait(String message);
-
-    void showWait(int message);
-
-    void removeWait();
-
-    void onFailure(String appErrorMessage);
-
-    Context getViewContext();
-
+public interface ActionView  extends AppBaseActionView {
     RelativeLayout getParentView();
 
-    void showInternetAlertLogic(boolean isInternet);
-
-    void showSnackBar(String snackBar);
-
-    void onFinishActivity();
-
-    Dialog getLoading();
-
     String getToken();
-
-    /////////////DEFAULTS///////////////////////
 
     void setCurrentLocation(Location mLocation);
 

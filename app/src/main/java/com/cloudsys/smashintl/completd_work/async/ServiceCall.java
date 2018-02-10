@@ -28,21 +28,17 @@ public class ServiceCall implements ServiceAction {
 
     @Override
     public void getJson(String user_id, String tocken) {
-        mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.loading));
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks(user_id, /*tocken*/"1234")
+
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks(user_id, tocken)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try {
                             JSONObject mJsonObject = new JSONObject(Utilities.getNullAsEmptyString(response));
                             if (mJsonObject.getBoolean("status")) {
-                                mServiceCallBack.showWait(mServiceCallBack.getStringRes(R.string.please_waite));
-                                mServiceCallBack.removeWait();
-                                mServiceCallBack.onSuccess(mJsonObject);
+                                mServiceCallBack.showWait(R.string.please_waite);
+                                mServiceCallBack.onSuccessCallBack(mJsonObject);
                             } else {
-                                mServiceCallBack.showWait(mJsonObject.getString("message"));
-                                mServiceCallBack.showScnackBar(mJsonObject.getString("message"));
-                                mServiceCallBack.removeWait();
                                 mServiceCallBack.onCallfailerFromServerside(mJsonObject);
                             }
 
@@ -50,17 +46,52 @@ public class ServiceCall implements ServiceAction {
                             if (e != null) {
                                 e.printStackTrace();
                             }
-                            mServiceCallBack.showScnackBar(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
-                            mServiceCallBack.removeWait();
+                            mServiceCallBack.onExceptionCallBack(e.getMessage());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
-                        mServiceCallBack.showScnackBar(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
-                        mServiceCallBack.onFailer(t.getMessage());
-                        mServiceCallBack.removeWait();
+                        mServiceCallBack.onFailerCallBack(t.getMessage());
+                    }
+                });
+
+    }
+
+    @Override
+    public void getSearchScheduledWorks(String user_id, String tocken, String work_type, String query) {
+        mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.searching));
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis()
+                .getSearchScheduledWorks(user_id,
+                        tocken,
+                        work_type,
+                        query)
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        try {
+                            JSONObject mJsonObject = new JSONObject(Utilities.getNullAsEmptyString(response));
+                            if (mJsonObject.getBoolean("status")) {
+                                mServiceCallBack.showWait(R.string.please_waite);
+                                mServiceCallBack.onSuccessCallBack(mJsonObject);
+                            } else {
+                                mServiceCallBack.showWait(mJsonObject.getString("message"));
+                                mServiceCallBack.onCallfailerSearch(mJsonObject);
+                            }
+
+                        } catch (Exception e) {
+                            if (e != null) {
+                                e.printStackTrace();
+                            }
+                            mServiceCallBack.onExceptionCallBack(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                        mServiceCallBack.onFailerCallBack(t.getMessage());
                     }
                 });
 

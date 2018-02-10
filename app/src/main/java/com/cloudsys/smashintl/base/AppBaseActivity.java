@@ -25,7 +25,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 /**
  * Created by appzoc on 22/8/15.
  */
-public class AppBaseActivity extends BaseActivity implements AppBaseActionView {
+public class AppBaseActivity extends BaseActivity{
 
     private SharedPreferenceHelper sharedPreferenceHelper;
     private OnFragmentSwitchListener mFragmenntSwitchListner;
@@ -156,96 +156,5 @@ public class AppBaseActivity extends BaseActivity implements AppBaseActionView {
 
     public interface OnFragmentSwitchListener {
         void onFragmentSwitch(Fragment fragment, boolean addToBackStack, String backStackTag, boolean replace, String screenName);
-    }
-
-
-    @Override
-    public void showWait(String mesage) {
-
-    }
-
-    @Override
-    public void showWait(int mesage) {
-
-    }
-
-    @Override
-    public void removeWait(String message) {
-
-    }
-
-    @Override
-    public void removeWait(int message) {
-
-    }
-
-    @Override
-    public void removeWait() {
-
-    }
-
-    @Override
-    public void onFailure(String appErrorMessage) {
-
-    }
-
-    @Override
-    public void onFailure(int appErrorMessage) {
-
-    }
-
-    @Override
-    public void onFailure() {
-
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-
-    }
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
-    }
-
-    @Override
-    public Context getViewContext() {
-        return AppBaseActivity.this;
-    }
-
-    @Override
-    public AppBaseActivity getViewActivity() {
-        return AppBaseActivity.this;
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return null;
-    }
-
-    @Override
-    public void onFinishActivity() {
-        finish();
-    }
-
-    @Override
-    public void showInternetAlertLogic(boolean isInternet) {
-
-    }
-
-    @Override
-    public void showNodataAlertLogic(boolean isDataPresent) {
-
-    }
-
-    @Override
-    public OnFragmentSwitchListener getFragmentSwitch() {
-        return mFragmenntSwitchListner;
     }
 }

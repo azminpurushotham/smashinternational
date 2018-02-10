@@ -14,24 +14,8 @@ import com.cloudsys.smashintl.base.AppBaseActionView;
 
 public interface ActionView extends AppBaseActionView {
 
-    /////////////DEFAULTS///////////////////////
-    void showWait(String message);
-
-    void removeWait();
-
-    void onFailure(String appErrorMessage);
-
-    Context getViewContext();
 
     LinearLayout getParentView();
-
-    void showNoInternetConnectionLayout(boolean isInternet);
-
-    void showSnackBar(Snackbar snackBar);
-
-    void onFinishActivity();
-
-    /////////////DEFAULTS///////////////////////
 
     void setErrorUserNameMissing(int message);
 
@@ -40,7 +24,6 @@ public interface ActionView extends AppBaseActionView {
     void setErrorUserNameInvalid(int message);
 
     void setErrorPassWordInvalid(int message);
-
 
     String getUserName();
 

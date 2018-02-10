@@ -14,25 +14,9 @@ import com.cloudsys.smashintl.base.AppBaseActivity;
  */
 
 public interface ActionView extends AppBaseActionView {
-    /////////////DEFAULTS///////////////////////
-
-    void showWait(Dialog mLoading);
-
-    void removeWait(Dialog mLoading);
-
-    void onFailure(String appErrorMessage);
-
-    Context getViewContext();
 
     RelativeLayout getParentView();
 
-    void showInternetAlertLogic(boolean isInternet);
-
-    void showSnackBar(Snackbar snackBar);
-
-    void onFinishActivity();
-
-    /////////////DEFAULTS///////////////////////
     String getPhoneNumber();
 
     String getEmail();

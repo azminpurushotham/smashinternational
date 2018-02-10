@@ -1,11 +1,26 @@
 package com.cloudsys.smashintl.workdetailview.model;
 
 /**
- * Created by Nazif on 13-01-2018.
+ * Created by azmin on 18/1/18.
  */
-
 public class scheduleWorkPojo {
-    String userId,token,branch_id,email,sms_no,branch_name,address,telephone_no,status,collection_amount,reason,bill_id;
+    String userId, token, branch_id, email, sms_no, branch_name, address1, address2, telephone_no, pendingAmount,status, collection_amount, reason, bill_id;
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public String getPendingAmount() {
+        return pendingAmount;
+    }
+
+    public void setPendingAmount(String pendingAmount) {
+        this.pendingAmount = pendingAmount;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
 
     public String getUserId() {
         return userId;
@@ -55,12 +70,12 @@ public class scheduleWorkPojo {
         this.branch_name = branch_name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddress1() {
+        return address1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress1(String address1) {
+        this.address1 = address1;
     }
 
     public String getTelephone_no() {

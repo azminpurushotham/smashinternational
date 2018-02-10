@@ -8,7 +8,7 @@ import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
  * Created by AzminPurushotham on 11/15/2017 time 15 : 39.
  */
 
-public class AppBasePresenter implements AppBaseAction {
+public class AppBasePresenter {
     AppBaseActionView mView;
     AppBaseActivity activity;
     AppBaseFragment fragment;
@@ -30,7 +30,6 @@ public class AppBasePresenter implements AppBaseAction {
     }
 
 
-    @Override
     public SharedPreferenceHelper getSharedPreference() {
         if (activity == null) {
             return fragment.getSharedPreferenceHelper();
@@ -38,26 +37,4 @@ public class AppBasePresenter implements AppBaseAction {
             return activity.getSharedPreferenceHelper();
         }
     }
-
-    @Override
-    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
-
-    }
-
-    @Override
-    public void permissionGranded(String permission) {
-
-    }
-
-    @Override
-    public void permissionDenaid(String permission) {
-
-    }
-
-    @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
-    }
-
-
 }

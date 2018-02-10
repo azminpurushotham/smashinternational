@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.cloudsys.smashintl.main.MainActivity;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
 import butterknife.BindView;
@@ -30,9 +31,9 @@ import butterknife.ButterKnife;
  * Created by User on 11/30/2017.
  */
 
-public class PendingWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener {
+public class PendingWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener ,MainActivity.SearchQueryScheduledWork{
 
-    private static final String TAG = "SelectProviderFragment";
+    private static final String TAG = "PendingWorkFragment";
     //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;
@@ -96,12 +97,10 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
     }
 
     @Override
-    public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
-        return getFragmentSwitchListener();
+    public void searchQueryScheduledWork(String query) {
+        mPresenter.searchItems(query);
     }
 
-
-    /////////////DEFAULTS///////////////////////
 
     public AppBaseFragment getBaseInstence() {
         return PendingWorkFragment.this;
@@ -115,6 +114,27 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
     }
 
     @Override
+    public void showWait(int string_id) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(string_id));
+        mLoading.show();
+    }
+
+    @Override
+    public void removeWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
+        mLoading.dismiss();
+    }
+
+    @Override
+    public void removeWait(int message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(message));
+        mLoading.dismiss();
+    }
+
+    @Override
     public void removeWait() {
         mLoading.dismiss();
     }
@@ -125,13 +145,28 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
     }
 
     @Override
-    public RelativeLayout getParentView() {
-        return parent;
+    public AppBaseActivity getViewActivity() {
+        return (AppBaseActivity) getActivity();
     }
 
     @Override
-    public void onFailure(String appErrorMessage) {
-        getSnackBar(parent, appErrorMessage).show();
+    public AppBaseFragment getViewFragment() {
+        return PendingWorkFragment.this;
+    }
+
+    @Override
+    public AppBaseFragment getBaseFragment() {
+        return this;
+    }
+
+    @Override
+    public AppBaseActivity getBaseActivity() {
+        return (AppBaseActivity) getActivity();
+    }
+
+    @Override
+    public RelativeLayout getParentView() {
+        return parent;
     }
 
     @Override
@@ -145,6 +180,16 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
     }
 
     @Override
+    public void showNodataAlertLogic(boolean isDataPresent) {
+
+    }
+
+    @Override
+    public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
+        return null;
+    }
+
+    @Override
     public void showSnackBar(String message) {
         Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
         // Changing action button text color
@@ -154,6 +199,19 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
         textView.setMaxLines(3);
         snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
         snackbar.show();
+    }
+
+    @Override
+    public void showSnackBar(int message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+
     }
 
     @Override
@@ -177,5 +235,4 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
         }
     }
 
-    /////////////DEFAULTS///////////////////////
 }

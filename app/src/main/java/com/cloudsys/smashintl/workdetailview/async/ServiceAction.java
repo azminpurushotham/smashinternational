@@ -9,5 +9,5 @@ import com.cloudsys.smashintl.workdetailview.model.scheduleWorkPojo;
 public interface ServiceAction {
     void getJson(String userId, String token, String id);
 
-    void sendData(scheduleWorkPojo data);
+    void postUpdateWorkStatus(scheduleWorkPojo data);
 }

@@ -13,30 +13,11 @@ import com.cloudsys.smashintl.base.AppBaseActionView;
  */
 
 public interface ActionView extends AppBaseActionView {
-    /////////////DEFAULTS///////////////////////
-
-    void showWait(String message);
-
-    void showWait(int string_id);
-
-    void removeWait();
-
-    void onFailure(String appErrorMessage);
-
-    Context getViewContext();
 
     RelativeLayout getParentView();
 
-    void showInternetAlertLogic(boolean isInternet);
-
-    void showSnackBar(String message);
-
-    void onFinishActivity();
-
-    String getStringRes(int string_id);
-
-    /////////////DEFAULTS///////////////////////
     RecyclerView getRecyclerView();
 
     LinearLayoutManager getLinearLayoutManager();
+
 }

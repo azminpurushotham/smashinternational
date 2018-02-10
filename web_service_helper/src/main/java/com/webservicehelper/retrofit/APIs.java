@@ -81,6 +81,13 @@ public interface APIs {
     Call<JsonObject> getScheduledWorks(@Path("user_id") String user_id,
                                        @Path("token") String token);
 
+
+    @GET("api/smash/api/search/search_list")
+    Call<JsonObject> getSearchScheduledWorks(@Query("user_id") String user_id,
+                                             @Query("token") String token,
+                                             @Query("worktype") String worktype,
+                                             @Query("query") String query);
+
     @GET("api/work/work_list/{path}")
     Call<JsonObject> getScheduledWorks();
 
@@ -104,7 +111,7 @@ public interface APIs {
                                  @Query("lon") String lon);
 
     @POST("api/smash/api/work/work_update/")
-    Call<JsonObject> updateWorkStatus(@Query("user_id") String user_id, 
+    Call<JsonObject> updateWorkStatus(@Query("user_id") String user_id,
                                       @Query("token") String token,
                                       @Query("customer_id") String customer_id,
                                       @Query("customer_name") String branch_name,
@@ -116,6 +123,6 @@ public interface APIs {
                                       @Query("status") String status,
                                       @Query("collection_amount") String collection_amount,
                                       @Query("pending_amount") String pending_amount,
-                                      @Query("reason") String reason, 
+                                      @Query("reason") String reason,
                                       @Query("bill_id") String bill_id);
 }

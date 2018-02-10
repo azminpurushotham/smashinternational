@@ -3,6 +3,7 @@ package com.cloudsys.smashintl.newlead;
 import android.location.Location;
 import android.view.View;
 
+import com.cloudsys.smashintl.base.AppBaseAction;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 
 
@@ -11,13 +12,7 @@ import com.cloudsys.smashintl.base.AppBaseFragment;
  * Mfluid Mobile Apps Pvt Ltd
  */
 
-public interface UserActions {
-    void showNoInternetConnectionLayout(boolean isInternet);
-
-    void showSnackBar(View parent, String message);
-
-    void checkRunTimePermission(AppBaseFragment activity, String permission);
-
+public interface UserActions extends AppBaseAction{
     void submitData();
 
     void setLocationOfShop();

@@ -8,21 +8,15 @@ import android.content.Context;
 
 public interface AppBaseActionView {
 
-    void showWait(String mesage);
+    void showWait(String message);
 
-    void showWait(int mesage);
+    void showWait(int message);
 
     void removeWait(String message);
 
     void removeWait(int message);
 
     void removeWait();
-
-    void onFailure(String appErrorMessage);
-
-    void onFailure(int appErrorMessage);
-
-    void onFailure();
 
     void showSnackBar(String message);
 
@@ -35,6 +29,10 @@ public interface AppBaseActionView {
     AppBaseActivity getViewActivity();
 
     AppBaseFragment getViewFragment();
+
+    AppBaseFragment getBaseFragment();
+
+    AppBaseActivity getBaseActivity();
 
     void onFinishActivity();
 

@@ -25,30 +25,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public interface ActionView extends AppBaseActionView {
-    /////////////DEFAULTS///////////////////////
-
-    void showWait(String message);
-
-    void showWait(int message);
-
-    void removeWait();
-
-    void onFailure(String appErrorMessage);
-
-    Context getViewContext();
 
     RelativeLayout getParentView();
-
-    void showInternetAlertLogic(boolean isInternet);
-
-    void showSnackBar(String snackBar);
-
-    void onFinishActivity();
-
-    Dialog getLoading();
-
-    /////////////////////////////////////
-
 
     TextView getIdTextView();
 
@@ -64,15 +42,7 @@ public interface ActionView extends AppBaseActionView {
 
     int getAmount();
 
-    String getString(int string);
-
-    AppBaseActivity getViewActivity();
-
-    AppBaseFragment getViewBaseContext();
-
     String getToken();
-
-    ////////////////////////////////////////////
 
     RadioButton getPendingStatus();
 

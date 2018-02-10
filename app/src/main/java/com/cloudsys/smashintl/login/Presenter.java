@@ -1,14 +1,7 @@
 package com.cloudsys.smashintl.login;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
@@ -55,7 +48,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                         getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
             }
         } else {
-            mView.showNoInternetConnectionLayout(false);
+            mView.showSnackBar(R.string.no_network_connection);
         }
     }
 
@@ -73,42 +66,78 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public String getUserName() {
-        return null;
+        return mView.getUserName();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return mView.getPassword();
     }
 
+    @Override
+    public String getStringRec(int string_id) {
+        return mView.getStringRes(string_id);
+    }
 
-    ////////////DEAFULTS////////////////////
+    @Override
+    public void permissionGranded(String permission) {
+
+    }
+
+    @Override
+    public void permissionDenaid(String permission) {
+
+    }
+
+    @Override
+    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
+
+    }
 
     @Override
     public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showNoInternetConnectionLayout(isInternet);
+        mView.showInternetAlertLogic(isInternet);
     }
 
     @Override
-    public void showSnackBar(View parent, String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(mView.getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(mView.getViewContext(), R.color.snack_bar_text_color));
-        mView.showSnackBar(snackbar);
+    public void showNoDataLayout(boolean isNodata) {
+        mView.showNodataAlertLogic(isNodata);
+
     }
 
 
     @Override
-    public void onSuccess() {
+    public void onSuccessCallBack() {
         mView.loadHomePage();
     }
 
     @Override
-    public void onFailer() {
+    public void onExceptionCallBack(String message) {
+
+    }
+
+    @Override
+    public void onExceptionCallBack(int message) {
+
+    }
+
+    @Override
+    public void onExceptionCallBack() {
+
+    }
+
+    @Override
+    public void onFailerCallBack(String message) {
+
+    }
+
+    @Override
+    public void onFailerCallBack(int message) {
+
+    }
+
+    @Override
+    public void onFailerCallBack() {
     }
 
     @Override
@@ -117,13 +146,24 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void showScnackBar(String message) {
-        showSnackBar(mView.getParentView(), message);
+    public void onCallfailerFromServerside(String message) {
+
     }
 
     @Override
-    public void removeWait() {
-        mView.removeWait();
+    public void onCallfailerFromServerside(int message) {
+
+    }
+
+    @Override
+    public void onCallfailerFromServerside(JSONObject mJsonObject) {
+
+    }
+
+
+    @Override
+    public SharedPreferenceHelper getSharedPreferenceHelper() {
+        return null;
     }
 
     @Override
@@ -132,8 +172,23 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
+    public void setJson(JSONObject mJsonObject) {
+
+    }
+
+    @Override
+    public void showWait(int message) {
+        mView.showSnackBar(message);
+    }
+
+    @Override
     public String getStringRes(int string_id) {
         return mView.getViewContext().getString(string_id);
+    }
+
+    @Override
+    public void userNamePasswordinCorrect(int username_or_password_incorrect) {
+        mView.showSnackBar(username_or_password_incorrect);
     }
 
 
@@ -142,5 +197,34 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.showWait(message);
     }
 
-    ////////////DEAFULTS////////////////////
+    @Override
+    public void showWait(JSONObject message) {
+        try {
+            mView.showWait(message.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSuccessCallBack(String message) {
+        mView.showSnackBar(message);
+        mView.loadHomePage();
+    }
+
+    @Override
+    public void onSuccessCallBack(JSONObject message) {
+        try {
+            mView.showWait(message.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mView.loadHomePage();
+    }
+
+    @Override
+    public void onSuccessCallBack(int message) {
+        mView.showSnackBar(message);
+        mView.loadHomePage();
+    }
 }

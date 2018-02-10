@@ -2,6 +2,7 @@ package com.cloudsys.smashintl.main;
 
 import android.view.View;
 
+import com.cloudsys.smashintl.base.AppBaseAction;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 
 /**
@@ -9,11 +10,6 @@ import com.cloudsys.smashintl.base.AppBaseActivity;
  * Mfluid Mobile Apps Pvt Ltd
  */
 
-public interface UserActions {
-    void showNoInternetConnectionLayout(boolean isInternet);
-
-    void showSnackBar(View parent, String message);
-
+public interface UserActions extends AppBaseAction {
     void logOut();
-
 }

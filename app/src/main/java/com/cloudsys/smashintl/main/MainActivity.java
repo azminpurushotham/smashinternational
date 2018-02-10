@@ -2,6 +2,7 @@ package com.cloudsys.smashintl.main;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
+import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.collectionsviewpager.CollectionFragment;
 import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
@@ -49,7 +52,7 @@ import static com.cloudsys.smashintl.utiliti.Utilities.clearApplicationData;
 
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActionView, View.OnClickListener,
-        AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener {
+        AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener, SearchView.OnQueryTextListener {
 
     private static final String TAG = "MainActivity";
 
@@ -64,6 +67,7 @@ public class MainActivity extends AppBaseActivity
     @BindView(R.id.BTN_try)
     Button BTN_try;
     Presenter mPresenter;
+    Dialog mLoading;
     //// DEFAULT///////
 
 
@@ -82,6 +86,8 @@ public class MainActivity extends AppBaseActivity
     private FragmentManager mFragmentManager;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    SearchQueryScheduledWork mSearchQueryScheduledWork;
+
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         return intent;
@@ -94,6 +100,10 @@ public class MainActivity extends AppBaseActivity
         buscinessLogic();
     }
 
+    public interface SearchQueryScheduledWork {
+        public void searchQueryScheduledWork(String query);
+    }
+
     private void buscinessLogic() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -101,6 +111,10 @@ public class MainActivity extends AppBaseActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mToolbar.setNavigationIcon(R.drawable.menu_arrow_back_24dp);
         mToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.menu_icon));
+
+        if (mLoading == null) {
+            mLoading = Utilities.showProgressBar(this, getString(R.string.loading));
+        }
 
         View headerLayout = nav_view.getHeaderView(0);
         TVname = (TextView) headerLayout.findViewById(R.id.TVname);
@@ -132,7 +146,8 @@ public class MainActivity extends AppBaseActivity
 
         mPresenter = new Presenter(this, getBaseInstence());
 //        onFragmentSwitch(new CollectionFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
-        onFragmentSwitch(new ScheduledWorkFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
+        onFragmentSwitch(new ScheduledWorkFragment(), true, getString(R.string.tag_sheduled_work),
+                false, getString(R.string.title_sheduled_work));
 
         mPresenter.checkRunTimePermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
@@ -154,6 +169,17 @@ public class MainActivity extends AppBaseActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem action_search = menu.findItem(R.id.action_search);
         MenuItem action_notification = menu.findItem(R.id.action_notification);
+
+
+        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = null;
+        if (action_search != null) {
+            searchView = (SearchView) action_search.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+            searchView.setOnQueryTextListener(this);
+        }
 
         String tag = getVisibleFragmentTag();
         Log.v("tag", " onPrepareOptionsMenu " + tag);
@@ -275,6 +301,41 @@ public class MainActivity extends AppBaseActivity
     }
 
     @Override
+    public void onBackPressed() {
+        onBackPressedLogic();
+    }
+
+    private void onBackPressedLogic() {
+
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START);
+        } else {
+            if (getVisibleFragmentTag().equalsIgnoreCase(getString(R.string.tag_home))) {
+                if (doubleBackToExitPressedOnce) {
+                    super.onBackPressed();
+                    finish();
+                    return;
+                }
+
+                this.doubleBackToExitPressedOnce = true;
+                showSnackBar("Please click BACK again to exit !.");
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            } else {
+                getSupportFragmentManager().popBackStack();
+                invalidateMenuWithDelay();
+            }
+        }
+    }
+
+
+    @Override
     public String getImage() {
         return null;
     }
@@ -321,40 +382,6 @@ public class MainActivity extends AppBaseActivity
         return null;
     }
 
-    /////////////DEFAULTS///////////////////////
-    @Override
-    public void onBackPressed() {
-        onBackPressedLogic();
-    }
-
-    private void onBackPressedLogic() {
-
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START);
-        } else {
-            if (getVisibleFragmentTag().equalsIgnoreCase(getString(R.string.tag_home))) {
-                if (doubleBackToExitPressedOnce) {
-                    super.onBackPressed();
-                    finish();
-                    return;
-                }
-
-                this.doubleBackToExitPressedOnce = true;
-                mPresenter.showSnackBar(parent, "Please click BACK again to exit !.");
-
-                new Handler().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
-                    }
-                }, 2000);
-            } else {
-                getSupportFragmentManager().popBackStack();
-                invalidateMenuWithDelay();
-            }
-        }
-    }
 
     private void invalidateMenuWithDelay() {
         new Handler().postDelayed(new Runnable() {
@@ -363,6 +390,68 @@ public class MainActivity extends AppBaseActivity
                 invalidateOptionsMenu();
             }
         }, 500);
+    }
+
+    @Override
+    public void showWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
+        mLoading.show();
+    }
+
+    @Override
+    public void showWait(int message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(message));
+        mLoading.show();
+    }
+
+    @Override
+    public void removeWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
+        mLoading.dismiss();
+    }
+
+    @Override
+    public void removeWait(int message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(message));
+        mLoading.dismiss();
+    }
+
+    @Override
+    public void removeWait() {
+        mLoading.dismiss();
+    }
+
+    @Override
+    public void showSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+    }
+
+    @Override
+    public void showSnackBar(int message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+    }
+
+    @Override
+    public String getStringRes(int string_id) {
+        return getString(string_id);
     }
 
     @Override
@@ -387,18 +476,18 @@ public class MainActivity extends AppBaseActivity
     }
 
     @Override
-    public void showWait(Dialog mLoading) {
-        mLoading.show();
+    public AppBaseFragment getViewFragment() {
+        return null;
     }
 
     @Override
-    public void removeWait(Dialog mLoading) {
-        mLoading.dismiss();
+    public AppBaseFragment getBaseFragment() {
+        return null;
     }
 
     @Override
-    public void onFailure(String appErrorMessage) {
-        getSnackBar(parent, appErrorMessage).show();
+    public AppBaseActivity getBaseActivity() {
+        return MainActivity.this;
     }
 
     @Override
@@ -412,9 +501,15 @@ public class MainActivity extends AppBaseActivity
     }
 
     @Override
-    public void showSnackBar(Snackbar snackBar) {
-        snackBar.show();
+    public void showNodataAlertLogic(boolean isDataPresent) {
+
     }
+
+    @Override
+    public OnFragmentSwitchListener getFragmentSwitch() {
+        return null;
+    }
+
 
     @Override
     public void onFinishActivity() {
@@ -492,6 +587,13 @@ public class MainActivity extends AppBaseActivity
                     }
                 }
 
+                if (backStackTag.equalsIgnoreCase(getString(R.string.tag_sheduled_work))) {
+                    mSearchQueryScheduledWork = (SearchQueryScheduledWork) mFragment;
+                } else if (backStackTag.equalsIgnoreCase(getString(R.string.tag_collection))) {
+
+                }
+
+
                 Log.v("tag", mFragment.getClass().getSimpleName());
                 TVtitle.setText(screenName);
                 Log.v("tag", screenName);
@@ -520,5 +622,21 @@ public class MainActivity extends AppBaseActivity
     public void onDrawerStateChanged(int newState) {
 
     }
-/////////////DEFAULTS///////////////////////
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (query != null && !query.equalsIgnoreCase("")) {
+            mSearchQueryScheduledWork.searchQueryScheduledWork(query);
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText != null && !newText.equalsIgnoreCase("")) {
+            mSearchQueryScheduledWork.searchQueryScheduledWork(newText);
+        }
+        return false;
+    }
 }

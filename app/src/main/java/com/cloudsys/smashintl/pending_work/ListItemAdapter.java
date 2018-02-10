@@ -46,7 +46,7 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ViewHolder) holder).TVname.setText(list.get(position).getName());
             ((ViewHolder) holder).TVid.setText(list.get(position).getCustomerId());
             ((ViewHolder) holder).TVlocation.setText(list.get(position).getAddress());
-            ((ViewHolder) holder).TVamount.setText(list.get(position).getAmount() + "" + list.get(position).getCurrency());
+            ((ViewHolder) holder).TVamount.setText(list.get(position).getAmount() + " " + list.get(position).getCurrency());
             ((ViewHolder) holder).TVdate.setText(
                     Utilities.getFormatedDate(list.get(position).getDate(),
                             Utilities.REQ_FORMAT,

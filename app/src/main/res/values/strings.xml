@@ -70,5 +70,10 @@
     <string name="pic_shop_location">pic shop location</string>
     <string name="existing_customer">existing customer</string>
     <string name="new_customer">new customer</string>
+    <string name="searching">searching..</string>
+    <string name="worktype_pending">pending</string>
+    <string name="worktype_completed">completed</string>
+    <string name="worktype_shop">shop</string>
+    <string name="successfully_new_lead_created">Successfully new lead created</string>
 
 </resources>

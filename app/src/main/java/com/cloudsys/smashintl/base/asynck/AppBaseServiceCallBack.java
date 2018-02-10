@@ -17,6 +17,12 @@ public interface AppBaseServiceCallBack {
 
     void setJson(JSONObject mJsonObject);
 
+    void showWait(int message);
+
+    void showWait(String message);
+
+    void showWait(JSONObject message);
+
     void onSuccessCallBack(String message);
 
     void onSuccessCallBack(JSONObject message);
@@ -29,6 +35,8 @@ public interface AppBaseServiceCallBack {
 
     void onExceptionCallBack(int message);
 
+    void onExceptionCallBack();
+
     void onFailerCallBack(String message);
 
     void onFailerCallBack(int message);
@@ -40,6 +48,8 @@ public interface AppBaseServiceCallBack {
     void onCallfailerFromServerside(String message);
 
     void onCallfailerFromServerside(int message);
+
+    void onCallfailerFromServerside(JSONObject mJsonObject);
 
     SharedPreferenceHelper getSharedPreferenceHelper();
 

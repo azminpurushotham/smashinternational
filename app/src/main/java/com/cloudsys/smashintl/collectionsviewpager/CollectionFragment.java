@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cloudsys.smashintl.R;
+import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 
 import butterknife.BindView;
@@ -23,13 +24,9 @@ import butterknife.ButterKnife;
 public class CollectionFragment extends AppBaseFragment implements ActionView {
 
     private static final String TAG = "CollectionFragment";
-    //// DEFAULT///////
     Presenter mPresenter;
-    //// DEFAULT///////
-
     @BindView(R.id.mViewPager)
     ViewPager mViewPager;
-
     @BindView(R.id.tab)
     TabLayout tab;
 
@@ -74,8 +71,6 @@ public class CollectionFragment extends AppBaseFragment implements ActionView {
     }
 
 
-    /////////////DEFAULTS///////////////////////
-
     public AppBaseFragment getBaseInstence() {
         return CollectionFragment.this;
     }
@@ -86,8 +81,23 @@ public class CollectionFragment extends AppBaseFragment implements ActionView {
     }
 
     @Override
-    public AppBaseFragment getAppBaseFragment() {
-        return getBaseInstence();
+    public AppBaseActivity getViewActivity() {
+        return (AppBaseActivity) getActivity();
+    }
+
+    @Override
+    public AppBaseFragment getViewFragment() {
+        return CollectionFragment.this;
+    }
+
+    @Override
+    public AppBaseFragment getBaseFragment() {
+        return CollectionFragment.this;
+    }
+
+    @Override
+    public AppBaseActivity getBaseActivity() {
+        return (AppBaseActivity) getActivity();
     }
 
     @Override
@@ -95,6 +105,56 @@ public class CollectionFragment extends AppBaseFragment implements ActionView {
         getActivity().finish();
     }
 
+    @Override
+    public void showInternetAlertLogic(boolean isInternet) {
+
+    }
+
+    @Override
+    public void showNodataAlertLogic(boolean isDataPresent) {
+
+    }
+
+    @Override
+    public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
+        return null;
+    }
+
+
+    @Override
+    public void showWait(String mesage) {
+
+    }
+
+    @Override
+    public void showWait(int mesage) {
+
+    }
+
+    @Override
+    public void removeWait(String message) {
+
+    }
+
+    @Override
+    public void removeWait(int message) {
+
+    }
+
+    @Override
+    public void removeWait() {
+
+    }
+
+    @Override
+    public void showSnackBar(String message) {
+
+    }
+
+    @Override
+    public void showSnackBar(int message) {
+
+    }
 
     @Override
     public String getStringRes(int string_id) {

@@ -10,13 +10,17 @@ import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 public interface AppBaseAction {
     SharedPreferenceHelper getSharedPreference();
 
-    void checkRunTimePermission(AppBaseActivity activity, String permission);
+    String getStringRec(int string_id);
 
     void permissionGranded(String permission);
 
     void permissionDenaid(String permission);
 
-    String getStringRec(int string_id);
+    void checkRunTimePermission(AppBaseActivity activity, String permission);
+
+    void showNoInternetConnectionLayout(boolean isInternet);
+
+    void showNoDataLayout(boolean isNodata);
 }
 
 

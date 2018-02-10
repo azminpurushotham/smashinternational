@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
+import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.main.MainActivity;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -114,11 +116,29 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     }
 
 
-    /////////////DEFAULT CALLBACKS///////////////////////
-
     @Override
     public Context getViewContext() {
         return LoginActivity.this;
+    }
+
+    @Override
+    public AppBaseActivity getViewActivity() {
+        return LoginActivity.this;
+    }
+
+    @Override
+    public AppBaseFragment getViewFragment() {
+        return null;
+    }
+
+    @Override
+    public AppBaseFragment getBaseFragment() {
+        return null;
+    }
+
+    @Override
+    public AppBaseActivity getBaseActivity() {
+        return this;
     }
 
     @Override
@@ -139,6 +159,27 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     }
 
     @Override
+    public void showWait(int message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(message));
+        mLoading.show();
+    }
+
+    @Override
+    public void removeWait(String message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(message);
+        mLoading.show();
+    }
+
+    @Override
+    public void removeWait(int message) {
+        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
+        TVmessage.setText(getString(message));
+        mLoading.show();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         if (mLoading != null) {
@@ -151,15 +192,44 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
         mLoading.dismiss();
     }
 
+    @Override
+    public void showSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+    }
 
     @Override
-    public void onFailure(String appErrorMessage) {
-        getSnackBar(parent, appErrorMessage).show();
+    public void showSnackBar(int message) {
+        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        // Changing action button text color
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        textView.setMaxLines(3);
+        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
+        snackbar.show();
+    }
+
+    @Override
+    public String getStringRes(int string_id) {
+        return getString(string_id);
     }
 
 
+
     @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
+    public void onFinishActivity() {
+        finish();
+    }
+
+    @Override
+    public void showInternetAlertLogic(boolean isInternet) {
         if (isInternet == false) {
             parent.setVisibility(View.GONE);
             LAYnointernet.setVisibility(View.VISIBLE);
@@ -170,13 +240,13 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     }
 
     @Override
-    public void showSnackBar(Snackbar snackBar) {
-        snackBar.show();
+    public void showNodataAlertLogic(boolean isDataPresent) {
+
     }
 
     @Override
-    public void onFinishActivity() {
-        finish();
+    public OnFragmentSwitchListener getFragmentSwitch() {
+        return null;
     }
 
 

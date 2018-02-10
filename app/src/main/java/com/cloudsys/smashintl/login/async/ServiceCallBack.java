@@ -2,6 +2,7 @@ package com.cloudsys.smashintl.login.async;
 
 import android.content.Context;
 
+import com.cloudsys.smashintl.base.asynck.AppBaseServiceCallBack;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 
 import org.json.JSONObject;
@@ -11,31 +12,13 @@ import org.json.JSONObject;
  * Mfluid Mobile Apps Pvt Ltd
  */
 
-public interface ServiceCallBack {
-
-    /////DEFAULT/////////
-
-    void onSuccess();
-
-    void onFailer();
-
-    void onCallfailerFromServerside();
-
-    void showWait(String message);
-
-    void showScnackBar(String message);
-
-    void removeWait();
-
-    Context getViewContext();
-
-    String getStringRes(int please_waite);
-    /////DEFAULT/////////
-
+public interface ServiceCallBack extends AppBaseServiceCallBack{
 
     String getUserName();
 
     String getPassword();
 
-    SharedPreferenceHelper getSharedPreference();
+    String getStringRes(int string_id);
+
+    void userNamePasswordinCorrect(int username_or_password_incorrect);
 }
