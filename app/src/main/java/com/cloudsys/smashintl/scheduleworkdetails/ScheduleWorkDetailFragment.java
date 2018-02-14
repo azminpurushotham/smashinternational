@@ -195,6 +195,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         BTN_try.setOnClickListener(this);
         BTNnavigate.setOnClickListener(this);
         BTNSelectPlace.setOnClickListener(this);
+        RBcomplete.setChecked(true);
+        RBpending.setEnabled(false);
     }
 
 
@@ -539,7 +541,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.BTN_try:
-                mPresenter.showNoInternetConnectionLayout(true);
+                showInternetAlertLogic(true);
                 buscinessLogic();
                 break;
             case R.id.BTNupdateStatus:

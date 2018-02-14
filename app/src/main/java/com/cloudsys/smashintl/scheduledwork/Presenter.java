@@ -84,7 +84,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void searchItems(String query) {
-        mView.showWait(mView.getStringRes(R.string.searching));
         if (Utilities.isInternet(mView.getViewContext())) {
             mServiceCall.getSearchScheduledWorks(
                     getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null),
@@ -92,7 +91,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                     mView.getViewContext().getString(R.string.worktype_pending),
                     query);
         } else {
-            mView.removeWait();
             mView.showSnackBar(R.string.no_network_connection);
         }
     }
@@ -232,21 +230,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void showWait(int message_id) {
         mView.showWait(message_id);
-    }
-
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showNoDataLayout(boolean isNodata) {
-        mView.showNodataAlertLogic(isNodata);
-    }
-
-    @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
     }
 
     @Override

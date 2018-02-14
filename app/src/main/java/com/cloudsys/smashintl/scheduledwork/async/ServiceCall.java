@@ -65,7 +65,6 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
     @Override
     public void getSearchScheduledWorks(String user_id, String tocken, String work_type, String query) {
-        mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.searching));
         new RetrofitHelper(mServiceCallBack.getViewContext()).getApis()
                 .getSearchScheduledWorks(user_id,
                         tocken,
@@ -77,10 +76,8 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                         try {
                             JSONObject mJsonObject = new JSONObject(Utilities.getNullAsEmptyString(response));
                             if (mJsonObject.getBoolean("status")) {
-                                mServiceCallBack.showWait(R.string.please_waite);
                                 mServiceCallBack.onSuccessCallBack(mJsonObject);
                             } else {
-                                mServiceCallBack.showWait(mJsonObject.getString("message"));
                                 mServiceCallBack.onCallfailerSearch(mJsonObject);
                             }
 

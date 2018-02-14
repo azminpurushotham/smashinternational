@@ -17,6 +17,7 @@ public class RetrofitHelper {
     static APIs apis;
 
     public RetrofitHelper() {
+        initRestAdapter();
     }
 
     public static APIs getApis() {

@@ -268,7 +268,7 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
                 break;
 
             case R.id.BTN_try:
-                mPresenter.showNoInternetConnectionLayout(true);
+                showInternetAlertLogic(true);
                 buscinessLogic();
                 break;
         }

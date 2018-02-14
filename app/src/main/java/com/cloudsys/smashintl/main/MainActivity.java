@@ -52,7 +52,7 @@ import static com.cloudsys.smashintl.utiliti.Utilities.clearApplicationData;
 
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActionView, View.OnClickListener,
-        AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener, SearchView.OnQueryTextListener {
+        AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private static final String TAG = "MainActivity";
 
@@ -99,6 +99,7 @@ public class MainActivity extends AppBaseActivity
         initView(savedInstanceState);
         buscinessLogic();
     }
+
 
     public interface SearchQueryScheduledWork {
         public void searchQueryScheduledWork(String query);
@@ -179,10 +180,19 @@ public class MainActivity extends AppBaseActivity
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
             searchView.setOnQueryTextListener(this);
+            searchView.setOnCloseListener(this);
+
         }
 
         String tag = getVisibleFragmentTag();
         Log.v("tag", " onPrepareOptionsMenu " + tag);
+
+        if (tag.equalsIgnoreCase(getString(R.string.tag_sheduled_work))) {
+            action_search.setVisible(true);
+        } else {
+            action_search.setVisible(false);
+        }
+
         return true;
     }
 
@@ -284,17 +294,17 @@ public class MainActivity extends AppBaseActivity
                         getString(R.string.title_sheduled_work));
                 break;
             case R.id.ic_update_customer_location:
-                ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("id", "1");
-                bundle.putString("userId", "1");
-                bundle.putString("token", getSharedPreferenceHelper().getString(getString(R.string.tocken), null));
-                fragment.setArguments(bundle);
-                onFragmentSwitch(fragment,
-                        true,
-                        getString(R.string.tag_sheduled_work),
-                        true,
-                        getString(R.string.title_sheduled_work));
+//                ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putString("id", "1");
+//                bundle.putString("userId", "1");
+//                bundle.putString("token", getSharedPreferenceHelper().getString(getString(R.string.tocken), null));
+//                fragment.setArguments(bundle);
+//                onFragmentSwitch(fragment,
+//                        true,
+//                        getString(R.string.tag_sheduled_work),
+//                        true,
+//                        getString(R.string.title_sheduled_work));
                 break;
         }
         return true;
@@ -466,7 +476,7 @@ public class MainActivity extends AppBaseActivity
 
     @OnClick(R.id.BTN_try)
     void onConnectionRetry(View v) {
-        mPresenter.showNoInternetConnectionLayout(true);
+        showInternetAlertLogic(true);
         buscinessLogic();
     }
 
@@ -507,7 +517,7 @@ public class MainActivity extends AppBaseActivity
 
     @Override
     public OnFragmentSwitchListener getFragmentSwitch() {
-        return null;
+        return getFragmenntSwitchListner();
     }
 
 
@@ -625,7 +635,7 @@ public class MainActivity extends AppBaseActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        if (query != null && !query.equalsIgnoreCase("")) {
+        if (query != null) {
             mSearchQueryScheduledWork.searchQueryScheduledWork(query);
         }
         return false;
@@ -634,9 +644,16 @@ public class MainActivity extends AppBaseActivity
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText != null && !newText.equalsIgnoreCase("")) {
+        if (newText != null) {
             mSearchQueryScheduledWork.searchQueryScheduledWork(newText);
         }
         return false;
     }
+
+    @Override
+    public boolean onClose() {
+        mSearchQueryScheduledWork.searchQueryScheduledWork("");
+        return false;
+    }
+
 }

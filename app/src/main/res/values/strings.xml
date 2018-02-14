@@ -75,5 +75,6 @@
     <string name="worktype_completed">completed</string>
     <string name="worktype_shop">shop</string>
     <string name="successfully_new_lead_created">Successfully new lead created</string>
+    <string name="please_try_again">Please try again</string>
 
 </resources>
