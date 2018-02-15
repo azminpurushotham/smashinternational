@@ -76,5 +76,9 @@
     <string name="worktype_shop">shop</string>
     <string name="successfully_new_lead_created">Successfully new lead created</string>
     <string name="please_try_again">Please try again</string>
+    <string name="update">update</string>
+    <string name="change_password">Change Password ?</string>
+    <string name="old_password">Old Password</string>
+    <string name="confirm_password">Confirm Password</string>
 
 </resources>

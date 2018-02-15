@@ -1,11 +1,13 @@
-package com.cloudsys.smashintl.login.async;
+package com.cloudsys.smashintl.userprofile.async;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
-import com.cloudsys.smashintl.login.Presenter;
-import com.cloudsys.smashintl.login.model.LoginPojo;
-import com.google.gson.Gson;
+import com.cloudsys.smashintl.userprofile.Presenter;
+import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,25 +33,21 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                 tocken).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
                 try {
-                    LoginPojo mPojo = new Gson().fromJson(response.body().toString(), LoginPojo.class);
-                    if (mPojo.getStatus()) {
-                        mServiceCallBack.getSharedPreferenceHelper().putString(mServiceCallBack.getStringRes(R.string.user_id),
-                                mPojo.getResult().getUserId());
-                        mServiceCallBack.getSharedPreferenceHelper().putString(mServiceCallBack.getStringRes(R.string.user_name),
-                                mPojo.getResult().getName());
-                        mServiceCallBack.getSharedPreferenceHelper().putString(mServiceCallBack.getStringRes(R.string.user_image),
-                                mPojo.getResult().getImage());
+                    JSONObject mJsonObject = new JSONObject(Utilities.getNullAsEmptyString(response));
+                    if (mJsonObject.getBoolean("status")) {
+                        mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.please_waite));
                         mServiceCallBack.onSuccessCallBack();
                     } else {
-                        mServiceCallBack.userNamePasswordinCorrect(R.string.username_or_password_incorrect);
+                        mServiceCallBack.showWait(mJsonObject.getString("message"));
+                        mServiceCallBack.onCallfailerFromServerside(mJsonObject.getString("message"));
                     }
-
-                } catch (Exception e) {
+                } catch (JSONException e) {
                     if (e != null) {
                         e.printStackTrace();
                     }
-                    mServiceCallBack.onExceptionCallBack(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
+                    mServiceCallBack.onExceptionCallBack(R.string.api_default_error);
                 }
             }
 

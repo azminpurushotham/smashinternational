@@ -32,7 +32,6 @@ import android.widget.TextView;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.main.MainActivity;
 import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.location.places.Place;

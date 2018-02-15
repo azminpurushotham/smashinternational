@@ -71,10 +71,6 @@ public class MainActivity extends AppBaseActivity
     //// DEFAULT///////
 
 
-    TextView TVname;
-    CircleImageView IMGuser;
-
-
     private Dialog dialougeLogout;
     boolean doubleBackToExitPressedOnce = false;
     @BindView(R.id.drawer_layout)
@@ -83,6 +79,10 @@ public class MainActivity extends AppBaseActivity
     NavigationView nav_view;
     @BindView(R.id.TVtitle)
     TextView TVtitle;
+
+    Button BTNeditUser;
+    TextView TVname;
+    CircleImageView IMGuser;
     private FragmentManager mFragmentManager;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -120,6 +120,8 @@ public class MainActivity extends AppBaseActivity
         View headerLayout = nav_view.getHeaderView(0);
         TVname = (TextView) headerLayout.findViewById(R.id.TVname);
         IMGuser = (CircleImageView) headerLayout.findViewById(R.id.IMGuser);
+        BTNeditUser = (Button)headerLayout.findViewById(R.id.BTNeditUser);
+
         TVname.setText(getSharedPreferenceHelper().getString(getString(R.string.user_name), ""));
 
         Log.v("image", getSharedPreferenceHelper().getString(getString(R.string.user_image), "image"));
@@ -142,6 +144,13 @@ public class MainActivity extends AppBaseActivity
             @Override
             public void run() {
                 mDrawerToggle.syncState();
+            }
+        });
+
+        BTNeditUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

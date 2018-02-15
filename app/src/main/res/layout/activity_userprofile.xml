@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3A3A3A">
+
+    <include
+        android:id="@+id/mToolbar"
+        layout="@layout/toolbar_custom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mToolbar"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mCircleImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/user_placeholder" />
+
+            <Button
+                android:id="@+id/BTNadd"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/edit"
+                android:text="" />
+
+            <include layout="@layout/content_image_progressbar" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/TVname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="Name"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text_size" />
+
+        <CheckBox
+            android:id="@+id/CHKchangePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:checked="true"
+            android:textStyle="bold"
+            android:text="@string/change_password"
+            android:buttonTint="@color/white"
+            android:textAllCaps="true"
+            android:textColor="@color/white" />
+
+
+        <LinearLayout
+            android:id="@+id/lay2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/registrationRowMargin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        style="@style/AppTextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/old_password"
+                        android:textColor="@color/background_dark"
+                        android:textSize="@dimen/medium_text_size" />
+
+                    <EditText
+                        android:id="@+id/EDToldPassword"
+                        style="@style/AppEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edit_text_height"
+                        android:hint="Old Password"
+                        android:inputType="textPassword"
+                        android:text=""
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/registrationRowMargin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/AppTextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/Password"
+                        android:textColor="@color/background_dark"
+                        android:textSize="@dimen/medium_text_size" />
+
+                    <EditText
+                        android:id="@+id/EDTpassword"
+                        style="@style/AppEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edit_text_height"
+                        android:hint="New Password"
+                        android:inputType="textPassword"
+                        android:text=""
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/registrationRowMargin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/AppTextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/confirm_password"
+                        android:textColor="@color/background_dark"
+                        android:textSize="@dimen/medium_text_size" />
+
+                    <EditText
+                        android:id="@+id/EDTconfirmPassword"
+                        style="@style/AppEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/edit_text_height"
+                        android:hint="Confirm Password"
+                        android:inputType="textPassword"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/medium_text_size" />
+
+                </LinearLayout>
+            </TableRow>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/BTNsubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/selector_primary_to_primarydark"
+            android:gravity="center"
+            android:paddingBottom="3dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="@string/update"
+            android:textAllCaps="true"
+            android:textColor="@color/selector_white_secondary_white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/layout_no_internet_connection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/mToolbar" />
+
+</RelativeLayout>
