@@ -8,5 +8,8 @@ import com.cloudsys.smashintl.base.AppBaseAction;
  */
 
 public interface UserActions extends AppBaseAction{
-    void onLoginClick();
+    void onUpdateUserClick();
+
+    void setData();
+
 }

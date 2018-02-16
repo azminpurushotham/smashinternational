@@ -64,12 +64,12 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
-            android:checked="true"
-            android:textStyle="bold"
-            android:text="@string/change_password"
             android:buttonTint="@color/white"
+            android:checked="true"
+            android:text="@string/change_password"
             android:textAllCaps="true"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
 
         <LinearLayout
@@ -136,7 +136,7 @@
                         android:textSize="@dimen/medium_text_size" />
 
                     <EditText
-                        android:id="@+id/EDTpassword"
+                        android:id="@+id/EDTnewpassword"
                         style="@style/AppEditText"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edit_text_height"

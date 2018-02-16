@@ -4,14 +4,18 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
@@ -22,6 +26,7 @@ import com.cloudsys.smashintl.utiliti.Utilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by azmin on 16/2/18.
@@ -30,18 +35,39 @@ import butterknife.ButterKnife;
 public class UserProfileActivity extends AppBaseActivity implements ActionView, View.OnClickListener {
 
     private static final String TAG = "UserProfileActivity";
-    @BindView(R.id.EDTUserName)
-    EditText EDTUserName;
-    @BindView(R.id.EDTPassword)
-    EditText EDTPassword;
-    @BindView(R.id.BTNlogin)
-    Button BTNlogin;
+    @BindView(R.id.BTNsubmit)
+    Button BTNsubmit;
     @BindView(R.id.parent)
-    LinearLayout parent;
+    RelativeLayout parent;
     @BindView(R.id.LAYnointernet)
     ConstraintLayout LAYnointernet;
     @BindView(R.id.BTN_try)
     Button BTN_try;
+    @BindView(R.id.mToolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.TVtitle)
+    TextView TVtitle;
+
+    @BindView(R.id.mCircleImageView)
+    CircleImageView mCircleImageView;
+    @BindView(R.id.BTNadd)
+    Button BTNadd;
+    @BindView(R.id.CHKchangePassword)
+    CheckBox CHKchangePassword;
+    @BindView(R.id.lay2)
+    LinearLayout lay2;
+    @BindView(R.id.EDToldPassword)
+    EditText EDToldPassword;
+    @BindView(R.id.EDTnewpassword)
+    EditText EDTnewpassword;
+    @BindView(R.id.EDTconfirmPassword)
+    EditText EDTconfirmPassword;
+    @BindView(R.id.TVname)
+    TextView TVname;
+    @BindView(R.id.mProgressBar)
+    ProgressBar mProgressBar;
+
+
 
     Presenter mPresenter;
     Dialog mLoading;
@@ -65,52 +91,117 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
     }
 
     private void buscinessLogic() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbar.setNavigationIcon(R.drawable.menu_arrow_back_24dp);
+        TVtitle.setText(R.string.user_profile);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         mPresenter = new Presenter(this, getBaseInstence());
-        BTNlogin.setOnClickListener(this);
+        BTNsubmit.setOnClickListener(this);
+        BTNadd.setOnClickListener(this);
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(UserProfileActivity.this, getString(R.string.loading));
         }
+        mPresenter.setData();
+        CHKchangePassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    lay2.setVisibility(View.VISIBLE);
+                }else {
+                    lay2.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
 
     @Override
-    public void setErrorUserNameMissing(int message) {
-        EDTUserName.setError(getString(message));
-        EDTUserName.requestFocus();
+    public void setErrorOldPasswordMissing(int message) {
+        EDToldPassword.setError(getString(message));
+        EDToldPassword.requestFocus();
     }
 
     @Override
-    public void setErrorPasswordMissing(int message) {
-        EDTPassword.setError(getString(message));
-        EDTPassword.requestFocus();
-    }
-
-    @Override
-    public void setErrorUserNameInvalid(int message) {
-        EDTUserName.setError(getString(message));
-        EDTUserName.requestFocus();
+    public void setErrorNewPasswordMissing(int message) {
+        EDTconfirmPassword.setError(getString(message));
+        EDTconfirmPassword.requestFocus();
     }
 
     @Override
     public void setErrorPassWordInvalid(int message) {
-        EDTPassword.setError(getString(message));
-        EDTPassword.requestFocus();
+        showSnackBar(message);
+    }
+
+    @Override
+    public void setPasswordNotMaching(int message) {
+        showSnackBar(message);
     }
 
     @Override
     public String getUserName() {
-        return EDTUserName.getText().toString();
+        return getSharedPreferenceHelper().getString(getString(R.string.user_name), "");
     }
 
-    @Override
-    public String getPassword() {
-        return EDTPassword.getText().toString();
-    }
 
     @Override
     public void loadHomePage() {
         startActivity(MainActivity.getStartIntent(UserProfileActivity.this));
         finish();
+    }
+
+    @Override
+    public String getOldPassword() {
+        return EDToldPassword.getText().toString();
+    }
+
+    @Override
+    public String getNewPassword() {
+        return EDTconfirmPassword.getText().toString();
+    }
+
+    @Override
+    public String getConfirmPassword() {
+        return EDTconfirmPassword.getText().toString();
+    }
+
+    @Override
+    public String getImageUrl() {
+        return getSharedPreferenceHelper().getString(getString(R.string.user_image), "");
+    }
+
+    @Override
+    public CircleImageView getCircleImageView() {
+        return mCircleImageView;
+    }
+
+    @Override
+    public void setName() {
+        TVname.setText(getSharedPreferenceHelper().getString(getString(R.string.user_name), ""));
+    }
+
+    @Override
+    public boolean isPassWordChange() {
+        return CHKchangePassword.isChecked();
+    }
+
+    @Override
+    public void dimissImagePregress() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showImagePregress() {
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -140,7 +231,7 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
     }
 
     @Override
-    public LinearLayout getParentView() {
+    public RelativeLayout getParentView() {
         return parent;
     }
 
@@ -220,7 +311,6 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
     }
 
 
-
     @Override
     public void onFinishActivity() {
         finish();
@@ -244,7 +334,7 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
 
     @Override
     public OnFragmentSwitchListener getFragmentSwitch() {
-        return null;
+        return super.getFragmenntSwitchListner();
     }
 
 
@@ -261,13 +351,12 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.BTNlogin:
-                mPresenter.onLoginClick();
+            case R.id.BTNadd:
+
                 break;
 
-            case R.id.BTN_try:
-                showInternetAlertLogic(true);
-                buscinessLogic();
+            case R.id.BTNsubmit:
+                mPresenter.onUpdateUserClick();
                 break;
         }
     }

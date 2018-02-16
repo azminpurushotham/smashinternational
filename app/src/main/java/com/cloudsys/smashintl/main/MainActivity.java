@@ -33,13 +33,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cloudsys.smashintl.R;
+import com.cloudsys.smashintl.about_status.AboutActivity;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.collectionsviewpager.CollectionFragment;
+import com.cloudsys.smashintl.completd_work.CompletdWorkFragment;
 import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
 import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
+import com.cloudsys.smashintl.userprofile.UserProfileActivity;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
 import butterknife.BindView;
@@ -87,6 +90,7 @@ public class MainActivity extends AppBaseActivity
     private ActionBarDrawerToggle mDrawerToggle;
 
     SearchQueryScheduledWork mSearchQueryScheduledWork;
+    SearchQueryCompletedWork mSearchQueryCompletedWork;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -105,6 +109,10 @@ public class MainActivity extends AppBaseActivity
         public void searchQueryScheduledWork(String query);
     }
 
+    public interface SearchQueryCompletedWork {
+        public void onSearchQueryCompletedWork(String query);
+    }
+
     private void buscinessLogic() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -120,7 +128,7 @@ public class MainActivity extends AppBaseActivity
         View headerLayout = nav_view.getHeaderView(0);
         TVname = (TextView) headerLayout.findViewById(R.id.TVname);
         IMGuser = (CircleImageView) headerLayout.findViewById(R.id.IMGuser);
-        BTNeditUser = (Button)headerLayout.findViewById(R.id.BTNeditUser);
+        BTNeditUser = (Button) headerLayout.findViewById(R.id.BTNeditUser);
 
         TVname.setText(getSharedPreferenceHelper().getString(getString(R.string.user_name), ""));
 
@@ -150,7 +158,7 @@ public class MainActivity extends AppBaseActivity
         BTNeditUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
             }
         });
 
@@ -279,14 +287,14 @@ public class MainActivity extends AppBaseActivity
                 mPresenter.showLogoutDialouge();
                 break;
             case R.id.ic_collection:
-                onFragmentSwitch(new CollectionFragment(),
+                onFragmentSwitch(new CompletdWorkFragment(),
                         true,
                         getString(R.string.tag_collection),
                         true,
                         getString(R.string.tag_collection));
                 break;
             case R.id.ic_about_smash:
-                mPresenter.showLogoutDialouge();
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.ic_new_lead:
                 onFragmentSwitch(new NewLeadFragment(),
@@ -609,7 +617,7 @@ public class MainActivity extends AppBaseActivity
                 if (backStackTag.equalsIgnoreCase(getString(R.string.tag_sheduled_work))) {
                     mSearchQueryScheduledWork = (SearchQueryScheduledWork) mFragment;
                 } else if (backStackTag.equalsIgnoreCase(getString(R.string.tag_collection))) {
-
+                    mSearchQueryCompletedWork = (SearchQueryCompletedWork) mFragment;
                 }
 
 

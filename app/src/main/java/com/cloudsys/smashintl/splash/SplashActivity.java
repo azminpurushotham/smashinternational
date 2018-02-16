@@ -15,7 +15,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SplashActivity extends AppBaseActivity {
 
-    private String TAG = "SplashActivity";
+    private String TAG = "AboutActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

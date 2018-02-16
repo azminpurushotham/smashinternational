@@ -80,5 +80,8 @@
     <string name="change_password">Change Password ?</string>
     <string name="old_password">Old Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="old_and_new_password_notmatching">Old and new password not matching.</string>
+    <string name="updating">Updating..</string>
+    <string name="user_profile">Profile</string>
 
 </resources>

@@ -138,58 +138,65 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onSuccessCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(String message) {
         Log.v("exception", message);
         mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
@@ -224,13 +231,16 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
-    public void showWait(int message_id) {
-        mView.showWait(message_id);
+    public void showWait(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
+
 
     @Override
     public void permissionGranded(String permission) {

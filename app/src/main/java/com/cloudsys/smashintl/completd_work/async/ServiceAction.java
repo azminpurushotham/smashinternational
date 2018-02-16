@@ -7,5 +7,5 @@ package com.cloudsys.smashintl.completd_work.async;
 public interface ServiceAction {
     void getJson(String user_id, String tocken);
 
-    void getSearchScheduledWorks(String user_id, String tocken, String work_type, String query);
+    void getSearchCompletedWorks(String user_id, String tocken, String work_type, String query);
 }

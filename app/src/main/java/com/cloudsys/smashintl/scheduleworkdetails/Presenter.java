@@ -147,12 +147,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 scheduleWorkPojo data = new scheduleWorkPojo();
                 data.setUserId(getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null));
                 data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
-                if (mView.getCompleteStatus().isChecked()) {
-                    data.setStatus("pending");
-                } else {
-                    data.setStatus("completed");
-                }
-                data.setBranch_id(mPojo.getResult().get(0).getCustomerId());
+//                if (mView.getCompleteStatus().isChecked()) {
+//                    data.setStatus("pending");
+//                } else {
+//                    data.setStatus("completed");
+//                }
+                data.setStatus(mView.getStringRes(R.string.completed_));
+
+                data.setBranch_id(mPojo.getResult().get(0).getId());
                 data.setEmail(mPojo.getResult().get(0).getEmail());
                 data.setSms_no(mPojo.getResult().get(0).getSmsNumber());
                 data.setBranch_name(mPojo.getResult().get(0).getName());
@@ -316,27 +318,35 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(JSONObject mJsonObject) {
-
+        try {
+            mView.showSnackBar(mJsonObject.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mView.removeWait();
     }
 
     @Override
     public void onSuccessCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onSuccessCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
@@ -348,31 +358,35 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void onFailerCallBack(String message) {
         Log.v("exception", message);
         mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
@@ -407,12 +421,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
-    public void showWait(int message_id) {
-        mView.showWait(message_id);
+    public void showWait(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
 
@@ -432,7 +448,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         if (ContextCompat.checkSelfPermission(activity, permission)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity ,permission)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.

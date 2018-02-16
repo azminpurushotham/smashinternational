@@ -37,6 +37,13 @@ public interface APIs {
                                @Query("password") String password,
                                @Query("token") String token);
 
+
+    @POST("/api/smash/api/profile/changepwd/")
+    Call<JsonObject> postUpdatePassword(@Query("user_id") String user_id,
+                                        @Query("new_password") String new_password,
+                                        @Query("old_password") String old_password,
+                                        @Query("token") String token);
+
     @GET("mobile/termsAndConditions")
     Call<JSONObject> getTermsAndConditions();
 
@@ -81,12 +88,23 @@ public interface APIs {
     Call<JsonObject> getScheduledWorks(@Path("user_id") String user_id,
                                        @Path("token") String token);
 
+    @GET("/api/smash/api/work/complete_list/{user_id}/{token}")
+    Call<JsonObject> getCompletedWorks(@Path("user_id") String user_id,
+                                       @Path("token") String token);
 
     @GET("api/smash/api/search/search_list")
     Call<JsonObject> getSearchScheduledWorks(@Query("user_id") String user_id,
                                              @Query("token") String token,
                                              @Query("worktype") String worktype,
                                              @Query("query") String query);
+
+
+    @GET("api/smash/api/search/search_list")
+    Call<JsonObject> getSearchCompletedWorks(@Query("user_id") String user_id,
+                                             @Query("token") String token,
+                                             @Query("worktype") String worktype,
+                                             @Query("query") String query);
+
 
     @GET("api/work/work_list/{path}")
     Call<JsonObject> getScheduledWorks();

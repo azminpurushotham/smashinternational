@@ -291,7 +291,11 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public String getPendingAmount() {
-        return ETamount.getText().toString().trim();
+        int temp = 0;
+        if (Integer.parseInt(mPojo.getResult().get(0).getAmount()) > Integer.parseInt(ETamount.getText().toString())) {
+            temp = Integer.parseInt(mPojo.getResult().get(0).getAmount()) - Integer.parseInt(ETamount.getText().toString());
+        }
+        return temp + "";
     }
 
     @Override

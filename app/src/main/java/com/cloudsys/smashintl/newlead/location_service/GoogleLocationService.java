@@ -161,7 +161,7 @@ public class GoogleLocationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // Called when a client (SplashActivity in case of this sample) comes to the foreground
+        // Called when a client (AboutActivity in case of this sample) comes to the foreground
         // and binds with this service. The service should cease to be a foreground service
         // when that happens.
         Log.i(TAG, "in onBind()");
@@ -172,7 +172,7 @@ public class GoogleLocationService extends Service {
 
     @Override
     public void onRebind(Intent intent) {
-        // Called when a client (SplashActivity in case of this sample) returns to the foreground
+        // Called when a client (AboutActivity in case of this sample) returns to the foreground
         // and binds once again with this service. The service should cease to be a foreground
         // service when that happens.
         Log.i(TAG, "in onRebind()");
@@ -185,8 +185,8 @@ public class GoogleLocationService extends Service {
     public boolean onUnbind(Intent intent) {
         Log.i(TAG, "Last client unbound from service");
 
-        // Called when the last client (SplashActivity in case of this sample) unbinds from this
-        // service. If this method is called due to a configuration change in SplashActivity, we
+        // Called when the last client (AboutActivity in case of this sample) unbinds from this
+        // service. If this method is called due to a configuration change in AboutActivity, we
         // do nothing. Otherwise, we make this service a foreground service.
         if (!mChangingConfiguration && LocationUtilities.requestingLocationUpdates(this)) {
             Log.i(TAG, "Starting foreground service");

@@ -26,10 +26,11 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
     }
 
     @Override
-    public void postLogin(String userName, String password, String tocken) {
-        getApis().postLogin(
-                userName,
-                password,
+    public void postUpdatePassword(String user_id, String new_password, String old_password, String tocken) {
+        getApis().postUpdatePassword(
+                user_id,
+                new_password,
+                old_password,
                 tocken).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

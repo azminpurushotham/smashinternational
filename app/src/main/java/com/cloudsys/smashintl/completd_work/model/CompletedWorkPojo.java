@@ -9,7 +9,7 @@ import javax.annotation.Generated;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
-public class ScheduledWorkPojo {
+public class CompletedWorkPojo {
 
     @SerializedName("error_code")
     private String mErrorCode;

@@ -101,51 +101,58 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onExceptionCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack() {
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(JSONObject mJsonObject) {
-
+        mView.removeWait();
     }
 
 
@@ -177,6 +184,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void userNamePasswordinCorrect(int username_or_password_incorrect) {
         mView.showSnackBar(username_or_password_incorrect);
+        mView.removeWait();
     }
 
 

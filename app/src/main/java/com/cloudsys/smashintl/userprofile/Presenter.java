@@ -3,6 +3,7 @@ package com.cloudsys.smashintl.userprofile;
 import android.content.Context;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBasePresenter;
@@ -32,17 +33,18 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void onLoginClick() {
+    public void onUpdateUserClick() {
         if (Utilities.isInternet(mView.getViewContext())) {
             if (isValidate()) {
-                showWait(mView.getViewContext().getString(R.string.loading));
+                showWait(mView.getViewContext().getString(R.string.updating));
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
                 Log.d(TAG, "Refreshed token: " + refreshedToken);
                 if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
                     getSharedPreference().putString(mView.getStringRes(R.string.tocken), refreshedToken);
-                    mServiceCall.postLogin(
-                            mView.getUserName(),
-                            mView.getPassword(),
+                    mServiceCall.postUpdatePassword(
+                            getSharedPreferenceHelper().getString(mView.getStringRes(R.string.user_id), null),
+                            mView.getNewPassword(),
+                            mView.getOldPassword(),
                             getSharedPreference().getString(mView.getStringRes(R.string.tocken), null));
                 } else {
                     mView.removeWait();
@@ -55,15 +57,40 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         }
     }
 
+    @Override
+    public void setData() {
+
+        Glide.with(mView.getBaseActivity())
+                .load(mView.getImageUrl())
+                .error(R.drawable.user_placeholder).dontAnimate()
+                .placeholder(R.drawable.user_placeholder).dontAnimate()
+                .into(mView.getCircleImageView());
+        mView.setName();
+        mView.dimissImagePregress();
+        mView.removeWait();
+
+    }
+
 
     private boolean isValidate() {
-        if (mView.getUserName().equalsIgnoreCase("")) {
-            mView.setErrorUserNameMissing(R.string.missing_user_name);
-            return false;
-        } else if (mView.getPassword().equalsIgnoreCase("")) {
-            mView.setErrorPasswordMissing(R.string.missing_password);
+        if (mView.isPassWordChange()) {
+            if (mView.getOldPassword().equalsIgnoreCase(mView.getNewPassword())) {
+                mView.setErrorOldPasswordMissing(R.string.old_and_new_password_notmatching);
+                return false;
+            } else if (mView.getNewPassword().equalsIgnoreCase("")) {
+                mView.setErrorNewPasswordMissing(R.string.missing_password);
+                return false;
+            } else if (mView.getConfirmPassword().equalsIgnoreCase("")) {
+                mView.setErrorNewPasswordMissing(R.string.missing_password);
+                return false;
+            } else if (mView.getOldPassword().equalsIgnoreCase(mView.getNewPassword())) {
+                mView.setErrorOldPasswordMissing(R.string.old_and_new_password_notmatching);
+                return false;
+            }
+        } else if (mView.getImageUrl().contains("http") == false && mView.getImageUrl().equalsIgnoreCase("")) {
             return false;
         }
+
         return true;
     }
 
@@ -74,93 +101,105 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public String getPassword() {
-        return mView.getPassword();
+        return mView.getConfirmPassword();
     }
 
     @Override
     public String getOldPassword() {
-        return null;
+        return mView.getOldPassword();
     }
 
     @Override
     public String getImageUrl() {
-        return null;
+        return getSharedPreferenceHelper().getString(mView.getStringRes(R.string.user_image), "");
     }
 
     @Override
-    public void permissionGranded(String permission) {
-
+    public void onSuccessPasswordUpdate() {
+        mView.removeWait();
     }
 
     @Override
-    public void permissionDenaid(String permission) {
-
+    public void onSuccessPasswordUpdate(String message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
-    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
-
+    public void onSuccessPasswordUpdate(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
-
     @Override
-    public void onSuccessCallBack() {
+    public void onSuccessPasswordUpdate(JSONObject message) {
+        try {
+            mView.showWait(message.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mView.removeWait();
         mView.loadHomePage();
     }
 
     @Override
-    public void onExceptionCallBack(String message) {
-
+    public void onFailPasswordUpdate() {
+        mView.removeWait();
     }
 
     @Override
-    public void onExceptionCallBack(int message) {
-
+    public void onFailPasswordUpdate(String message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
-    public void onExceptionCallBack() {
-
+    public void onFailPasswordUpdate(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
-    public void onFailerCallBack(String message) {
-
+    public void onFailPasswordUpdate(JSONObject message) {
+        try {
+            mView.showWait(message.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mView.removeWait();
+        mView.loadHomePage();
     }
 
     @Override
-    public void onFailerCallBack(int message) {
-
+    public void onSuccessCallBack(String message) {
+        mView.showSnackBar(message);
     }
 
     @Override
-    public void onFailerCallBack() {
+    public void onSuccessCallBack(JSONObject message) {
+        try {
+            mView.showWait(message.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mView.removeWait();
+        mView.loadHomePage();
     }
 
     @Override
-    public void onCallfailerFromServerside() {
-
+    public void onSuccessCallBack(int message) {
+        mView.showSnackBar(message);
+        mView.loadHomePage();
     }
-
-    @Override
-    public void onCallfailerFromServerside(String message) {
-
-    }
-
-    @Override
-    public void onCallfailerFromServerside(int message) {
-
-    }
-
-    @Override
-    public void onCallfailerFromServerside(JSONObject mJsonObject) {
-
-    }
-
 
     @Override
     public SharedPreferenceHelper getSharedPreferenceHelper() {
         return super.getSharedPreference();
+    }
+
+    @Override
+    public void onSuccessCallBack() {
+        mView.loadHomePage();
     }
 
     @Override
@@ -174,8 +213,65 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void showWait(int message) {
+    public void onExceptionCallBack(String message) {
         mView.showSnackBar(message);
+        mView.removeWait();
+    }
+
+    @Override
+    public void onExceptionCallBack(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
+    }
+
+    @Override
+    public void onExceptionCallBack() {
+        mView.removeWait();
+    }
+
+    @Override
+    public void onFailerCallBack(String message) {
+        Log.v("exception", message);
+        mView.showSnackBar(message);
+        mView.removeWait();
+    }
+
+    @Override
+    public void onFailerCallBack(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
+    }
+
+    @Override
+    public void onFailerCallBack() {
+        mView.removeWait();
+    }
+
+    @Override
+    public void onCallfailerFromServerside() {
+        mView.removeWait();
+    }
+
+    @Override
+    public void onCallfailerFromServerside(String message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
+    }
+
+    @Override
+    public void onCallfailerFromServerside(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
+    }
+
+    @Override
+    public void onCallfailerFromServerside(JSONObject mJsonObject) {
+        mView.removeWait();
+        try {
+            mView.showSnackBar(mJsonObject.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -193,25 +289,25 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         }
     }
 
+
     @Override
-    public void onSuccessCallBack(String message) {
+    public void showWait(int message) {
         mView.showSnackBar(message);
-        mView.loadHomePage();
+        mView.removeWait();
+    }
+
+
+    @Override
+    public void permissionGranded(String permission) {
+
     }
 
     @Override
-    public void onSuccessCallBack(JSONObject message) {
-        try {
-            mView.showWait(message.getString("message"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mView.loadHomePage();
+    public void permissionDenaid(String permission) {
+
     }
 
     @Override
-    public void onSuccessCallBack(int message) {
-        mView.showSnackBar(message);
-        mView.loadHomePage();
+    public void checkRunTimePermission(AppBaseActivity activity, String permission) {
     }
 }
