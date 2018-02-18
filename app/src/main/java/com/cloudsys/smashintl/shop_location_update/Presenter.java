@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.scheduleworkdetails;
+package com.cloudsys.smashintl.shop_location_update;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -22,12 +22,9 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
-import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCall;
-import com.cloudsys.smashintl.scheduleworkdetails.async.ServiceCallBack;
-import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationPresenter;
-import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationView;
-import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
-import com.cloudsys.smashintl.scheduleworkdetails.model.scheduleWorkPojo;
+import com.cloudsys.smashintl.shop_location_update.async.*;
+import com.cloudsys.smashintl.shop_location_update.location_service.*;
+import com.cloudsys.smashintl.shop_location_update.model.*;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -49,7 +46,7 @@ import java.util.ArrayList;
 public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack, LocationView {
     ActionView mView;
     ServiceCall mServiceCall;
-    WorkDetailsPojo mPojo = new WorkDetailsPojo();
+    ShopDetail mPojo = new ShopDetail();
     CustomSpinnerAdapter customSpinnerAdapter;
     ArrayList<String> reasons = new ArrayList();
     public static final int REQUEST_PLACE_PICKER = 666;
@@ -61,12 +58,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
         this.mView = mView;
-        mServiceCall = new ServiceCall(this);
-    }
-
-    public Presenter(ActionView mView, AppBaseFragment baseInstence) {
-        super(mView, baseInstence);
-        this.mView = mView;
         mLocationPresenter = new LocationPresenter(this, baseInstence);
         mLocationPresenter.initLocation();
         mServiceCall = new ServiceCall(this);
@@ -76,14 +67,12 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void setServices(JSONObject mJsonObject) {
         mView.removeWait();
-        mPojo = new Gson().fromJson(mJsonObject.toString(), WorkDetailsPojo.class);
+        mPojo = new Gson().fromJson(mJsonObject.toString(), ShopDetail.class);
         mView.getIdTextView().setText(mPojo.getResult().get(0).getCustomerId());
-        mView.getLocationTextView().setText(mPojo.getResult().get(0).getAddress());
+        mView.getLocationTextView().setText(mPojo.getResult().get(0).getAddress1());
         mView.getEmailTextView().setText(mPojo.getResult().get(0).getEmail());
-        mView.getPhoneTextView().setText(mPojo.getResult().get(0).getPhoneNumber());
-        mView.getSmsPhoneTextView().setText(mPojo.getResult().get(0).getPhoneNumber());
-        mView.getAmountTextView().setText(mPojo.getResult().get(0).getAmount() + " " + mPojo.getResult().get(0).getCurrency());
-        mView.getCurrencyEditText().setText(mPojo.getResult().get(0).getCurrency());
+        mView.getPhoneTextView().setText(mPojo.getResult().get(0).getTelephoneNumber());
+        mView.getSmsPhoneTextView().setText(mPojo.getResult().get(0).getSmsNo());
 
         mView.setPlacePickerLocation(new LatLng(
                 Double.parseDouble(mPojo.getResult().get(0).getLat()),
@@ -103,10 +92,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
         mView.setPojo(mPojo);
 
-        mView.getDateTextView().setText(
-                Utilities.getFormatedDate(
-                        mPojo.getResult().get(0).getDate(), Utilities.REQ_FORMAT, Utilities.SERVER_DATE_FORMAT));
-
     }
 
     @Override
@@ -124,7 +109,10 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void getScheduledWorkDetails() {
         mView.showWait(R.string.loading);
         if (Utilities.isInternet(mView.getViewContext())) {
-            mServiceCall.getJson(mView.getUserId(), mView.getToken(), mView.getCustomerId());
+            mServiceCall.getJson(
+                    mView.getCustomerId(),
+                    mView.getUserId(),
+                    mView.getToken());
         } else {
             mView.removeWait();
             mView.showInternetAlertLogic(false);
@@ -134,46 +122,37 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void postData() {
         Utilities.hideKeyboard((Activity) getViewContext());
-        if (mView.getPendingAmount().equals("")) {
-            mView.showSnackBar(R.string.pending_amount_cannot_be_blank);
-        } else if (mView.getBillId().equals("")) {
-            mView.showSnackBar(R.string.billid_cannot_be_blank);
-        } else if (mView.getReasonSpinner().getSelectedItemPosition() == 0
-                && Integer.parseInt(mView.getPojo().getResult().get(0).getAmount()) > mView.getAmount()) {
-            mView.showSnackBar(R.string.please_select_a_reason);
-        } else {
 
-            if (Utilities.isInternet(getViewContext())) {
-                scheduleWorkPojo data = new scheduleWorkPojo();
-                data.setUserId(getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null));
-                data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
+        if (Utilities.isInternet(getViewContext())) {
+            scheduleWorkPojo data = new scheduleWorkPojo();
+            data.setUserId(getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null));
+            data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
 //                if (mView.getCompleteStatus().isChecked()) {
 //                    data.setStatus("pending");
 //                } else {
 //                    data.setStatus("completed");
 //                }
-                data.setStatus(mView.getStringRes(R.string.completed_));
+            data.setStatus(mView.getStringRes(R.string.completed_));
 
-                data.setBranch_id(mPojo.getResult().get(0).getId());
-                data.setEmail(mPojo.getResult().get(0).getEmail());
-                data.setSms_no(mPojo.getResult().get(0).getSmsNumber());
-                data.setBranch_name(mPojo.getResult().get(0).getName());
-                data.setAddress1(mPojo.getResult().get(0).getAddress());
-                data.setAddress2(mPojo.getResult().get(0).getAddress());
-                data.setTelephone_no(mPojo.getResult().get(0).getPhoneNumber());
-                data.setCollection_amount(mView.getAmount() + "");
-                data.setReason(mView.getReason());
-                data.setBill_id(mView.getBillId());
-                mView.showWait(R.string.loading);
-                if (isAgentInRange()) {
-                    mServiceCall.postUpdateWorkStatus(data);
-                } else {
-                    mView.removeWait(R.string.not_on_the_premises);
-                    mView.showSnackBar(R.string.not_on_the_premises);
-                }
+            data.setBranch_id(mPojo.getResult().get(0).getId());
+            data.setEmail(mPojo.getResult().get(0).getEmail());
+            data.setSms_no(mPojo.getResult().get(0).getSmsNo());
+            data.setBranch_name(mPojo.getResult().get(0).getName());
+            data.setAddress1(mPojo.getResult().get(0).getAddress1());
+            data.setAddress2(mPojo.getResult().get(0).getAddress2());
+            data.setTelephone_no(mPojo.getResult().get(0).getTelephoneNumber());
+            data.setCollection_amount(mView.getAmount() + "");
+            data.setReason(mView.getReason());
+            data.setBill_id(mView.getBillId());
+            mView.showWait(R.string.loading);
+            if (isAgentInRange()) {
+                mServiceCall.postUpdateWorkStatus(data);
             } else {
-                mView.showInternetAlertLogic(false);
+                mView.removeWait(R.string.not_on_the_premises);
+                mView.showSnackBar(R.string.not_on_the_premises);
             }
+        } else {
+            mView.showInternetAlertLogic(false);
         }
     }
 

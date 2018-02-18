@@ -1,7 +1,7 @@
-package com.cloudsys.smashintl.scheduledwork;
+package com.cloudsys.smashintl.shoplist;
 
 import android.content.Context;
-import android.os.Bundle;
+import android.content.Intent;
 import android.util.Log;
 
 import com.cloudsys.smashintl.R;
@@ -9,9 +9,11 @@ import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.itemdecorator.SpacesItemDecoration;
-import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
-import com.cloudsys.smashintl.scheduledwork.async.*;
-import com.cloudsys.smashintl.scheduledwork.model.*;
+import com.cloudsys.smashintl.shop_location_update.UpdateShopLocationActivity;
+import com.cloudsys.smashintl.shoplist.async.ServiceCall;
+import com.cloudsys.smashintl.shoplist.async.ServiceCallBack;
+import com.cloudsys.smashintl.shoplist.model.Result;
+import com.cloudsys.smashintl.shoplist.model.ShopListPojo;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.Gson;
@@ -32,27 +34,24 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     ServiceCall mServiceCall;
     private ListItemAdapter adapter;
     private ListItemAdapter.OnAdapterItemClick listner;
-    ScheduledWorkPojo mPojo = new ScheduledWorkPojo();
-    AppBaseActivity.OnFragmentSwitchListener onFragmentSwitchListener;
+    ShopListPojo mPojo = new ShopListPojo();
     List<Result> list = new ArrayList<Result>();
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
         this.mView = mView;
         mServiceCall = new ServiceCall(this);
-        onFragmentSwitchListener = (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
     }
 
     public Presenter(ActionView mView, AppBaseFragment baseInstence) {
         super(mView, baseInstence);
         this.mView = mView;
         mServiceCall = new ServiceCall(this);
-        onFragmentSwitchListener = (AppBaseActivity.OnFragmentSwitchListener) getViewContext();
     }
 
 
     @Override
-    public void getScheduledWork() {
+    public void getShopList() {
         mView.showWait(mView.getStringRes(R.string.loading));
         if (Utilities.isInternet(mView.getViewContext())) {
             mServiceCall.getJson(
@@ -69,7 +68,8 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.getRecyclerView().setLayoutManager(mView.getLinearLayoutManager());
         listner = (ListItemAdapter.OnAdapterItemClick) this;
         adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
-        mView.getRecyclerView().addItemDecoration(new SpacesItemDecoration(getViewContext().getResources().getInteger(R.integer.item_spacing)));
+        mView.getRecyclerView().addItemDecoration(
+                new SpacesItemDecoration(getViewContext().getResources().getInteger(R.integer.item_spacing_10)));
         mView.getRecyclerView().setAdapter(adapter);
     }
 
@@ -96,16 +96,9 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void onAdapterItemClick(Result Result, int adapterPosition) {
         String id = Result.getId();
-        ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("id", id);
-        bundle.putString("token", getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
-        fragment.setArguments(bundle);
-        onFragmentSwitchListener.onFragmentSwitch(fragment,
-                true,
-                getViewContext().getString(R.string.tag_sheduled_work_detail),
-                true,
-                getViewContext().getString(R.string.title_sheduled_work_detail));
+        Intent mIntent = new Intent(mView.getBaseActivity(), UpdateShopLocationActivity.class);
+        mIntent.putExtra("shop_id", id);
+        mView.getBaseActivity().startActivity(mIntent);
     }
 
     @Override
@@ -130,7 +123,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void onSuccessCallBack(JSONObject mJsonObject) {
         mView.removeWait();
-        mPojo = new Gson().fromJson(mJsonObject.toString(), ScheduledWorkPojo.class);
+        mPojo = new Gson().fromJson(mJsonObject.toString(), ShopListPojo.class);
         setData();
     }
 

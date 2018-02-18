@@ -7,4 +7,6 @@ package com.cloudsys.smashintl.userprofile.async;
 
 public interface ServiceAction {
     void postUpdatePassword(String user_id, String new_password, String old_password, String tocken);
+
+    void postUpdateImage(String user_id, String image,String tocken);
 }

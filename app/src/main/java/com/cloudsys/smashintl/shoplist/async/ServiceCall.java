@@ -1,16 +1,14 @@
-package com.cloudsys.smashintl.scheduledwork.async;
+package com.cloudsys.smashintl.shoplist.async;
 
 import android.util.Log;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
-import com.cloudsys.smashintl.scheduledwork.Presenter;
+import com.cloudsys.smashintl.shoplist.Presenter;
 import com.cloudsys.smashintl.utiliti.Utilities;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.webservicehelper.retrofit.RetrofitHelper;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import retrofit2.Call;
@@ -32,7 +30,8 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
     @Override
     public void getJson(String user_id, String tocken) {
 
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks(user_id, tocken)
+        getApis().getShopList(user_id,
+                tocken)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

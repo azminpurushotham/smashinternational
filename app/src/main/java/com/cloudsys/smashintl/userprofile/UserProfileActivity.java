@@ -1,12 +1,21 @@
 package com.cloudsys.smashintl.userprofile;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -22,11 +31,22 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.main.MainActivity;
+import com.cloudsys.smashintl.utiliti.ImageUtility;
 import com.cloudsys.smashintl.utiliti.Utilities;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.cloudsys.smashintl.userprofile.Presenter.REQUEST_CAMERA;
+import static com.cloudsys.smashintl.userprofile.Presenter.SELECT_FILE;
+import static com.cloudsys.smashintl.userprofile.Presenter.userChoosenTask;
 
 /**
  * Created by azmin on 16/2/18.
@@ -68,9 +88,9 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
     ProgressBar mProgressBar;
 
 
-
     Presenter mPresenter;
     Dialog mLoading;
+    String selectedImage = "";
 
 
     public static Intent getStartIntent(Context context) {
@@ -115,9 +135,9 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
         CHKchangePassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     lay2.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     lay2.setVisibility(View.GONE);
                 }
             }
@@ -133,6 +153,12 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
 
     @Override
     public void setErrorNewPasswordMissing(int message) {
+        EDTnewpassword.setError(getString(message));
+        EDTnewpassword.requestFocus();
+    }
+
+    @Override
+    public void setErrorConfirmPasswordMissing(int message) {
         EDTconfirmPassword.setError(getString(message));
         EDTconfirmPassword.requestFocus();
     }
@@ -166,7 +192,7 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
 
     @Override
     public String getNewPassword() {
-        return EDTconfirmPassword.getText().toString();
+        return EDTnewpassword.getText().toString();
     }
 
     @Override
@@ -202,6 +228,11 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
     @Override
     public void showImagePregress() {
         mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public String getImagePathForUpload() {
+        return selectedImage;
     }
 
 
@@ -352,15 +383,92 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
         switch (view.getId()) {
 
             case R.id.BTNadd:
-
+                mPresenter.pickImage();
                 break;
 
             case R.id.BTNsubmit:
-                mPresenter.onUpdateUserClick();
+                mPresenter.onUpdatePasswordClick();
                 break;
         }
     }
 
-    /////////////DEFAULT CALLBACKS///////////////////////
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case ImageUtility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (userChoosenTask.equals("Take Photo"))
+                        mPresenter.cameraIntent();
+                    else if (userChoosenTask.equals("Choose from Library"))
+                        mPresenter.galleryIntent();
+                } else {
+                    //code for deny
+                }
+                break;
+        }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+
+    private void onSelectFromGalleryResult(Intent data) {
+        Bitmap bm = null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            selectedImage = getRealPathFromURI(data.getData());
+        }
+        mCircleImageView.setImageBitmap(bm);
+    }
+
+    private String getRealPathFromURI(Uri data) {
+
+        String[] proj = {MediaStore.Images.Media.DATA};
+
+        //This method was deprecated in API level 11
+        //Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+
+        CursorLoader cursorLoader = new CursorLoader(
+                this,
+                data, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        int column_index =
+                cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+        selectedImage = destination.getAbsolutePath();
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mCircleImageView.setImageBitmap(thumbnail);
+    }
 }

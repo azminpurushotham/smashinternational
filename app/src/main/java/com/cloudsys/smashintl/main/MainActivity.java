@@ -42,6 +42,7 @@ import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
 import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
+import com.cloudsys.smashintl.shoplist.ShopListActivity;
 import com.cloudsys.smashintl.userprofile.UserProfileActivity;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
@@ -311,17 +312,8 @@ public class MainActivity extends AppBaseActivity
                         getString(R.string.title_sheduled_work));
                 break;
             case R.id.ic_update_customer_location:
-//                ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putString("id", "1");
-//                bundle.putString("userId", "1");
-//                bundle.putString("token", getSharedPreferenceHelper().getString(getString(R.string.tocken), null));
-//                fragment.setArguments(bundle);
-//                onFragmentSwitch(fragment,
-//                        true,
-//                        getString(R.string.tag_sheduled_work),
-//                        true,
-//                        getString(R.string.title_sheduled_work));
+                Intent mIntent = new Intent(MainActivity.this, ShopListActivity.class);
+                startActivity(mIntent);
                 break;
         }
         return true;

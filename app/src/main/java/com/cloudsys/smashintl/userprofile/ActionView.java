@@ -20,6 +20,8 @@ public interface ActionView extends AppBaseActionView {
 
     void setErrorNewPasswordMissing(int message);
 
+    void setErrorConfirmPasswordMissing(int message);
+
     void setErrorPassWordInvalid(int message);
 
     void setPasswordNotMaching(int message);
@@ -45,4 +47,6 @@ public interface ActionView extends AppBaseActionView {
     void dimissImagePregress();
 
     void showImagePregress();
+
+    String getImagePathForUpload();
 }

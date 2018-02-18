@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.scheduleworkdetails;
+package com.cloudsys.smashintl.shop_location_update;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,9 +19,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -32,7 +31,7 @@ import android.widget.TextView;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
+import com.cloudsys.smashintl.shop_location_update.model.ShopDetail;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -50,9 +49,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.app.Activity.RESULT_OK;
-
-public class ScheduleWorkDetailFragment extends AppBaseFragment implements ActionView, View.OnClickListener {
+public class UpdateShopLocationActivity extends AppBaseActivity implements ActionView, View.OnClickListener {
 
     //// DEFAULT///////
     @BindView(R.id.parent)
@@ -94,8 +91,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     Spinner SPreason;
     @BindView(R.id.BTNupdateStatus)
     Button BTNupdateStatus;
-    @BindView(R.id.BTNnavigate)
-    Button BTNnavigate;
     @BindView(R.id.Layreason)
     LinearLayout Layreason;
     @BindView(R.id.EDTreason)
@@ -107,7 +102,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
 
     private GoogleMap googleMap;
-    private String id;
+    private String shop_id;
     Presenter mPresenter;
 
 
@@ -118,81 +113,37 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     public static final int REQUEST_PLACE_PICKER = 666;
     private static final int REQUEST_PERMISSIONS_LOCATION = 6;
-    WorkDetailsPojo mPojo = new WorkDetailsPojo();
+    ShopDetail mPojo = new ShopDetail();
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return initView(inflater, container, savedInstanceState);
-    }
-
-    private View initView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceSate) {
-        View mView = inflater.inflate(R.layout.fragment_schedule_work_detail, container, false);
-        ButterKnife.bind(this, mView);
-
-        id = getArguments().getString("id");
-        MVmap.onCreate(savedInstanceSate);
+        setContentView(R.layout.activity_shop_detail);
+        ButterKnife.bind(this);
+        shop_id = getIntent().getStringExtra("shop_id");
+        MVmap.onCreate(savedInstanceState);
         MVmap.onResume(); // needed to get the map to display immediately
 
         try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
+            MapsInitializer.initialize(UpdateShopLocationActivity.this.getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return mView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         checkPermission();
     }
 
+
     private void buscinessLogic() {
         if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
+            mLoading = Utilities.showProgressBar(UpdateShopLocationActivity.this, UpdateShopLocationActivity.this.getString(R.string.loading));
         }
-
-        ETamount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                try {
-                    if (Integer.parseInt(getPojo().getResult().get(0).getAmount()) > Integer.parseInt(ETamount.getText().toString())) {
-                        SPreason.setVisibility(View.VISIBLE);
-                    } else {
-                        SPreason.setVisibility(View.GONE);
-                    }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    SPreason.setVisibility(View.GONE);
-                }
-            }
-        });
 
         mPresenter = new Presenter(this, getBaseInstence());
         mPresenter.getScheduledWorkDetails();
         mPresenter.initSpinner();
         BTNupdateStatus.setOnClickListener(this);
         BTN_try.setOnClickListener(this);
-        BTNnavigate.setOnClickListener(this);
         BTNSelectPlace.setOnClickListener(this);
         RBcomplete.setChecked(true);
         RBpending.setEnabled(false);
@@ -203,9 +154,11 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         if (ContextCompat.checkSelfPermission(getViewActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
-            requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQUEST_PERMISSIONS_LOCATION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        REQUEST_PERMISSIONS_LOCATION);
+            }
         } else {
             buscinessLogic();
         }
@@ -279,36 +232,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public TextView getAmountTextView() {
-        return TVamount;
-    }
-
-    @Override
-    public RadioButton getPendingStatus() {
-        return RBpending;
-    }
-
-    @Override
-    public RadioButton getCompleteStatus() {
-        return RBcomplete;
-    }
-
-    @Override
-    public String getPendingAmount() {
-        int temp = 0;
-        if (mPojo.getResult().get(0).getAmount() != null
-                && !mPojo.getResult().get(0).getAmount().equalsIgnoreCase("")
-                && Integer.parseInt(mPojo.getResult().get(0).getAmount()) > 0
-                && mPojo.getResult().get(0).getAmount() != null
-                && !ETamount.getText().toString().equalsIgnoreCase("")
-                && Integer.parseInt(ETamount.getText().toString()) > 0
-                && Integer.parseInt(mPojo.getResult().get(0).getAmount()) > Integer.parseInt(ETamount.getText().toString())) {
-            temp = Integer.parseInt(mPojo.getResult().get(0).getAmount()) - Integer.parseInt(ETamount.getText().toString());
-        }
-        return temp + "";
-    }
-
-    @Override
     public String getBillId() {
         return ETbillId.getText().toString().trim();
     }
@@ -320,8 +243,9 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public String getCustomerId() {
-        return id;
+        return shop_id;
     }
+
 
     @Override
     public String getUserId() {
@@ -334,12 +258,12 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public WorkDetailsPojo getPojo() {
+    public ShopDetail getPojo() {
         return mPojo;
     }
 
     @Override
-    public void setPojo(WorkDetailsPojo mPojo) {
+    public void setPojo(ShopDetail mPojo) {
         this.mPojo = mPojo;
     }
 
@@ -367,14 +291,14 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                             .position(new LatLng(location.getLatitude(), location.getLongitude()))
                             .icon(
                                     getBitmapFromVectorDrawable(
-                                            getActivity(), R.drawable.current_location_24dp)));
+                                            UpdateShopLocationActivity.this, R.drawable.current_location_24dp)));
                 } else {
 
                     googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(location.getLatitude(), location.getLongitude()))
                             .icon(
                                     getBitmapFromVectorDrawable(
-                                            getActivity(), R.drawable.shop_24dp)));
+                                            UpdateShopLocationActivity.this, R.drawable.shop_24dp)));
                 }
 
 
@@ -398,14 +322,14 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                             .position(new LatLng(location.latitude, location.longitude))
                             .icon(
                                     getBitmapFromVectorDrawable(
-                                            getActivity(), R.drawable.current_location_24dp)));
+                                            UpdateShopLocationActivity.this, R.drawable.current_location_24dp)));
                 } else {
 
                     googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(location.latitude, location.longitude))
                             .icon(
                                     getBitmapFromVectorDrawable(
-                                            getActivity(), R.drawable.shop_24dp)));
+                                            UpdateShopLocationActivity.this, R.drawable.shop_24dp)));
                 }
 
 
@@ -498,7 +422,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public void returnToHome() {
-        getActivity().onBackPressed();
+        UpdateShopLocationActivity.this.onBackPressed();
     }
 
     @Override
@@ -545,7 +469,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(getActivity(), data);
+                Place place = PlacePicker.getPlace(UpdateShopLocationActivity.this, data);
                 String toastMsg = String.format("Place: %s", place.getName());
                 showSnackBar(toastMsg);
                 mLocationSelected = new Location("dummyprovider");
@@ -588,7 +512,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
 
-                if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                if (mapIntent.resolveActivity(UpdateShopLocationActivity.this.getPackageManager()) != null) {
                     startActivity(mapIntent);
                 }
 
@@ -599,8 +523,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     /////////////*******************
 
 
-    public AppBaseFragment getBaseInstence() {
-        return ScheduleWorkDetailFragment.this;
+    public AppBaseActivity getBaseInstence() {
+        return UpdateShopLocationActivity.this;
     }
 
     @Override
@@ -638,27 +562,27 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public Context getViewContext() {
-        return getActivity();
+        return UpdateShopLocationActivity.this;
     }
 
     @Override
     public AppBaseActivity getViewActivity() {
-        return (AppBaseActivity) getActivity();
+        return (AppBaseActivity) UpdateShopLocationActivity.this;
     }
 
     @Override
     public AppBaseFragment getViewFragment() {
-        return ScheduleWorkDetailFragment.this;
+        return null;
     }
 
     @Override
     public AppBaseFragment getBaseFragment() {
-        return this;
+        return null;
     }
 
     @Override
     public AppBaseActivity getBaseActivity() {
-        return (AppBaseActivity) getActivity();
+        return UpdateShopLocationActivity.this;
     }
 
     @Override
@@ -713,7 +637,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public void onFinishActivity() {
-        getActivity().finish();
+        UpdateShopLocationActivity.this.finish();
     }
 
 

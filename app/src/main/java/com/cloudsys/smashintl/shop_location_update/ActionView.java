@@ -1,11 +1,7 @@
-package com.cloudsys.smashintl.scheduleworkdetails;
+package com.cloudsys.smashintl.shop_location_update;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.support.design.widget.Snackbar;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -14,9 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.base.AppBaseActionView;
-import com.cloudsys.smashintl.base.AppBaseActivity;
-import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
+import com.cloudsys.smashintl.shop_location_update.model.ShopDetail;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -38,17 +32,9 @@ public interface ActionView extends AppBaseActionView {
 
     TextView getPhoneTextView();
 
-    TextView getAmountTextView();
-
     int getAmount();
 
     String getToken();
-
-    RadioButton getPendingStatus();
-
-    RadioButton getCompleteStatus();
-
-    String getPendingAmount();
 
     String getBillId();
 
@@ -88,8 +74,8 @@ public interface ActionView extends AppBaseActionView {
 
     EditText getCurrencyEditText();
 
-    WorkDetailsPojo getPojo();
+    ShopDetail getPojo();
 
-    void setPojo(WorkDetailsPojo mPojo);
+    void setPojo(ShopDetail mPojo);
 
 }
