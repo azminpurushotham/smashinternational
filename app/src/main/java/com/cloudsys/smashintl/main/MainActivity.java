@@ -33,13 +33,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cloudsys.smashintl.R;
+import com.cloudsys.smashintl.about_status.AboutActivity;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.collectionsviewpager.CollectionFragment;
+import com.cloudsys.smashintl.completd_work.CompletdWorkFragment;
 import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
 import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
+import com.cloudsys.smashintl.shoplist.ShopListActivity;
+import com.cloudsys.smashintl.userprofile.UserProfileActivity;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
 import butterknife.BindView;
@@ -52,7 +56,7 @@ import static com.cloudsys.smashintl.utiliti.Utilities.clearApplicationData;
 
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActionView, View.OnClickListener,
-        AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener, SearchView.OnQueryTextListener {
+        AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private static final String TAG = "MainActivity";
 
@@ -71,10 +75,6 @@ public class MainActivity extends AppBaseActivity
     //// DEFAULT///////
 
 
-    TextView TVname;
-    CircleImageView IMGuser;
-
-
     private Dialog dialougeLogout;
     boolean doubleBackToExitPressedOnce = false;
     @BindView(R.id.drawer_layout)
@@ -83,10 +83,15 @@ public class MainActivity extends AppBaseActivity
     NavigationView nav_view;
     @BindView(R.id.TVtitle)
     TextView TVtitle;
+
+    Button BTNeditUser;
+    TextView TVname;
+    CircleImageView IMGuser;
     private FragmentManager mFragmentManager;
     private ActionBarDrawerToggle mDrawerToggle;
 
     SearchQueryScheduledWork mSearchQueryScheduledWork;
+    SearchQueryCompletedWork mSearchQueryCompletedWork;
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -100,8 +105,13 @@ public class MainActivity extends AppBaseActivity
         buscinessLogic();
     }
 
+
     public interface SearchQueryScheduledWork {
         public void searchQueryScheduledWork(String query);
+    }
+
+    public interface SearchQueryCompletedWork {
+        public void onSearchQueryCompletedWork(String query);
     }
 
     private void buscinessLogic() {
@@ -119,6 +129,8 @@ public class MainActivity extends AppBaseActivity
         View headerLayout = nav_view.getHeaderView(0);
         TVname = (TextView) headerLayout.findViewById(R.id.TVname);
         IMGuser = (CircleImageView) headerLayout.findViewById(R.id.IMGuser);
+        BTNeditUser = (Button) headerLayout.findViewById(R.id.BTNeditUser);
+
         TVname.setText(getSharedPreferenceHelper().getString(getString(R.string.user_name), ""));
 
         Log.v("image", getSharedPreferenceHelper().getString(getString(R.string.user_image), "image"));
@@ -141,6 +153,13 @@ public class MainActivity extends AppBaseActivity
             @Override
             public void run() {
                 mDrawerToggle.syncState();
+            }
+        });
+
+        BTNeditUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
             }
         });
 
@@ -179,10 +198,19 @@ public class MainActivity extends AppBaseActivity
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
             searchView.setOnQueryTextListener(this);
+            searchView.setOnCloseListener(this);
+
         }
 
         String tag = getVisibleFragmentTag();
         Log.v("tag", " onPrepareOptionsMenu " + tag);
+
+        if (tag.equalsIgnoreCase(getString(R.string.tag_sheduled_work))) {
+            action_search.setVisible(true);
+        } else {
+            action_search.setVisible(false);
+        }
+
         return true;
     }
 
@@ -260,14 +288,14 @@ public class MainActivity extends AppBaseActivity
                 mPresenter.showLogoutDialouge();
                 break;
             case R.id.ic_collection:
-                onFragmentSwitch(new CollectionFragment(),
+                onFragmentSwitch(new CompletdWorkFragment(),
                         true,
                         getString(R.string.tag_collection),
                         true,
                         getString(R.string.tag_collection));
                 break;
             case R.id.ic_about_smash:
-                mPresenter.showLogoutDialouge();
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.ic_new_lead:
                 onFragmentSwitch(new NewLeadFragment(),
@@ -284,17 +312,8 @@ public class MainActivity extends AppBaseActivity
                         getString(R.string.title_sheduled_work));
                 break;
             case R.id.ic_update_customer_location:
-                ScheduleWorkDetailFragment fragment = new ScheduleWorkDetailFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("id", "1");
-                bundle.putString("userId", "1");
-                bundle.putString("token", getSharedPreferenceHelper().getString(getString(R.string.tocken), null));
-                fragment.setArguments(bundle);
-                onFragmentSwitch(fragment,
-                        true,
-                        getString(R.string.tag_sheduled_work),
-                        true,
-                        getString(R.string.title_sheduled_work));
+                Intent mIntent = new Intent(MainActivity.this, ShopListActivity.class);
+                startActivity(mIntent);
                 break;
         }
         return true;
@@ -466,7 +485,7 @@ public class MainActivity extends AppBaseActivity
 
     @OnClick(R.id.BTN_try)
     void onConnectionRetry(View v) {
-        mPresenter.showNoInternetConnectionLayout(true);
+        showInternetAlertLogic(true);
         buscinessLogic();
     }
 
@@ -507,7 +526,7 @@ public class MainActivity extends AppBaseActivity
 
     @Override
     public OnFragmentSwitchListener getFragmentSwitch() {
-        return null;
+        return getFragmenntSwitchListner();
     }
 
 
@@ -590,7 +609,7 @@ public class MainActivity extends AppBaseActivity
                 if (backStackTag.equalsIgnoreCase(getString(R.string.tag_sheduled_work))) {
                     mSearchQueryScheduledWork = (SearchQueryScheduledWork) mFragment;
                 } else if (backStackTag.equalsIgnoreCase(getString(R.string.tag_collection))) {
-
+                    mSearchQueryCompletedWork = (SearchQueryCompletedWork) mFragment;
                 }
 
 
@@ -625,7 +644,7 @@ public class MainActivity extends AppBaseActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        if (query != null && !query.equalsIgnoreCase("")) {
+        if (query != null) {
             mSearchQueryScheduledWork.searchQueryScheduledWork(query);
         }
         return false;
@@ -634,9 +653,16 @@ public class MainActivity extends AppBaseActivity
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText != null && !newText.equalsIgnoreCase("")) {
+        if (newText != null) {
             mSearchQueryScheduledWork.searchQueryScheduledWork(newText);
         }
         return false;
     }
+
+    @Override
+    public boolean onClose() {
+        mSearchQueryScheduledWork.searchQueryScheduledWork("");
+        return false;
+    }
+
 }

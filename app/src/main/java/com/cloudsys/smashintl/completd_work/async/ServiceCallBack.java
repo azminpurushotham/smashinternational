@@ -9,7 +9,5 @@ import org.json.JSONObject;
  */
 
 public interface ServiceCallBack  extends AppBaseServiceCallBack{
-    void onCallfailerFromServerside(JSONObject mJsonObject);
-
     void onCallfailerSearch(JSONObject mJsonObject);
 }

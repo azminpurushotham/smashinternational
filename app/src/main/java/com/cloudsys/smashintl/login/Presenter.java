@@ -40,12 +40,16 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
                 Log.d(TAG, "Refreshed token: " + refreshedToken);
                 if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
-                    getSharedPreference().putString(mView.getViewContext().getString(R.string.tocken), refreshedToken);
+                    getSharedPreference().putString(mView.getStringRes(R.string.tocken), refreshedToken);
+                    mServiceCall.postLogin(
+                            mView.getUserName(),
+                            mView.getPassword(),
+                            getSharedPreference().getString(mView.getStringRes(R.string.tocken), null));
+                }else {
+                    mView.removeWait();
+                    mView.showSnackBar(R.string.please_try_again);
                 }
 
-                mServiceCall.postLogin(mView.getUserName(),
-                        mView.getPassword(),
-                        getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
             }
         } else {
             mView.showSnackBar(R.string.no_network_connection);
@@ -74,12 +78,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         return mView.getPassword();
     }
 
-    @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
-    }
-
-    @Override
+       @Override
     public void permissionGranded(String permission) {
 
     }
@@ -94,17 +93,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     }
 
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showNoDataLayout(boolean isNodata) {
-        mView.showNodataAlertLogic(isNodata);
-
-    }
-
 
     @Override
     public void onSuccessCallBack() {
@@ -113,57 +101,64 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onExceptionCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack() {
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(JSONObject mJsonObject) {
-
+        mView.removeWait();
     }
 
 
     @Override
     public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return null;
+        return super.getSharedPreference();
     }
 
     @Override
@@ -183,12 +178,13 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public String getStringRes(int string_id) {
-        return mView.getViewContext().getString(string_id);
+        return mView.getStringRes(string_id);
     }
 
     @Override
     public void userNamePasswordinCorrect(int username_or_password_incorrect) {
         mView.showSnackBar(username_or_password_incorrect);
+        mView.removeWait();
     }
 
 

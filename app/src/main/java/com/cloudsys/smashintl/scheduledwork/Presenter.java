@@ -9,11 +9,9 @@ import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.itemdecorator.SpacesItemDecoration;
-import com.cloudsys.smashintl.scheduledwork.async.ServiceCall;
-import com.cloudsys.smashintl.scheduledwork.async.ServiceCallBack;
-import com.cloudsys.smashintl.scheduledwork.model.Result;
-import com.cloudsys.smashintl.scheduledwork.model.ScheduledWorkPojo;
 import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
+import com.cloudsys.smashintl.scheduledwork.async.*;
+import com.cloudsys.smashintl.scheduledwork.model.*;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.Gson;
@@ -84,7 +82,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void searchItems(String query) {
-        mView.showWait(mView.getStringRes(R.string.searching));
         if (Utilities.isInternet(mView.getViewContext())) {
             mServiceCall.getSearchScheduledWorks(
                     getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null),
@@ -92,7 +89,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                     mView.getViewContext().getString(R.string.worktype_pending),
                     query);
         } else {
-            mView.removeWait();
             mView.showSnackBar(R.string.no_network_connection);
         }
     }
@@ -140,58 +136,65 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onSuccessCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(String message) {
         Log.v("exception", message);
         mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
@@ -226,28 +229,16 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
-    public void showWait(int message_id) {
-        mView.showWait(message_id);
+    public void showWait(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showNoDataLayout(boolean isNodata) {
-        mView.showNodataAlertLogic(isNodata);
-    }
-
-    @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
-    }
 
     @Override
     public void permissionGranded(String permission) {

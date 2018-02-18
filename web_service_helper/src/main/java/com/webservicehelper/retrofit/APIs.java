@@ -6,11 +6,14 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -36,6 +39,19 @@ public interface APIs {
     Call<JsonObject> postLogin(@Query("username") String username,
                                @Query("password") String password,
                                @Query("token") String token);
+
+
+    @POST("/api/smash/api/profile/changepwd/")
+    Call<JsonObject> postUpdatePassword(@Query("user_id") String user_id,
+                                        @Query("new_password") String new_password,
+                                        @Query("old_password") String old_password,
+                                        @Query("token") String token);
+
+    @Multipart
+    @POST("/api/smash/api/profile/pic/")
+    Call<JsonObject> postUpdateImage(@Part("user_id") String user_id,
+                                     @Part MultipartBody.Part file,
+                                     @Query("token") String token);
 
     @GET("mobile/termsAndConditions")
     Call<JSONObject> getTermsAndConditions();
@@ -81,6 +97,14 @@ public interface APIs {
     Call<JsonObject> getScheduledWorks(@Path("user_id") String user_id,
                                        @Path("token") String token);
 
+    @GET("api/smash/api/shop/shop_list/{user_id}/{token}")
+    Call<JsonObject> getShopList(@Path("user_id") String user_id,
+                                             @Path("token") String token);
+
+
+    @GET("/api/smash/api/work/complete_list/{user_id}/{token}")
+    Call<JsonObject> getCompletedWorks(@Path("user_id") String user_id,
+                                       @Path("token") String token);
 
     @GET("api/smash/api/search/search_list")
     Call<JsonObject> getSearchScheduledWorks(@Query("user_id") String user_id,
@@ -88,11 +112,24 @@ public interface APIs {
                                              @Query("worktype") String worktype,
                                              @Query("query") String query);
 
+
+    @GET("api/smash/api/search/search_list")
+    Call<JsonObject> getSearchCompletedWorks(@Query("user_id") String user_id,
+                                             @Query("token") String token,
+                                             @Query("worktype") String worktype,
+                                             @Query("query") String query);
+
+
     @GET("api/work/work_list/{path}")
     Call<JsonObject> getScheduledWorks();
 
     @GET("api/smash/api/work/work_details/{id}/{user_id}/{token}")
     Call<JsonObject> getScheduledWorksDetail(@Path("id") String id, @Path("user_id") String user_id, @Path("token") String token);
+
+    @GET("api/smash/api/shop/shop_details/{id}/{user_id}/{token}")
+    Call<JsonObject> getShopDetail(@Path("id") String id,
+                                   @Path("user_id") String user_id,
+                                   @Path("token") String token);
 
     @POST("api/smash/api/lead/add_lead/")
     Call<JsonObject> postNewLead(@Query("user_id") String user_id,

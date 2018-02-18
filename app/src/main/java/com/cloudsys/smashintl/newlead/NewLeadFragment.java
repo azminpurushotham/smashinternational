@@ -70,8 +70,10 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     EditText ETAddress1;
     @BindView(R.id.ETAddress2)
     EditText ETAddress2;
-    @BindView(R.id.RBpending)
-    RadioButton RBpending;
+    @BindView(R.id.RBexisting)
+    RadioButton RBexisting;
+    @BindView(R.id.RBnew)
+    RadioButton RBnew;
     @BindView(R.id.ETamount)
     EditText ETamount;
     @BindView(R.id.ETbillId)
@@ -149,6 +151,29 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.please_waite));
         }
+
+        RBexisting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (RBexisting.isChecked()) {
+                    ETCustomerId.setVisibility(View.VISIBLE);
+                } else {
+                    ETCustomerId.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        RBnew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (RBexisting.isChecked()) {
+                    ETCustomerId.setVisibility(View.VISIBLE);
+                } else {
+                    ETCustomerId.setVisibility(View.GONE);
+                }
+            }
+        });
+
 
         BTNupdateStatus.setOnClickListener(this);
         BTNSelectPlace.setOnClickListener(this);
@@ -295,11 +320,7 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
 
     @Override
     public String getStatus() {
-        if (RBpending.isChecked()) {
-            return getString(R.string.pending_);
-        } else {
-            return getString(R.string.completed_);
-        }
+        return getString(R.string.completed_);
     }
 
     private void setShopLocation(Location mLocationSelected) {

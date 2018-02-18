@@ -10,12 +10,28 @@
     android:orientation="horizontal"
     android:paddingTop="10dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/IMGuser"
+    <RelativeLayout
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="20dp"
-        android:src="@drawable/user_placeholder" />
+        android:layout_height="100dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/IMGuser"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/user_placeholder" />
+
+        <Button
+            android:id="@+id/BTNeditUser"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/IMGuser"
+            android:layout_alignEnd="@+id/IMGuser"
+            android:layout_alignRight="@+id/IMGuser"
+            android:background="@drawable/edit"
+            android:text="" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/TVname"

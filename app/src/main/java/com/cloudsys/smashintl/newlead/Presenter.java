@@ -396,20 +396,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.showWait(message_id);
     }
 
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showNoDataLayout(boolean isNodata) {
-        mView.showNodataAlertLogic(isNodata);
-    }
-
-    @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
-    }
 
     @Override
     public void permissionGranded(String permission) {

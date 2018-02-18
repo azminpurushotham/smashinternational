@@ -31,9 +31,10 @@ import butterknife.ButterKnife;
  * Created by User on 11/30/2017.
  */
 
-public class CompletdWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener ,MainActivity.SearchQueryScheduledWork{
+public class CompletdWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener ,
+        MainActivity.SearchQueryCompletedWork{
 
-    private static final String TAG = "CompletdWorkFragment";
+    private static final String TAG = "CompletdWork";
     //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;
@@ -97,9 +98,10 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
     }
 
     @Override
-    public void searchQueryScheduledWork(String query) {
+    public void onSearchQueryCompletedWork(String query) {
         mPresenter.searchItems(query);
     }
+
 
     public AppBaseFragment getBaseInstence() {
         return CompletdWorkFragment.this;
@@ -228,7 +230,7 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.BTN_try:
-                mPresenter.showNoInternetConnectionLayout(true);
+                showInternetAlertLogic(true);
                 buscinessLogic();
                 break;
         }

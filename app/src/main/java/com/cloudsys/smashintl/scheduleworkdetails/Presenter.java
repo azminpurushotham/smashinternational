@@ -95,11 +95,11 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
         mView.setPlacePickerLocation(mLocation);
 
-        if (mPojo.getResult().get(0).getWorkstatus().equals("pending")) {
-            mView.getPendingStatus().setChecked(true);
-        } else {
-            mView.getCompleteStatus().setChecked(true);
-        }
+//        if (mPojo.getResult().get(0).getWorkstatus().equals("pending")) {
+//            mView.getPendingStatus().setChecked(true);
+//        } else {
+//            mView.getCompleteStatus().setChecked(true);
+//        }
 
         mView.setPojo(mPojo);
 
@@ -147,12 +147,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 scheduleWorkPojo data = new scheduleWorkPojo();
                 data.setUserId(getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null));
                 data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
-                if (mView.getCompleteStatus().isChecked()) {
-                    data.setStatus("pending");
-                } else {
-                    data.setStatus("completed");
-                }
-                data.setBranch_id(mPojo.getResult().get(0).getCustomerId());
+//                if (mView.getCompleteStatus().isChecked()) {
+//                    data.setStatus("pending");
+//                } else {
+//                    data.setStatus("completed");
+//                }
+                data.setStatus(mView.getStringRes(R.string.completed_));
+
+                data.setBranch_id(mPojo.getResult().get(0).getId());
                 data.setEmail(mPojo.getResult().get(0).getEmail());
                 data.setSms_no(mPojo.getResult().get(0).getSmsNumber());
                 data.setBranch_name(mPojo.getResult().get(0).getName());
@@ -163,10 +165,43 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setReason(mView.getReason());
                 data.setBill_id(mView.getBillId());
                 mView.showWait(R.string.loading);
-                mServiceCall.postUpdateWorkStatus(data);
+                if (isAgentInRange()) {
+                    mServiceCall.postUpdateWorkStatus(data);
+                } else {
+                    mView.removeWait(R.string.not_on_the_premises);
+                    mView.showSnackBar(R.string.not_on_the_premises);
+                }
             } else {
                 mView.showInternetAlertLogic(false);
             }
+        }
+    }
+
+    private boolean isAgentInRange() {
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLat()));//9.9666543
+        startPoint.setLongitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLon())); //76.3168134
+
+        Location endPoint = new Location("locationB");
+
+        if (mView.getCurrentLocation() != null) {
+            endPoint.setLatitude(mView.getCurrentLocation().getLatitude());
+            endPoint.setLongitude(mView.getCurrentLocation().getLongitude());
+        } else if (mView.getCurrentLatLng() != null) {
+            endPoint.setLatitude(mView.getCurrentLatLng().longitude);
+            endPoint.setLongitude(mView.getCurrentLatLng().longitude);
+        }
+
+
+        Log.v("Location Range",
+                "Location START  lat " + startPoint.getLatitude() + " -- " + startPoint.getLongitude()
+                        + "\n" + " Location END lat " + endPoint.getLatitude() + " -- " + endPoint.getLongitude());
+
+        double distance = startPoint.distanceTo(endPoint);
+        if (distance > getViewActivity().getResources().getInteger(R.integer.maximum_permises)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -293,10 +328,10 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     public void initReason() {
-        reasons.add("Select a reason");
-        reasons.add("Reason 1");
-        reasons.add("Reason 2");
-        reasons.add("Reason 3");
+        reasons.add(mView.getStringRes(R.string.reason_title));
+        reasons.add(mView.getStringRes(R.string.reason_1));
+        reasons.add(mView.getStringRes(R.string.reason_2));
+        reasons.add(mView.getStringRes(R.string.reason_3));
     }
 
 
@@ -316,27 +351,35 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(JSONObject mJsonObject) {
-
+        try {
+            mView.showSnackBar(mJsonObject.getString("message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mView.removeWait();
     }
 
     @Override
     public void onSuccessCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onSuccessCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onExceptionCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
@@ -348,31 +391,35 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void onFailerCallBack(String message) {
         Log.v("exception", message);
         mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onFailerCallBack() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside() {
-
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
     public void onCallfailerFromServerside(int message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
@@ -407,28 +454,16 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(String message) {
-
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
     @Override
-    public void showWait(int message_id) {
-        mView.showWait(message_id);
+    public void showWait(int message) {
+        mView.showSnackBar(message);
+        mView.removeWait();
     }
 
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showNoDataLayout(boolean isNodata) {
-        mView.showNodataAlertLogic(isNodata);
-    }
-
-    @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
-    }
 
     @Override
     public void permissionGranded(String permission) {
@@ -446,7 +481,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         if (ContextCompat.checkSelfPermission(activity, permission)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity ,permission)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.

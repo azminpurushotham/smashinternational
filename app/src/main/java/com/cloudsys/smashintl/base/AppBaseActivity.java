@@ -56,22 +56,6 @@ public class AppBaseActivity extends BaseActivity{
         this.sharedPreferenceHelper = sharedPreferenceHelper;
     }
 
-    /**
-     * @param parent  parent view of layout
-     * @param message
-     * @return
-     */
-    public Snackbar getSnackBar(View parent, String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.snack_bar_text_color));
-        snackbar.setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.snack_bar_text_color));
-        return snackbar;
-    }
-
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -93,6 +77,13 @@ public class AppBaseActivity extends BaseActivity{
         return class_name;
     }
 
+    public OnFragmentSwitchListener getFragmenntSwitchListner() {
+        return mFragmenntSwitchListner;
+    }
+
+    public void setFragmenntSwitchListner(OnFragmentSwitchListener mFragmenntSwitchListner) {
+        this.mFragmenntSwitchListner = mFragmenntSwitchListner;
+    }
 
     @Override
     public void onAttachFragment(Fragment fragment) {

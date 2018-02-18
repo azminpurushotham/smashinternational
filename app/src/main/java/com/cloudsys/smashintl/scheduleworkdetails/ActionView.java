@@ -67,12 +67,16 @@ public interface ActionView extends AppBaseActionView {
 
     void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker);
 
-
     void setCurrentLocation(Location mLocation);
 
     void setPlacePickerLocation(Location mLocation);
 
     void setCurrentLocation(LatLng mLocation);
+
+    LatLng getCurrentLatLng();
+
+    Location getCurrentLocation();
+
 
     void setPlacePickerLocation(LatLng mLocation);
 

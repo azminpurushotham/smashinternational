@@ -174,11 +174,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
-    }
-
-    @Override
     public void permissionGranded(String permission) {
 
     }
@@ -193,17 +188,4 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     }
 
-    @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showNoDataLayout(boolean isNodata) {
-        mView.showInternetAlertLogic(isNodata);
-    }
-
-    ////////////
-
-    /////////////DEFAULTS///////////////////////
 }

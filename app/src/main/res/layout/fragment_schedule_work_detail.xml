@@ -255,7 +255,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimary"
-                                    android:checked="true"
+                                    android:checked="false"
                                     android:text="Pending" />
 
                                 <RadioButton
@@ -264,6 +264,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="@color/colorPrimary"
+                                    android:checked="true"
                                     android:text="Completed" />
                             </RadioGroup>
 

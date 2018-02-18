@@ -8,10 +8,8 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
-import com.cloudsys.smashintl.completd_work.async.ServiceCall;
-import com.cloudsys.smashintl.completd_work.async.ServiceCallBack;
-import com.cloudsys.smashintl.completd_work.model.Result;
-import com.cloudsys.smashintl.completd_work.model.ScheduledWorkPojo;
+import com.cloudsys.smashintl.completd_work.async.*;
+import com.cloudsys.smashintl.completd_work.model.*;
 import com.cloudsys.smashintl.itemdecorator.SpacesItemDecoration;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
@@ -33,7 +31,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     ServiceCall mServiceCall;
     private ListItemAdapter adapter;
     private ListItemAdapter.OnAdapterItemClick listner;
-    ScheduledWorkPojo mPojo = new ScheduledWorkPojo();
+    CompletedWorkPojo mPojo = new CompletedWorkPojo();
     AppBaseActivity.OnFragmentSwitchListener onFragmentSwitchListener;
     List<Result> list = new ArrayList<Result>();
 
@@ -83,15 +81,13 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void searchItems(String query) {
-        mView.showWait(mView.getStringRes(R.string.searching));
         if (Utilities.isInternet(mView.getViewContext())) {
-            mServiceCall.getSearchScheduledWorks(
+            mServiceCall.getSearchCompletedWorks(
                     getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null),
                     getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null),
-                    mView.getViewContext().getString(R.string.worktype_pending),
+                    mView.getViewContext().getString(R.string.worktype_completed),
                     query);
         } else {
-            mView.removeWait();
             mView.showSnackBar(R.string.no_network_connection);
         }
     }
@@ -112,20 +108,28 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
+    public void onCallfailerSearch(JSONObject mJsonObject) {
+        list = new ArrayList<Result>();
+        adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
+        mView.getRecyclerView().setAdapter(adapter);
+    }
+
+
+    @Override
     public Context getViewContext() {
         return mView.getViewContext();
     }
+
 
     @Override
     public void setJson(JSONObject mJsonObject) {
 
     }
 
-
     @Override
     public void onSuccessCallBack(JSONObject mJsonObject) {
         mView.removeWait();
-        mPojo = new Gson().fromJson(mJsonObject.toString(), ScheduledWorkPojo.class);
+        mPojo = new Gson().fromJson(mJsonObject.toString(), CompletedWorkPojo.class);
         setData();
     }
 
@@ -200,12 +204,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         }
     }
 
-    @Override
-    public void onCallfailerSearch(JSONObject mJsonObject) {
-        list = new ArrayList<Result>();
-        adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
-        mView.getRecyclerView().setAdapter(adapter);
-    }
 
     @Override
     public void showWait(String message) {
@@ -232,21 +230,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void showNoInternetConnectionLayout(boolean isInternet) {
-        mView.showInternetAlertLogic(isInternet);
-    }
-
-    @Override
-    public void showNoDataLayout(boolean isNodata) {
-        mView.showNodataAlertLogic(isNodata);
-    }
-
-    @Override
-    public String getStringRec(int string_id) {
-        return mView.getStringRes(string_id);
-    }
-
-    @Override
     public void permissionGranded(String permission) {
 
     }
@@ -259,7 +242,5 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void checkRunTimePermission(AppBaseActivity activity, String permission) {
     }
-
-
 
 }

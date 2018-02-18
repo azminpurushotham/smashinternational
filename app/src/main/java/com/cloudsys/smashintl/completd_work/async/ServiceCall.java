@@ -3,6 +3,7 @@ package com.cloudsys.smashintl.completd_work.async;
 import android.util.Log;
 
 import com.cloudsys.smashintl.R;
+import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.completd_work.Presenter;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.JsonObject;
@@ -18,7 +19,7 @@ import retrofit2.Response;
  * Created by AzminPurushotham on 11/13/2017 time 12 : 35.
  */
 
-public class ServiceCall implements ServiceAction {
+public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
     ServiceCallBack mServiceCallBack;
 
@@ -29,7 +30,7 @@ public class ServiceCall implements ServiceAction {
     @Override
     public void getJson(String user_id, String tocken) {
 
-        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getScheduledWorks(user_id, tocken)
+        new RetrofitHelper(mServiceCallBack.getViewContext()).getApis().getCompletedWorks(user_id, tocken)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -60,10 +61,9 @@ public class ServiceCall implements ServiceAction {
     }
 
     @Override
-    public void getSearchScheduledWorks(String user_id, String tocken, String work_type, String query) {
-        mServiceCallBack.showWait(mServiceCallBack.getViewContext().getString(R.string.searching));
+    public void getSearchCompletedWorks(String user_id, String tocken, String work_type, String query) {
         new RetrofitHelper(mServiceCallBack.getViewContext()).getApis()
-                .getSearchScheduledWorks(user_id,
+                .getSearchCompletedWorks(user_id,
                         tocken,
                         work_type,
                         query)
@@ -73,10 +73,8 @@ public class ServiceCall implements ServiceAction {
                         try {
                             JSONObject mJsonObject = new JSONObject(Utilities.getNullAsEmptyString(response));
                             if (mJsonObject.getBoolean("status")) {
-                                mServiceCallBack.showWait(R.string.please_waite);
                                 mServiceCallBack.onSuccessCallBack(mJsonObject);
                             } else {
-                                mServiceCallBack.showWait(mJsonObject.getString("message"));
                                 mServiceCallBack.onCallfailerSearch(mJsonObject);
                             }
 

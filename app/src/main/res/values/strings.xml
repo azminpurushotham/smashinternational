@@ -75,5 +75,19 @@
     <string name="worktype_completed">completed</string>
     <string name="worktype_shop">shop</string>
     <string name="successfully_new_lead_created">Successfully new lead created</string>
+    <string name="please_try_again">Please try again</string>
+    <string name="update">update</string>
+    <string name="change_password">Change Password ?</string>
+    <string name="old_password">Old Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="old_and_new_password_notmatching">Old and new password not matching.</string>
+    <string name="updating">Updating..</string>
+    <string name="user_profile">Profile</string>
+    <string name="not_on_the_premises">You are not in the shops premises</string>
+    <string name="reason_title">Reason for collection zero amount entry</string>
+    <string name="reason_1">Reason 1</string>
+    <string name="reason_2">Reason 2</string>
+    <string name="reason_3">Reason 3</string>
+    <string name="shops">SHOPS</string>
 
 </resources>

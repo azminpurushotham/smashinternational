@@ -32,7 +32,6 @@ import android.widget.TextView;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.main.MainActivity;
 import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.location.places.Place;
@@ -195,6 +194,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         BTN_try.setOnClickListener(this);
         BTNnavigate.setOnClickListener(this);
         BTNSelectPlace.setOnClickListener(this);
+        RBcomplete.setChecked(true);
+        RBpending.setEnabled(false);
     }
 
 
@@ -245,7 +246,11 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public int getAmount() {
-        return Integer.parseInt(ETamount.getText().toString());
+        if (ETamount.getText().toString().equalsIgnoreCase("")) {
+            return 0;
+        } else {
+            return Integer.parseInt(ETamount.getText().toString());
+        }
     }
 
     @Override
@@ -290,7 +295,17 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public String getPendingAmount() {
-        return ETamount.getText().toString().trim();
+        int temp = 0;
+        if (mPojo.getResult().get(0).getAmount() != null
+                && !mPojo.getResult().get(0).getAmount().equalsIgnoreCase("")
+                && Integer.parseInt(mPojo.getResult().get(0).getAmount()) > 0
+                && mPojo.getResult().get(0).getAmount() != null
+                && !ETamount.getText().toString().equalsIgnoreCase("")
+                && Integer.parseInt(ETamount.getText().toString()) > 0
+                && Integer.parseInt(mPojo.getResult().get(0).getAmount()) > Integer.parseInt(ETamount.getText().toString())) {
+            temp = Integer.parseInt(mPojo.getResult().get(0).getAmount()) - Integer.parseInt(ETamount.getText().toString());
+        }
+        return temp + "";
     }
 
     @Override
@@ -446,6 +461,16 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
+    public LatLng getCurrentLatLng() {
+        return latLngSelected;
+    }
+
+    @Override
+    public Location getCurrentLocation() {
+        return mLocationCurrent;
+    }
+
+    @Override
     public void setPlacePickerLocation(LatLng mLocation) {
         latLngSelected = mLocation;
         setGoogleMapMarker(latLngSelected, false);
@@ -539,7 +564,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.BTN_try:
-                mPresenter.showNoInternetConnectionLayout(true);
+                showInternetAlertLogic(true);
                 buscinessLogic();
                 break;
             case R.id.BTNupdateStatus:

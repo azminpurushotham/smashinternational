@@ -538,7 +538,7 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.BTN_try:
-                mPresenter.showNoInternetConnectionLayout(true);
+                showInternetAlertLogic(true);
                 buscinessLogic();
                 break;
             case R.id.BTNupdateStatus:
