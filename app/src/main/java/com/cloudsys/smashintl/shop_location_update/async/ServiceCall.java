@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
-import com.cloudsys.smashintl.shop_location_update.model.scheduleWorkPojo;
 import com.cloudsys.smashintl.shop_location_update.Presenter;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.JsonObject;
@@ -62,22 +61,21 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
     }
 
     @Override
-    public void postUpdateWorkStatus(scheduleWorkPojo data) {
-        getApis().updateWorkStatus(
-                data.getUserId(),
-                data.getToken(),
-                data.getBranch_id(),
-                data.getBranch_name(),
-                data.getAddress1(),
-                data.getAddress2(),
-                data.getEmail(),
-                data.getSms_no(),
-                data.getTelephone_no(),
-                data.getStatus(),
-                data.getCollection_amount(),
-                data.getPendingAmount(),
-                data.getReason(),
-                data.getBill_id()).enqueue(new Callback<JsonObject>() {
+    public void updateShopLocation(String user_id,
+                                   String token,
+                                   String customer_id,
+                                   String address_1,
+                                   String address_2,
+                                   String latitude,
+                                   String longitude) {
+
+        getApis().updateShopLocation(user_id,
+                token,
+                customer_id,
+                address_1,
+                address_2,
+                latitude,
+                longitude).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
@@ -87,10 +85,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                     } else {
                         mServiceCallBack.onCallfailerFromServerside(mJsonObject.getString("message"));
                     }
-                } catch (
-                        JSONException e)
-
-                {
+                } catch (JSONException e) {
                     if (e != null) {
                         e.printStackTrace();
                     }
@@ -105,4 +100,5 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
             }
         });
     }
+
 }

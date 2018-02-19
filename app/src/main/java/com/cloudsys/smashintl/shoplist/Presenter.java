@@ -1,8 +1,14 @@
 package com.cloudsys.smashintl.shoplist;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
@@ -29,13 +35,16 @@ import java.util.List;
  */
 
 public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack,
-        ListItemAdapter.OnAdapterItemClick {
+        ListItemAdapter.OnAdapterItemClick, View.OnClickListener {
     ActionView mView;
     ServiceCall mServiceCall;
     private ListItemAdapter adapter;
     private ListItemAdapter.OnAdapterItemClick listner;
     ShopListPojo mPojo = new ShopListPojo();
     List<Result> list = new ArrayList<Result>();
+    Result mResult = new Result();
+
+    private Dialog mDialog;
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -96,9 +105,50 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void onAdapterItemClick(Result Result, int adapterPosition) {
         String id = Result.getId();
-        Intent mIntent = new Intent(mView.getBaseActivity(), UpdateShopLocationActivity.class);
-        mIntent.putExtra("shop_id", id);
-        mView.getBaseActivity().startActivity(mIntent);
+        mResult = Result;
+        if (Result.getIsLatLong().equalsIgnoreCase("0")) {
+            Intent mIntent = new Intent(mView.getBaseActivity(), UpdateShopLocationActivity.class);
+            mIntent.putExtra("shop_id", id);
+            mView.getBaseActivity().startActivity(mIntent);
+        }else {
+            showConFirMationDialouge();
+        }
+    }
+
+    private void showConFirMationDialouge() {
+        if (mDialog == null) {
+            mDialog = getConfirmationDialouge();
+        }
+        if (mDialog.isShowing() == false) {
+            mDialog.show();
+        }
+    }
+
+    private Dialog getConfirmationDialouge() {
+        Dialog mDialog = null;
+        Button BTNclose, BTNok;
+        TextView TVtitle, TVmessage;
+
+        mDialog = new Dialog(mView.getBaseActivity());
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.dialouge_message_with_positive_and_negative_button);
+
+        TVtitle = (TextView) mDialog.findViewById(R.id.TVtitle);
+        TVmessage = (TextView) mDialog.findViewById(R.id.TVmessage);
+        BTNclose = (Button) mDialog.findViewById(R.id.BTNclose);
+        BTNok = (Button) mDialog.findViewById(R.id.BTNok);
+
+        BTNclose.setText(R.string.cancel);
+        BTNok.setText(R.string.ok);
+        TVtitle.setText(R.string.update_customer_location);
+        TVmessage.setText(R.string.do_you_update_customer_location);
+
+        BTNclose.setOnClickListener(this);
+        BTNok.setOnClickListener(this);
+
+        mDialog.setCancelable(true);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        return mDialog;
     }
 
     @Override
@@ -247,4 +297,22 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void checkRunTimePermission(AppBaseActivity activity, String permission) {
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+
+            case R.id.BTNclose:
+                mDialog.dismiss();
+                break;
+
+            case R.id.BTNok:
+                mDialog.dismiss();
+                Intent mIntent = new Intent(mView.getBaseActivity(), UpdateShopLocationActivity.class);
+                mIntent.putExtra("shop_id", mResult.getId());
+                mView.getBaseActivity().startActivity(mIntent);
+                break;
+
+        }
+
+    }
 }

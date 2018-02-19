@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,15 +16,13 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
@@ -64,52 +61,36 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     Dialog mLoading;
     @BindView(R.id.LAYnodata)
     LinearLayout LAYnodata;
+    @BindView(R.id.mToolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.TVtitle)
+    TextView TVtitle;
 
     @BindView(R.id.MVmap)
     MapView MVmap;
     @BindView(R.id.TVid)
     TextView TVid;
-    @BindView(R.id.TVdate)
-    TextView TVdate;
-    @BindView(R.id.TVlocation)
-    TextView TVlocation;
     @BindView(R.id.TVEmail)
     TextView TVEmail;
     @BindView(R.id.TVMobile)
     TextView TVMobile;
-    @BindView(R.id.TVamount)
-    TextView TVamount;
-    @BindView(R.id.RBpending)
-    RadioButton RBpending;
-    @BindView(R.id.RBcomplete)
-    RadioButton RBcomplete;
-    @BindView(R.id.ETamount)
-    EditText ETamount;
-    @BindView(R.id.ETbillId)
-    EditText ETbillId;
-    @BindView(R.id.SPreason)
-    Spinner SPreason;
     @BindView(R.id.BTNupdateStatus)
     Button BTNupdateStatus;
-    @BindView(R.id.Layreason)
-    LinearLayout Layreason;
-    @BindView(R.id.EDTreason)
-    EditText EDTreason;
     @BindView(R.id.TVSmsMobile)
     TextView TVSmsMobile;
-    @BindView(R.id.ETcurrency)
-    EditText ETcurrency;
+
+    @BindView(R.id.ETAddress1)
+    EditText ETAddress1;
+    @BindView(R.id.ETAddress2)
+    TextView ETAddress2;
 
 
     private GoogleMap googleMap;
     private String shop_id;
     Presenter mPresenter;
 
-
-    LatLng latLngCurrent;
-    private Location mLocationCurrent;
-    LatLng latLngSelected;
-    private Location mLocationSelected;
+    private Location mLocationCurrent = null;
+    private Location mLocationShop = null;
 
     public static final int REQUEST_PLACE_PICKER = 666;
     private static final int REQUEST_PERMISSIONS_LOCATION = 6;
@@ -138,15 +119,24 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(UpdateShopLocationActivity.this, UpdateShopLocationActivity.this.getString(R.string.loading));
         }
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbar.setNavigationIcon(R.drawable.menu_arrow_back_24dp);
+        TVtitle.setText(R.string.shop_details);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         mPresenter = new Presenter(this, getBaseInstence());
-        mPresenter.getScheduledWorkDetails();
-        mPresenter.initSpinner();
+        mPresenter.getShopDetails();
         BTNupdateStatus.setOnClickListener(this);
         BTN_try.setOnClickListener(this);
         BTNSelectPlace.setOnClickListener(this);
-        RBcomplete.setChecked(true);
-        RBpending.setEnabled(false);
     }
 
 
@@ -198,47 +188,33 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
 
 
     @Override
-    public int getAmount() {
-        if (ETamount.getText().toString().equalsIgnoreCase("")) {
-            return 0;
-        } else {
-            return Integer.parseInt(ETamount.getText().toString());
+    public void setData(ShopDetail mPojo) {
+        TVtitle.setText(mPojo.getResult().get(0).getName());
+        TVSmsMobile.setText(mPojo.getResult().get(0).getSmsNo());
+        TVMobile.setText(mPojo.getResult().get(0).getTelephoneNumber());
+        TVEmail.setText(mPojo.getResult().get(0).getEmail());
+        TVid.setText(mPojo.getResult().get(0).getCustomerId());
+        ETAddress1.setText(mPojo.getResult().get(0).getAddress1());
+        ETAddress2.setText(mPojo.getResult().get(0).getAddress2());
+    }
+
+    @Override
+    public String getAddress1() {
+        return ETAddress1.getText().toString();
+    }
+
+    @Override
+    public String getAddress2() {
+        return ETAddress2.getText().toString();
+    }
+
+    @Override
+    public Location getShopLocation() {
+        Location mLocation = new Location("");
+        if (mLocationShop != null) {
+            return mLocationShop;
         }
-    }
-
-    @Override
-    public TextView getIdTextView() {
-        return TVid;
-    }
-
-    @Override
-    public TextView getLocationTextView() {
-        return TVlocation;
-    }
-
-    @Override
-    public TextView getDateTextView() {
-        return TVdate;
-    }
-
-    @Override
-    public TextView getEmailTextView() {
-        return TVEmail;
-    }
-
-    @Override
-    public TextView getPhoneTextView() {
-        return TVMobile;
-    }
-
-    @Override
-    public String getBillId() {
-        return ETbillId.getText().toString().trim();
-    }
-
-    @Override
-    public String getReason() {
-        return "";
+        return mLocation;
     }
 
     @Override
@@ -250,11 +226,6 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     @Override
     public String getUserId() {
         return getSharedPreferenceHelper().getString(getString(R.string.user_id), null);
-    }
-
-    @Override
-    public EditText getCurrencyEditText() {
-        return ETcurrency;
     }
 
     @Override
@@ -273,69 +244,45 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     }
 
     @Override
-    public void setCurrentLocation(Location mLocation) {
+    public void setCurrentLocationFromLocationService(Location mLocation) {
         mLocationCurrent = mLocation;
-        setGoogleMapMarker(mLocationCurrent, true);
+        setGoogleMapMarker(mLocationCurrent, mLocationShop);
     }
 
-    private void setGoogleMapMarker(final Location location, final boolean isCurrentLocation) {
+
+    private void setGoogleMapMarker(final Location mLocationCurrent, final Location mLocationShop) {
         MVmap.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
+                mMap.clear();
                 // For zooming automatically to the location of the marker
-                mPresenter.setLocationOfShop();
 
-                if (isCurrentLocation) {
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                if (mLocationCurrent != null) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(mLocationCurrent.getLatitude(), mLocationCurrent.getLongitude()))
                             .icon(
                                     getBitmapFromVectorDrawable(
                                             UpdateShopLocationActivity.this, R.drawable.current_location_24dp)));
-                } else {
+                }
 
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                if (mLocationShop != null) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(mLocationShop.getLatitude(), mLocationShop.getLongitude()))
                             .icon(
                                     getBitmapFromVectorDrawable(
                                             UpdateShopLocationActivity.this, R.drawable.shop_24dp)));
                 }
 
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
-    }
-
-    private void setGoogleMapMarker(final LatLng location, final boolean isCurrentLocation) {
-        MVmap.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-                // For zooming automatically to the location of the marker
-                mPresenter.setLocationOfShop();
-
-                if (isCurrentLocation) {
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(location.latitude, location.longitude))
-                            .icon(
-                                    getBitmapFromVectorDrawable(
-                                            UpdateShopLocationActivity.this, R.drawable.current_location_24dp)));
-                } else {
-
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(location.latitude, location.longitude))
-                            .icon(
-                                    getBitmapFromVectorDrawable(
-                                            UpdateShopLocationActivity.this, R.drawable.shop_24dp)));
+                if (mLocationShop != null) {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(mLocationShop.getLatitude(), mLocationShop.getLongitude())).zoom(12).build();
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                } else if (mLocationCurrent != null) {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(mLocationCurrent.getLatitude(), mLocationCurrent.getLongitude())).zoom(12).build();
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
-
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(location.latitude, location.longitude)).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
     }
@@ -357,36 +304,19 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
-    private void setGoogleMapMarker(final LatLng location) {
-        MVmap.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-                // For zooming automatically to the location of the marker
-                mPresenter.setLocationOfShop();
-                googleMap.addMarker(new MarkerOptions().position(
-                        new LatLng(24.2282003, 55.7466362)));
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(location.latitude, location.longitude)).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
+    @Override
+    public void setMarkerFromPlacePicker(Location mLocation) {
+
     }
 
     @Override
-    public void setPlacePickerLocation(Location mLocation) {
-        this.mLocationSelected = mLocation;
-        setGoogleMapMarker(mLocationSelected, false);
+    public void setMarkerForCurrentLocation(Location mLocation) {
+
     }
 
     @Override
-    public void setCurrentLocation(LatLng mLocation) {
-        latLngCurrent = mLocation;
-    }
-
-    @Override
-    public LatLng getCurrentLatLng() {
-        return latLngSelected;
+    public void setMarkerFromDb(Location mLocation) {
+        setGoogleMapMarker(mLocationCurrent,mLocation);
     }
 
     @Override
@@ -394,40 +324,15 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         return mLocationCurrent;
     }
 
-    @Override
-    public void setPlacePickerLocation(LatLng mLocation) {
-        latLngSelected = mLocation;
-        setGoogleMapMarker(latLngSelected, false);
-    }
-
-    @Override
-    public TextView getSmsPhoneTextView() {
-        return TVSmsMobile;
-    }
-
-    @Override
-    public EditText getReasonEditText() {
-        return EDTreason;
-    }
-
-    @Override
-    public LinearLayout getReasonLinearLay() {
-        return Layreason;
-    }
 
     private void setShopLocation(Location mLocationSelected) {
-        this.mLocationSelected = mLocationSelected;
-        setGoogleMapMarker(mLocationCurrent, false);
+        mLocationShop = mLocationSelected;
+        setGoogleMapMarker(mLocationCurrent,mLocationSelected);
     }
 
     @Override
     public void returnToHome() {
-        UpdateShopLocationActivity.this.onBackPressed();
-    }
-
-    @Override
-    public Spinner getReasonSpinner() {
-        return SPreason;
+        finish();
     }
 
     @Override
@@ -466,19 +371,21 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PLACE_PICKER) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(UpdateShopLocationActivity.this, data);
                 String toastMsg = String.format("Place: %s", place.getName());
+                Log.v("location", toastMsg);
                 showSnackBar(toastMsg);
-                mLocationSelected = new Location("dummyprovider");
-                mLocationSelected.setLongitude(place.getLatLng().longitude);
-                mLocationSelected.setLatitude(place.getLatLng().latitude);
-                setShopLocation(mLocationSelected);
+                mLocationShop = new Location("dummyprovider");
+                mLocationShop.setLongitude(place.getLatLng().longitude);
+                mLocationShop.setLatitude(place.getLatLng().latitude);
 
-//                TVlocation.setText(place.getName());
-                TVlocation.setText(place.getAddress());
+                if(ETAddress1.getText().toString().equalsIgnoreCase("")){
+                    ETAddress1.setText(toastMsg);
+                }
+
+                setShopLocation(mLocationShop);
             }
         }
     }
@@ -495,26 +402,9 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
                 mPresenter.postData();
                 break;
             case R.id.BTNSelectPlace:
-                mPresenter.selectLocationPlacePicker();
+                mPresenter.selectPlace();
                 break;
             case R.id.BTNnavigate:
-                Uri gmmIntentUri = null;
-                String google_nav = "google.navigation:q=";
-
-                if (latLngCurrent != null && latLngSelected != null) {
-                    gmmIntentUri = Uri.parse(google_nav +
-                            +latLngSelected.latitude + "," + latLngSelected.longitude);
-                } else if (mLocationCurrent != null && mLocationSelected != null) {
-                    gmmIntentUri = Uri.parse(google_nav
-                            + mLocationSelected.getLatitude() + "," + mLocationSelected.getLongitude());
-                }
-
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-
-                if (mapIntent.resolveActivity(UpdateShopLocationActivity.this.getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }
 
                 break;
         }

@@ -43,13 +43,17 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
+            String temp = "?";
             ((ViewHolder) holder).TVname.setText(list.get(position).getName());
             ((ViewHolder) holder).TVid.setText(list.get(position).getCustomerId());
             ((ViewHolder) holder).TVlocation.setText(list.get(position).getAddress());
-
-            if(list.get(position).getIsLatLong().equalsIgnoreCase("1")){
+            if (list.get(position).getName() != null && !list.get(position).getName().equalsIgnoreCase("")) {
+                temp = list.get(position).getName().charAt(0) + "";
+            }
+            ((ViewHolder) holder).TVfirstLetter.setText(temp);
+            if (list.get(position).getIsLatLong().equalsIgnoreCase("1")) {
                 ((ViewHolder) holder).IMGupdateStatus.setVisibility(View.GONE);
-            }else {
+            } else {
                 ((ViewHolder) holder).IMGupdateStatus.setVisibility(View.VISIBLE);
             }
         }
@@ -61,7 +65,7 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView TVname, TVid, TVlocation;
+        TextView TVname, TVid, TVlocation, TVfirstLetter;
         ImageView IMGupdateStatus;
         View mView;
 
@@ -70,9 +74,11 @@ class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             TVname = (TextView) inflate.findViewById(R.id.TVname);
             TVid = (TextView) inflate.findViewById(R.id.TVid);
             TVlocation = (TextView) inflate.findViewById(R.id.TVlocation);
+            TVfirstLetter = (TextView) inflate.findViewById(R.id.TVfirstLetter);
             IMGupdateStatus = (ImageView) inflate.findViewById(R.id.IMGupdateStatus);
             this.mView = inflate;
             IMGupdateStatus.setOnClickListener(this);
+            mView.setOnClickListener(this);
         }
 
         @Override

@@ -89,5 +89,7 @@
     <string name="reason_2">Reason 2</string>
     <string name="reason_3">Reason 3</string>
     <string name="shops">SHOPS</string>
+    <string name="shop_details">shop details</string>
+    <string name="do_you_update_customer_location">Do you want to update customer location.</string>
 
 </resources>

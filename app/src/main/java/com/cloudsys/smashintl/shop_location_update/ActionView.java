@@ -22,60 +22,37 @@ public interface ActionView extends AppBaseActionView {
 
     RelativeLayout getParentView();
 
-    TextView getIdTextView();
-
-    TextView getLocationTextView();
-
-    TextView getDateTextView();
-
-    TextView getEmailTextView();
-
-    TextView getPhoneTextView();
-
-    int getAmount();
-
     String getToken();
-
-    String getBillId();
-
-    String getReason();
 
     String getCustomerId();
 
     String getUserId();
 
-
     GoogleMap getMap();
 
     void returnToHome();
 
-    Spinner getReasonSpinner();
-
     void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker);
 
-    void setCurrentLocation(Location mLocation);
+    void setCurrentLocationFromLocationService(Location mLocation);
 
-    void setPlacePickerLocation(Location mLocation);
+    void setMarkerFromPlacePicker(Location mLocation);
 
-    void setCurrentLocation(LatLng mLocation);
+    void setMarkerForCurrentLocation(Location mLocation);
 
-    LatLng getCurrentLatLng();
+    void setMarkerFromDb(Location mLocation);
 
     Location getCurrentLocation();
-
-
-    void setPlacePickerLocation(LatLng mLocation);
-
-    TextView getSmsPhoneTextView();
-
-    EditText getReasonEditText();
-
-    LinearLayout getReasonLinearLay();
-
-    EditText getCurrencyEditText();
 
     ShopDetail getPojo();
 
     void setPojo(ShopDetail mPojo);
 
+    void setData(ShopDetail mPojo);
+
+    String getAddress1();
+
+    String getAddress2();
+
+    Location getShopLocation();
 }

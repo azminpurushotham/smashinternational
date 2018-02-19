@@ -11,16 +11,10 @@ import com.cloudsys.smashintl.base.AppBaseAction;
 
 public interface UserActions extends AppBaseAction{
 
-    void getScheduledWorkDetails();
+    void getShopDetails();
 
     void postData();
 
-    void initSpinner();
-
-    void selectLocationPlacePicker();
-
-    void setLocation(Location location);
-
-    void setLocationOfShop();
+    void selectPlace();
 
 }

@@ -99,7 +99,7 @@ public interface APIs {
 
     @GET("api/smash/api/shop/shop_list/{user_id}/{token}")
     Call<JsonObject> getShopList(@Path("user_id") String user_id,
-                                             @Path("token") String token);
+                                 @Path("token") String token);
 
 
     @GET("/api/smash/api/work/complete_list/{user_id}/{token}")
@@ -162,4 +162,13 @@ public interface APIs {
                                       @Query("pending_amount") String pending_amount,
                                       @Query("reason") String reason,
                                       @Query("bill_id") String bill_id);
+
+    @POST("api/smash/api/customer/customer_location/")
+    Call<JsonObject> updateShopLocation(@Query("user_id") String user_id,
+                                      @Query("token") String token,
+                                      @Query("customer_id") String customer_id,
+                                      @Query("address1") String address1,
+                                      @Query("address2") String address2,
+                                      @Query("latitude") String latitude,
+                                      @Query("longitude") String longitude);
 }

@@ -31,7 +31,6 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -68,30 +67,12 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void setServices(JSONObject mJsonObject) {
         mView.removeWait();
         mPojo = new Gson().fromJson(mJsonObject.toString(), ShopDetail.class);
-        mView.getIdTextView().setText(mPojo.getResult().get(0).getCustomerId());
-        mView.getLocationTextView().setText(mPojo.getResult().get(0).getAddress1());
-        mView.getEmailTextView().setText(mPojo.getResult().get(0).getEmail());
-        mView.getPhoneTextView().setText(mPojo.getResult().get(0).getTelephoneNumber());
-        mView.getSmsPhoneTextView().setText(mPojo.getResult().get(0).getSmsNo());
-
-        mView.setPlacePickerLocation(new LatLng(
-                Double.parseDouble(mPojo.getResult().get(0).getLat()),
-                Double.parseDouble(mPojo.getResult().get(0).getLon())));
-
+        mView.setData(mPojo);
         Location mLocation = new Location("");
         mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
         mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
-
-        mView.setPlacePickerLocation(mLocation);
-
-//        if (mPojo.getResult().get(0).getWorkstatus().equals("pending")) {
-//            mView.getPendingStatus().setChecked(true);
-//        } else {
-//            mView.getCompleteStatus().setChecked(true);
-//        }
-
+        mView.setMarkerFromDb(mLocation);
         mView.setPojo(mPojo);
-
     }
 
     @Override
@@ -106,7 +87,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void getScheduledWorkDetails() {
+    public void getShopDetails() {
         mView.showWait(R.string.loading);
         if (Utilities.isInternet(mView.getViewContext())) {
             mServiceCall.getJson(
@@ -122,77 +103,23 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void postData() {
         Utilities.hideKeyboard((Activity) getViewContext());
-
         if (Utilities.isInternet(getViewContext())) {
-            scheduleWorkPojo data = new scheduleWorkPojo();
-            data.setUserId(getSharedPreference().getString(mView.getViewContext().getString(R.string.user_id), null));
-            data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
-//                if (mView.getCompleteStatus().isChecked()) {
-//                    data.setStatus("pending");
-//                } else {
-//                    data.setStatus("completed");
-//                }
-            data.setStatus(mView.getStringRes(R.string.completed_));
 
-            data.setBranch_id(mPojo.getResult().get(0).getId());
-            data.setEmail(mPojo.getResult().get(0).getEmail());
-            data.setSms_no(mPojo.getResult().get(0).getSmsNo());
-            data.setBranch_name(mPojo.getResult().get(0).getName());
-            data.setAddress1(mPojo.getResult().get(0).getAddress1());
-            data.setAddress2(mPojo.getResult().get(0).getAddress2());
-            data.setTelephone_no(mPojo.getResult().get(0).getTelephoneNumber());
-            data.setCollection_amount(mView.getAmount() + "");
-            data.setReason(mView.getReason());
-            data.setBill_id(mView.getBillId());
-            mView.showWait(R.string.loading);
-            if (isAgentInRange()) {
-                mServiceCall.postUpdateWorkStatus(data);
-            } else {
-                mView.removeWait(R.string.not_on_the_premises);
-                mView.showSnackBar(R.string.not_on_the_premises);
-            }
+            mServiceCall.updateShopLocation(
+                    mView.getUserId(),
+                    mView.getToken(),
+                    mView.getPojo().getResult().get(0).getId(),
+                    mView.getAddress1(),
+                    mView.getAddress2(),
+                    mView.getShopLocation().getLatitude() + "",
+                    mView.getShopLocation().getLongitude() + "");
         } else {
             mView.showInternetAlertLogic(false);
         }
     }
 
-    private boolean isAgentInRange() {
-        Location startPoint = new Location("locationA");
-        startPoint.setLatitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLat()));//9.9666543
-        startPoint.setLongitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLon())); //76.3168134
-
-        Location endPoint = new Location("locationB");
-
-        if (mView.getCurrentLocation() != null) {
-            endPoint.setLatitude(mView.getCurrentLocation().getLatitude());
-            endPoint.setLongitude(mView.getCurrentLocation().getLongitude());
-        } else if (mView.getCurrentLatLng() != null) {
-            endPoint.setLatitude(mView.getCurrentLatLng().longitude);
-            endPoint.setLongitude(mView.getCurrentLatLng().longitude);
-        }
-
-
-        Log.v("Location Range",
-                "Location START  lat " + startPoint.getLatitude() + " -- " + startPoint.getLongitude()
-                        + "\n" + " Location END lat " + endPoint.getLatitude() + " -- " + endPoint.getLongitude());
-
-        double distance = startPoint.distanceTo(endPoint);
-        if (distance > getViewActivity().getResources().getInteger(R.integer.maximum_permises)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     @Override
-    public void initSpinner() {
-        initReason();
-        customSpinnerAdapter = new CustomSpinnerAdapter(getViewContext(), R.layout.item_reason_spinner, reasons);
-        mView.getReasonSpinner().setAdapter(customSpinnerAdapter);
-    }
-
-    @Override
-    public void selectLocationPlacePicker() {
+    public void selectPlace() {
         try {
             PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
             Intent intent = intentBuilder.build(mView.getViewActivity());
@@ -208,22 +135,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                     .show();
         }
     }
-
-    @Override
-    public void setLocation(Location location) {
-
-    }
-
-    @Override
-    public void setLocationOfShop() {
-//        mView.getMap().addMarker(new MarkerOptions().position(
-//                new LatLng(Double.parseDouble(mPojo.getResult().getLat()), Double.parseDouble(mPojo.getResult().getLon()))));
-
-    }
-
-    /////////////DEFAULTS///////////////////////
-
-
     @Override
     public AppBaseActivity getViewActivity() {
         return mView.getViewActivity();
@@ -236,7 +147,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void setCurrentLocation(Location location) {
-        mView.setCurrentLocation(location);
+        mView.setCurrentLocationFromLocationService(location);
     }
 
     @Override
