@@ -9,13 +9,9 @@ import com.cloudsys.smashintl.base.AppBaseActionView;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public interface ActionView extends AppBaseActionView {
-
-
-    LinearLayout getParentView();
 
     void setErrorUserNameMissing(int message);
 

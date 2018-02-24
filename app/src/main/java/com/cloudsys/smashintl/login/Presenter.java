@@ -8,20 +8,20 @@ import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.login.async.ServiceCall;
 import com.cloudsys.smashintl.login.async.ServiceCallBack;
+import com.cloudsys.smashintl.login.model.LoginPojo;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack {
-    public static final int MY_PERMISSIONS_REQUEST_READ_SMS = 1;
     ActionView mView;
     ServiceCall mServiceCall;
     private String TAG = "LoginP";
@@ -36,7 +36,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void onLoginClick() {
         if (Utilities.isInternet(mView.getViewContext())) {
             if (isValidate()) {
-                showWait(mView.getViewContext().getString(R.string.loading));
+                mView.showWait(mView.getViewContext().getString(R.string.loading));
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
                 Log.d(TAG, "Refreshed token: " + refreshedToken);
                 if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
@@ -45,7 +45,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                             mView.getUserName(),
                             mView.getPassword(),
                             getSharedPreference().getString(mView.getStringRes(R.string.tocken), null));
-                }else {
+                } else {
                     mView.removeWait();
                     mView.showSnackBar(R.string.please_try_again);
                 }
@@ -78,7 +78,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         return mView.getPassword();
     }
 
-       @Override
+    @Override
     public void permissionGranded(String permission) {
 
     }
@@ -204,8 +204,17 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onSuccessCallBack(String message) {
-        mView.showSnackBar(message);
-        mView.loadHomePage();
+        LoginPojo mPojo = new Gson().fromJson(message, LoginPojo.class);
+        if (mPojo.getStatus()) {
+            getSharedPreferenceHelper().putString(getStringRes(R.string.user_id),
+                    mPojo.getResult().getUserId());
+            getSharedPreferenceHelper().putString(getStringRes(R.string.user_name),
+                    mPojo.getResult().getName());
+            getSharedPreferenceHelper().putString(getStringRes(R.string.user_image),
+                    mPojo.getResult().getImage());
+            mView.showSnackBar(mPojo.getMessage());
+            mView.loadHomePage();
+        }
     }
 
     @Override

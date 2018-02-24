@@ -1,25 +1,18 @@
 package com.cloudsys.smashintl.login;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.main.MainActivity;
-import com.cloudsys.smashintl.utiliti.Utilities;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,9 +37,7 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     ConstraintLayout LAYnointernet;
     @BindView(R.id.BTN_try)
     Button BTN_try;
-
     Presenter mPresenter;
-    Dialog mLoading;
 
 
     public static Intent getStartIntent(Context context) {
@@ -64,14 +55,12 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     private void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        initParentView(parent);
     }
 
     private void buscinessLogic() {
         mPresenter = new Presenter(this, getBaseInstence());
         BTNlogin.setOnClickListener(this);
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(LoginActivity.this, getString(R.string.loading));
-        }
     }
 
 
@@ -142,90 +131,15 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     }
 
     @Override
-    public LinearLayout getParentView() {
-        return parent;
-    }
-
-    @Override
     public void onBackPressed() {
         onBackPressedLogic();
     }
 
-    @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.show();
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mLoading != null) {
-            mLoading.dismiss();
-        }
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
-    }
-
-
-
-    @Override
-    public void onFinishActivity() {
-        finish();
+        removeWait();
     }
 
     @Override
@@ -246,7 +160,7 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
 
     @Override
     public OnFragmentSwitchListener getFragmentSwitch() {
-        return null;
+        return super.getFragmentSwitch();
     }
 
 
@@ -273,7 +187,5 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
                 break;
         }
     }
-
-    /////////////DEFAULT CALLBACKS///////////////////////
 
 }

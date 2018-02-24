@@ -9,7 +9,7 @@ android {
         minSdkVersion "${MIN_SDK_VERSION}"
         targetSdkVersion "${target}"
         versionCode 1
-        versionName '1.1.5'
+        versionName '1.1.6'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

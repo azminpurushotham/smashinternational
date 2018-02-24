@@ -1,6 +1,8 @@
 package com.cloudsys.smashintl.base;
 
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by AzminPurushotham on 11/15/2017 time 15 : 43.
@@ -42,5 +44,6 @@ public interface AppBaseActionView {
 
     AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch();
 
+    View getParentView();
 
 }

@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -27,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,15 +34,12 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.about_status.AboutActivity;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.collectionsviewpager.CollectionFragment;
 import com.cloudsys.smashintl.completd_work.CompletdWorkFragment;
 import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
 import com.cloudsys.smashintl.scheduledwork.ScheduledWorkFragment;
-import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
 import com.cloudsys.smashintl.shoplist.ShopListActivity;
 import com.cloudsys.smashintl.userprofile.UserProfileActivity;
-import com.cloudsys.smashintl.utiliti.Utilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,13 +49,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.cloudsys.smashintl.scheduleworkdetails.Presenter.REQUEST_PLACE_PICKER;
 import static com.cloudsys.smashintl.utiliti.Utilities.clearApplicationData;
 
+/**
+ * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
+ */
+
 public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActionView, View.OnClickListener,
         AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private static final String TAG = "MainActivity";
 
-    //// DEFAULT///////
     @BindView(R.id.mToolbar)
     Toolbar mToolbar;
     @BindView(R.id.parent)
@@ -71,9 +69,6 @@ public class MainActivity extends AppBaseActivity
     @BindView(R.id.BTN_try)
     Button BTN_try;
     Presenter mPresenter;
-    Dialog mLoading;
-    //// DEFAULT///////
-
 
     private Dialog dialougeLogout;
     boolean doubleBackToExitPressedOnce = false;
@@ -122,18 +117,13 @@ public class MainActivity extends AppBaseActivity
         mToolbar.setNavigationIcon(R.drawable.menu_arrow_back_24dp);
         mToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.menu_icon));
 
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(this, getString(R.string.loading));
-        }
-
         View headerLayout = nav_view.getHeaderView(0);
         TVname = (TextView) headerLayout.findViewById(R.id.TVname);
         IMGuser = (CircleImageView) headerLayout.findViewById(R.id.IMGuser);
         BTNeditUser = (Button) headerLayout.findViewById(R.id.BTNeditUser);
-
         TVname.setText(getSharedPreferenceHelper().getString(getString(R.string.user_name), ""));
 
-        Log.v("image", getSharedPreferenceHelper().getString(getString(R.string.user_image), "image"));
+        Log.v(TAG, "image " + getSharedPreferenceHelper().getString(getString(R.string.user_image), "image"));
 
         Glide.with(MainActivity.this)
                 .load(getSharedPreferenceHelper().getString(getString(R.string.user_image), ""))
@@ -174,6 +164,7 @@ public class MainActivity extends AppBaseActivity
     private void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initParentView(parent);
     }
 
 
@@ -412,63 +403,6 @@ public class MainActivity extends AppBaseActivity
     }
 
     @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
     public String getStringRes(int string_id) {
         return getString(string_id);
     }
@@ -527,12 +461,6 @@ public class MainActivity extends AppBaseActivity
     @Override
     public OnFragmentSwitchListener getFragmentSwitch() {
         return getFragmenntSwitchListner();
-    }
-
-
-    @Override
-    public void onFinishActivity() {
-        finish();
     }
 
 

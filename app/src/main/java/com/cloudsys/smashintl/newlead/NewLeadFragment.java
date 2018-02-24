@@ -115,6 +115,7 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     private View initView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_new_lead, container, false);
         ButterKnife.bind(this, mView);
+        initParentView(parent);
 
         MVmap.onCreate(savedInstanceState);
         MVmap.onResume(); // needed to get the map to display immediately
@@ -313,7 +314,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
 
     @Override
     public void returnToHome() {
-//        getChildFragmentManager().popBackStack();
         getActivity().onBackPressed();
     }
 
