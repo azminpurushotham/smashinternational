@@ -13,9 +13,6 @@ import com.cloudsys.smashintl.base.AppBaseActionView;
  */
 
 public interface ActionView extends AppBaseActionView {
-
-    RelativeLayout getParentView();
-
     RecyclerView getRecyclerView();
 
     LinearLayoutManager getLinearLayoutManager();

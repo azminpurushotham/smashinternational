@@ -135,6 +135,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     private View initView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceSate) {
         View mView = inflater.inflate(R.layout.fragment_schedule_work_detail, container, false);
         ButterKnife.bind(this, mView);
+        initParentView(parent);
 
         id = getArguments().getString("id");
         MVmap.onCreate(savedInstanceSate);
@@ -604,39 +605,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
     public Context getViewContext() {
         return getActivity();
     }
@@ -649,21 +617,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public AppBaseFragment getViewFragment() {
         return ScheduleWorkDetailFragment.this;
-    }
-
-    @Override
-    public AppBaseFragment getBaseFragment() {
-        return this;
-    }
-
-    @Override
-    public AppBaseActivity getBaseActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
     }
 
     @Override
@@ -684,42 +637,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
         return null;
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-
-    }
-
-    @Override
-    public void onFinishActivity() {
-        getActivity().finish();
-    }
-
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
     }
 
 }

@@ -12,9 +12,8 @@ import java.util.List;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 45.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
-public interface ServiceCallBack extends AppBaseServiceCallBack{
+public interface ServiceCallBack extends AppBaseServiceCallBack {
     void onSuccessLogout(JSONObject mJsonObject);
 }

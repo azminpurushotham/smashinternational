@@ -34,13 +34,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                 try {
                     LoginPojo mPojo = new Gson().fromJson(response.body().toString(), LoginPojo.class);
                     if (mPojo.getStatus()) {
-                        mServiceCallBack.getSharedPreferenceHelper().putString(mServiceCallBack.getStringRes(R.string.user_id),
-                                mPojo.getResult().getUserId());
-                        mServiceCallBack.getSharedPreferenceHelper().putString(mServiceCallBack.getStringRes(R.string.user_name),
-                                mPojo.getResult().getName());
-                        mServiceCallBack.getSharedPreferenceHelper().putString(mServiceCallBack.getStringRes(R.string.user_image),
-                                mPojo.getResult().getImage());
-                        mServiceCallBack.onSuccessCallBack();
+                        mServiceCallBack.onSuccessCallBack(response.body().toString());
                     } else {
                         mServiceCallBack.userNamePasswordinCorrect(R.string.username_or_password_incorrect);
                     }

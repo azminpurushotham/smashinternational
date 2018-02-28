@@ -18,7 +18,6 @@ import retrofit2.Response;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 35.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public class ServiceCall extends AppBaseServiceCall implements ServiceAction {

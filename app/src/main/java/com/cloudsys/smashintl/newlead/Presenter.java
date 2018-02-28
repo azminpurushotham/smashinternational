@@ -147,7 +147,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.removeWait();
     }
 
-
     @Override
     public AppBaseActivity getViewActivity() {
         return mView.getViewActivity();

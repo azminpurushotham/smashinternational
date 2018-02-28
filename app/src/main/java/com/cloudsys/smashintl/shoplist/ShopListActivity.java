@@ -42,7 +42,6 @@ public class ShopListActivity extends AppBaseActivity implements ActionView, Vie
     @BindView(R.id.BTN_try)
     Button BTN_try;
     Presenter mPresenter;
-    Dialog mLoading;
     @BindView(R.id.LAYnodata)
     LinearLayout LAYnodatal;
     @BindView(R.id.mToolbar)
@@ -65,6 +64,7 @@ public class ShopListActivity extends AppBaseActivity implements ActionView, Vie
     private void init() {
         setContentView(R.layout.activity_shoplist);
         ButterKnife.bind(this);
+        initParentView(parent);
     }
 
 
@@ -83,9 +83,6 @@ public class ShopListActivity extends AppBaseActivity implements ActionView, Vie
         });
 
         mPresenter = new Presenter(this, getBaseInstence());
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(ShopListActivity.this, ShopListActivity.this.getString(R.string.loading));
-        }
         mPresenter.initRecyclerView();
         mPresenter.getShopList();
         BTN_try.setOnClickListener(this);
@@ -107,72 +104,13 @@ public class ShopListActivity extends AppBaseActivity implements ActionView, Vie
         mPresenter.searchItems(query);
     }
 
-
     public AppBaseActivity getBaseInstence() {
         return ShopListActivity.this;
     }
 
     @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
     public Context getViewContext() {
         return ShopListActivity.this;
-    }
-
-    @Override
-    public AppBaseActivity getViewActivity() {
-        return (AppBaseActivity) ShopListActivity.this;
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return null;
-    }
-
-    @Override
-    public AppBaseFragment getBaseFragment() {
-        return null;
-    }
-
-    @Override
-    public AppBaseActivity getBaseActivity() {
-        return (AppBaseActivity) ShopListActivity.this;
-    }
-
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
     }
 
     @Override
@@ -193,42 +131,6 @@ public class ShopListActivity extends AppBaseActivity implements ActionView, Vie
     @Override
     public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
         return null;
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-
-    }
-
-    @Override
-    public void onFinishActivity() {
-        ShopListActivity.this.finish();
-    }
-
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
     }
 
     @Override

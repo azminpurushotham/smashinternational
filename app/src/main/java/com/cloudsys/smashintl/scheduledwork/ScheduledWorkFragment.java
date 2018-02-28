@@ -34,7 +34,6 @@ import butterknife.ButterKnife;
 public class ScheduledWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener ,MainActivity.SearchQueryScheduledWork{
 
     private static final String TAG = "PendingWorkFragment";
-    //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;
     @Nullable
@@ -46,7 +45,6 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     Dialog mLoading;
     @BindView(R.id.LAYnodata)
     LinearLayout LAYnodatal;
-    //// DEFAULT///////
 
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
@@ -66,6 +64,7 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     private View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
         View mView = inflater.inflate(R.layout.fragment_scheduledwork, container, false);
         ButterKnife.bind(this, mView);
+        initParentView(parent);
         return mView;
     }
 

@@ -1,7 +1,6 @@
 package com.cloudsys.smashintl.shop_location_update;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,9 +25,7 @@ import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
-import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.shop_location_update.model.ShopDetail;
-import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -58,7 +54,6 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     Button BTN_try;
     @BindView(R.id.BTNSelectPlace)
     Button BTNSelectPlace;
-    Dialog mLoading;
     @BindView(R.id.LAYnodata)
     LinearLayout LAYnodata;
     @BindView(R.id.mToolbar)
@@ -104,6 +99,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
         ButterKnife.bind(this);
+        initParentView(parent);
         shop_id = getIntent().getStringExtra("shop_id");
         MVmap.onCreate(savedInstanceState);
         MVmap.onResume(); // needed to get the map to display immediately
@@ -118,9 +114,6 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
 
 
     private void buscinessLogic() {
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(UpdateShopLocationActivity.this, UpdateShopLocationActivity.this.getString(R.string.loading));
-        }
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -423,39 +416,6 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     }
 
     @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
     public Context getViewContext() {
         return UpdateShopLocationActivity.this;
     }
@@ -466,26 +426,11 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     }
 
     @Override
-    public AppBaseFragment getViewFragment() {
-        return null;
-    }
-
-    @Override
-    public AppBaseFragment getBaseFragment() {
-        return null;
-    }
-
-    @Override
     public AppBaseActivity getBaseActivity() {
         return UpdateShopLocationActivity.this;
     }
 
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
-    }
-
-    @Override
+  @Override
     public void showInternetAlertLogic(boolean isInternet) {
         if (isInternet == false) {
             LAYnointernet.setVisibility(View.VISIBLE);
@@ -505,40 +450,5 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         return null;
     }
 
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-
-    }
-
-    @Override
-    public void onFinishActivity() {
-        UpdateShopLocationActivity.this.finish();
-    }
-
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
-    }
 
 }

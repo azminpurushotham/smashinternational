@@ -19,9 +19,6 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public interface ActionView extends AppBaseActionView {
-
-    RelativeLayout getParentView();
-
     TextView getIdTextView();
 
     TextView getLocationTextView();

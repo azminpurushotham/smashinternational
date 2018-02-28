@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack {

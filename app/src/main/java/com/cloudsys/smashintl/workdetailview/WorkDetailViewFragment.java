@@ -64,7 +64,6 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
     Button BTN_try;
     @BindView(R.id.BTNSelectPlace)
     Button BTNSelectPlace;
-    Dialog mLoading;
     @BindView(R.id.LAYnodata)
     LinearLayout LAYnodata;
 
@@ -135,10 +134,11 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
     private View initView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceSate) {
         View mView = inflater.inflate(R.layout.fragment_schedule_work_detail, container, false);
         ButterKnife.bind(this, mView);
+        initParentView(parent);
 
         id = getArguments().getString("id");
         MVmap.onCreate(savedInstanceSate);
-        MVmap.onResume(); // needed to get the map to display immediately
+        MVmap.onResume();
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -156,10 +156,6 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
     }
 
     private void buscinessLogic() {
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
-        }
-
         ETamount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -570,44 +566,8 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
         }
     }
 
-    /////////////*******************
-
-
     public AppBaseFragment getBaseInstence() {
         return WorkDetailViewFragment.this;
-    }
-
-    @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
     }
 
     @Override
@@ -623,21 +583,6 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
     @Override
     public AppBaseFragment getViewFragment() {
         return WorkDetailViewFragment.this;
-    }
-
-    @Override
-    public AppBaseFragment getBaseFragment() {
-        return this;
-    }
-
-    @Override
-    public AppBaseActivity getBaseActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
     }
 
     @Override

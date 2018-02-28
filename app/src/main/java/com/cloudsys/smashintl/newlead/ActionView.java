@@ -16,9 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
  */
 
-public interface ActionView  extends AppBaseActionView {
-    RelativeLayout getParentView();
-
+public interface ActionView extends AppBaseActionView {
     String getToken();
 
     void setCurrentLocation(Location mLocation);
