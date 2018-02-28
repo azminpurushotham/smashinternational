@@ -20,5 +20,4 @@ public interface UserActions extends AppBaseAction{
     void selectLocationPlacePicker();
 
     void setLocation(Location location);
-
 }

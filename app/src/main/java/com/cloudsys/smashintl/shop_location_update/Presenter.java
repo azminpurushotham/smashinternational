@@ -68,10 +68,12 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.removeWait();
         mPojo = new Gson().fromJson(mJsonObject.toString(), ShopDetail.class);
         mView.setData(mPojo);
-        Location mLocation = new Location("");
-        mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
-        mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
-        mView.setMarkerFromDb(mLocation);
+        if (mPojo.getResult().get(0).getLat()!=null && Integer.parseInt(mPojo.getResult().get(0).getLat())>0) {
+            Location mLocation = new Location("");
+            mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
+            mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
+            mView.setMarkerFromDb(mLocation);
+        }
         mView.setPojo(mPojo);
     }
 
@@ -103,6 +105,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     @Override
     public void postData() {
         Utilities.hideKeyboard((Activity) getViewContext());
+        mView.showWait(R.string.update_customer_location);
         if (Utilities.isInternet(getViewContext())) {
 
             mServiceCall.updateShopLocation(
@@ -216,16 +219,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void removeWaiteLocation() {
         mView.removeWait();
     }
-
-    public void initReason() {
-        reasons.add(mView.getStringRes(R.string.reason_title));
-        reasons.add(mView.getStringRes(R.string.reason_1));
-        reasons.add(mView.getStringRes(R.string.reason_2));
-        reasons.add(mView.getStringRes(R.string.reason_3));
-    }
-
-
-    //////////********************
 
 
     @Override

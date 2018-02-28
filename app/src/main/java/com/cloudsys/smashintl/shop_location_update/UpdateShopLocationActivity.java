@@ -83,6 +83,8 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     EditText ETAddress1;
     @BindView(R.id.ETAddress2)
     TextView ETAddress2;
+    @BindView(R.id.TVname)
+    TextView TVname;
 
 
     private GoogleMap googleMap;
@@ -190,6 +192,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     @Override
     public void setData(ShopDetail mPojo) {
         TVtitle.setText(mPojo.getResult().get(0).getName());
+        TVname.setText(mPojo.getResult().get(0).getName());
         TVSmsMobile.setText(mPojo.getResult().get(0).getSmsNo());
         TVMobile.setText(mPojo.getResult().get(0).getTelephoneNumber());
         TVEmail.setText(mPojo.getResult().get(0).getEmail());
@@ -213,6 +216,8 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         Location mLocation = new Location("");
         if (mLocationShop != null) {
             return mLocationShop;
+        }else if(mLocationCurrent!=null){
+            return mLocationCurrent;
         }
         return mLocation;
     }
