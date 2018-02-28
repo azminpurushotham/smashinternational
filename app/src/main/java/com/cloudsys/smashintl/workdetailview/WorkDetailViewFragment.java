@@ -576,16 +576,6 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
     }
 
     @Override
-    public AppBaseActivity getViewActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return WorkDetailViewFragment.this;
-    }
-
-    @Override
     public void showInternetAlertLogic(boolean isInternet) {
         if (isInternet == false) {
             LAYnointernet.setVisibility(View.VISIBLE);
@@ -605,40 +595,4 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
         return null;
     }
 
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
     }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-
-    }
-
-    @Override
-    public void onFinishActivity() {
-        getActivity().finish();
-    }
-
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
-    }
-
-}
