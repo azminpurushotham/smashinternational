@@ -89,7 +89,6 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
 
 
     Presenter mPresenter;
-    Dialog mLoading;
     String selectedImage = "";
 
 
@@ -128,9 +127,6 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
         mPresenter = new Presenter(this, getBaseInstence());
         BTNsubmit.setOnClickListener(this);
         BTNadd.setOnClickListener(this);
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(UserProfileActivity.this, getString(R.string.loading));
-        }
         mPresenter.setData();
         CHKchangePassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -271,80 +267,11 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
         onBackPressedLogic();
     }
 
-    @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.show();
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mLoading != null) {
-            mLoading.dismiss();
-        }
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
-    }
-
-
-    @Override
-    public void onFinishActivity() {
-        finish();
+        removeWait();
     }
 
     @Override

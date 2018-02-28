@@ -3,7 +3,6 @@ package com.cloudsys.smashintl.pending_work;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;

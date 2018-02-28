@@ -22,5 +22,4 @@ public interface UserActions extends AppBaseAction{
     void setLocation(Location location);
 
     void setLocationOfShop();
-
 }

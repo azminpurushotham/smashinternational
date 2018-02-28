@@ -21,8 +21,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
-
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
  */

@@ -43,7 +43,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     ShopListPojo mPojo = new ShopListPojo();
     List<Result> list = new ArrayList<Result>();
     Result mResult = new Result();
-
     private Dialog mDialog;
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {

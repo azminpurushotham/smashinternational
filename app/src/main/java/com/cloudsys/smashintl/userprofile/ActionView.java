@@ -1,20 +1,14 @@
 package com.cloudsys.smashintl.userprofile;
 
-import android.widget.RelativeLayout;
-
 import com.cloudsys.smashintl.base.AppBaseActionView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 55.
- * Mfluid Mobile Apps Pvt Ltd
  */
 
 public interface ActionView extends AppBaseActionView {
-
-
-    RelativeLayout getParentView();
 
     void setErrorOldPasswordMissing(int message);
 
