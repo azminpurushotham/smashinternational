@@ -1,11 +1,8 @@
 
 package com.cloudsys.smashintl.completd_work.model;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
 import javax.annotation.Generated;
+import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
@@ -16,7 +13,7 @@ public class CompletedWorkPojo {
     @SerializedName("message")
     private String mMessage;
     @SerializedName("result")
-    private List<Result> mResult;
+    private Result mResult;
     @SerializedName("status")
     private Boolean mStatus;
 
@@ -36,11 +33,11 @@ public class CompletedWorkPojo {
         mMessage = message;
     }
 
-    public List<Result> getResult() {
+    public Result getResult() {
         return mResult;
     }
 
-    public void setResult(List<Result> result) {
+    public void setResult(Result result) {
         mResult = result;
     }
 

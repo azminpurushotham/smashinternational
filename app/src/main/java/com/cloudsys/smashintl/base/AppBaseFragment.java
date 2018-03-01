@@ -50,16 +50,15 @@ public class AppBaseFragment extends BaseFragment implements AppBaseActionView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (mLoading == null) {
+            mLoading = Utilities.showProgressBar(getActivity(), getString(R.string.loading));
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(getActivity(), getString(R.string.loading));
-        }
-        return null;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override

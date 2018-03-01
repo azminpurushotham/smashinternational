@@ -52,8 +52,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;
-    Dialog mLoading;
-
     @BindView(R.id.MVmap)
     MapView MVmap;
     @BindView(R.id.ETCustomerName)
@@ -149,10 +147,6 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     }
 
     private void buscinessLogic() {
-        if (mLoading == null) {
-            mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.please_waite));
-        }
-
         RBexisting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,6 +231,15 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     public void setPlacePickerLocation(LatLng mLocation) {
         latLngSelected = mLocation;
         setGoogleMapMarker(latLngSelected, false);
+    }
+
+    @Override
+    public boolean isExistingCustomer() {
+        if (RBexisting.isChecked()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

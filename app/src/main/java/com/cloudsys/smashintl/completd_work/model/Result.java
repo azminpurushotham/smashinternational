@@ -1,59 +1,30 @@
 
 package com.cloudsys.smashintl.completd_work.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import javax.annotation.Generated;
+import com.google.gson.annotations.SerializedName;
 
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
 public class Result {
 
-    @SerializedName("address")
-    private String mAddress;
-    @SerializedName("amount")
-    private String mAmount;
-    @SerializedName("branch_name")
-    private String mBranchName;
+    @SerializedName("completed_amount")
+    private String mCompletedAmount;
     @SerializedName("currency")
     private String mCurrency;
-    @SerializedName("customer_id")
-    private String mCustomerId;
-    @SerializedName("date")
-    private String mDate;
-    @SerializedName("id")
-    private String mId;
-    @SerializedName("lat")
-    private String mLat;
-    @SerializedName("lon")
-    private String mLon;
-    @SerializedName("name")
-    private String mName;
-    @SerializedName("status")
-    private String mStatus;
+    @SerializedName("list")
+    private java.util.List<Item> mList;
+    @SerializedName("pending_amount")
+    private Object mPendingAmount;
+    @SerializedName("total_amount")
+    private String mTotalAmount;
 
-    public String getAddress() {
-        return mAddress;
+    public String getCompletedAmount() {
+        return mCompletedAmount;
     }
 
-    public void setAddress(String address) {
-        mAddress = address;
-    }
-
-    public String getAmount() {
-        return mAmount;
-    }
-
-    public void setAmount(String amount) {
-        mAmount = amount;
-    }
-
-    public String getBranchName() {
-        return mBranchName;
-    }
-
-    public void setBranchName(String branchName) {
-        mBranchName = branchName;
+    public void setCompletedAmount(String completedAmount) {
+        mCompletedAmount = completedAmount;
     }
 
     public String getCurrency() {
@@ -64,60 +35,28 @@ public class Result {
         mCurrency = currency;
     }
 
-    public String getCustomerId() {
-        return mCustomerId;
+    public java.util.List<Item> getList() {
+        return mList;
     }
 
-    public void setCustomerId(String customerId) {
-        mCustomerId = customerId;
+    public void setList(java.util.List<Item> list) {
+        mList = list;
     }
 
-    public String getDate() {
-        return mDate;
+    public Object getPendingAmount() {
+        return mPendingAmount;
     }
 
-    public void setDate(String date) {
-        mDate = date;
+    public void setPendingAmount(Object pendingAmount) {
+        mPendingAmount = pendingAmount;
     }
 
-    public String getId() {
-        return mId;
+    public String getTotalAmount() {
+        return mTotalAmount;
     }
 
-    public void setId(String id) {
-        mId = id;
-    }
-
-    public String getLat() {
-        return mLat;
-    }
-
-    public void setLat(String lat) {
-        mLat = lat;
-    }
-
-    public String getLon() {
-        return mLon;
-    }
-
-    public void setLon(String lon) {
-        mLon = lon;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public void setName(String name) {
-        mName = name;
-    }
-
-    public String getStatus() {
-        return mStatus;
-    }
-
-    public void setStatus(String status) {
-        mStatus = status;
+    public void setTotalAmount(String totalAmount) {
+        mTotalAmount = totalAmount;
     }
 
 }

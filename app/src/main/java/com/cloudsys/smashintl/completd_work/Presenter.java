@@ -33,7 +33,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     private ListItemAdapter.OnAdapterItemClick listner;
     CompletedWorkPojo mPojo = new CompletedWorkPojo();
     AppBaseActivity.OnFragmentSwitchListener onFragmentSwitchListener;
-    List<Result> list = new ArrayList<Result>();
+    List<Item> list = new ArrayList<Item>();
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -74,7 +74,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void setData() {
-        list = mPojo.getResult();
+        list = mPojo.getResult().getList();
         adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
         mView.getRecyclerView().setAdapter(adapter);
     }
@@ -93,7 +93,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void onAdapterItemClick(Result Result, int adapterPosition) {
+    public void onAdapterItemClick(Item Result, int adapterPosition) {
         String id = Result.getId();
         CompletdWorkFragment fragment = new CompletdWorkFragment();
         Bundle bundle = new Bundle();
@@ -109,7 +109,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onCallfailerSearch(JSONObject mJsonObject) {
-        list = new ArrayList<Result>();
+        list = new ArrayList<Item>();
         adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
         mView.getRecyclerView().setAdapter(adapter);
     }
@@ -123,7 +123,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void setJson(JSONObject mJsonObject) {
-
     }
 
     @Override

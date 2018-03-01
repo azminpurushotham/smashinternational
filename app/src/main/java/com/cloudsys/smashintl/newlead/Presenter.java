@@ -167,35 +167,8 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void submitData() {
 
         Utilities.hideKeyboard((Activity) getViewContext());
-        if (mView.getCustomerName().equals("")) {
-            Utilities.hideKeyboard((Activity) getViewContext());
-            mView.showSnackBar("Customer Name cannot be blank");
-        } else if (mView.getCustomerId().equals("")) {
-            mView.showSnackBar("Customer id cannot be blank");
-        } else if (mView.getTelephoneNumber().length() == 0) {
-            mView. showSnackBar("Telephone number cannot be blank");
-        } else if (!isValidMobile(mView.getTelephoneNumber())) {
-            mView.showSnackBar("Please enter a valid phone number");
-        } else if (mView.getEmail().equals("")) {
-            mView. showSnackBar("Email cannot be blank");
-        } else if (!isValidMail(mView.getEmail())) {
-            mView.showSnackBar("Please enter a valid email");
-        } else if (mView.getSMS().equals("")) {
-            mView. showSnackBar("SMS number cannot be blank");
-        } else if (!isValidMobile(mView.getSMS())) {
-            mView.showSnackBar("Please enter a valid SMS number");
-        } else if (mView.getAddress1().equals("")) {
-            mView. showSnackBar("Address cannot be blank");
-        } else if (mView.getPendingAmount().equals("")) {
-            mView. showSnackBar("Pending amount cannot be blank");
-        } else if (mView.getBillId().equals("")) {
-            mView.showSnackBar("Bill id cannot be blank");
-        } else if (mView.getCompletedAmount().equals("")) {
-            mView. showSnackBar("Completed cannot be blank");
-        } else if (mView.getLat() == 0 || mView.getLon() == 0) {
-            mView.showSnackBar("Please select a location");
-        } else {
-            if (Utilities.isInternet(getViewContext())) {
+        if (Utilities.isInternet(getViewContext())) {
+            if (isValidate()) {
                 newlead data = new newlead();
                 data.setUserId(getSharedPreferenceHelper().getString(mView.getStringRes(R.string.user_id), null));
                 data.setToken(getSharedPreference().getString(mView.getViewContext().getString(R.string.tocken), null));
@@ -214,10 +187,61 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setLon(mView.getLon() + "");
                 data.setBill(mView.getBillId());
                 mServiceCall.postNewLead(data);
-            } else {
-                mView.showInternetAlertLogic(false);
+            }
+        } else {
+            mView.showInternetAlertLogic(false);
+        }
+    }
+
+    private boolean isValidate() {
+        if (mView.getCustomerName().equals("")) {
+            Utilities.hideKeyboard((Activity) getViewContext());
+            mView.showSnackBar("Customer Name cannot be blank");
+            return false;
+        }
+
+        if (mView.isExistingCustomer()) {
+            if (mView.getCustomerId().equals("")) {
+                mView.showSnackBar("Customer id cannot be blank");
+                return false;
             }
         }
+
+        if (mView.getTelephoneNumber().length() == 0) {
+            mView.showSnackBar("Telephone number cannot be blank");
+            return false;
+        } else if (!isValidMobile(mView.getTelephoneNumber())) {
+            mView.showSnackBar("Please enter a valid phone number");
+            return false;
+        } else if (mView.getEmail().equals("")) {
+            mView.showSnackBar("Email cannot be blank");
+            return false;
+        } else if (!isValidMail(mView.getEmail())) {
+            mView.showSnackBar("Please enter a valid email");
+            return false;
+        } else if (mView.getSMS().equals("")) {
+            mView.showSnackBar("SMS number cannot be blank");
+            return false;
+        } else if (!isValidMobile(mView.getSMS())) {
+            mView.showSnackBar("Please enter a valid SMS number");
+            return false;
+        } else if (mView.getAddress1().equals("")) {
+            mView.showSnackBar("Address cannot be blank");
+            return false;
+        } else if (mView.getPendingAmount().equals("")) {
+            mView.showSnackBar("Pending amount cannot be blank");
+            return false;
+        } else if (mView.getBillId().equals("")) {
+            mView.showSnackBar("Bill id cannot be blank");
+            return false;
+        } else if (mView.getCompletedAmount().equals("")) {
+            mView.showSnackBar("Completed cannot be blank");
+            return false;
+        } else if (mView.getLat() == 0 || mView.getLon() == 0) {
+            mView.showSnackBar("Please select a location");
+            return false;
+        }
+        return true;
     }
 
     @Override

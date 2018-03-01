@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
-import com.cloudsys.smashintl.completd_work.model.Result;
+import com.cloudsys.smashintl.completd_work.model.Item;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
 import java.util.ArrayList;
@@ -21,15 +21,15 @@ import java.util.List;
 
 class ListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private OnAdapterItemClick listner;
-    List<Result> list = new ArrayList<>();
+    List<Item> list = new ArrayList<>();
     Context mContext;
 
     public interface OnAdapterItemClick {
-        public void onAdapterItemClick(Result Result, int adapterPosition);
+        public void onAdapterItemClick(Item item, int adapterPosition);
     }
 
 
-    public ListItemAdapter(List<Result> list, Context viewContext, OnAdapterItemClick listner) {
+    public ListItemAdapter(List<Item> list, Context viewContext, OnAdapterItemClick listner) {
         this.list = list;
         this.mContext = viewContext;
         this.listner = listner;

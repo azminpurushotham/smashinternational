@@ -339,6 +339,7 @@ public class MainActivity extends AppBaseActivity
                 }, 2000);
             } else {
                 getSupportFragmentManager().popBackStack();
+                TVtitle.setText(getVisibleFragmentTag());
                 invalidateMenuWithDelay();
             }
         }

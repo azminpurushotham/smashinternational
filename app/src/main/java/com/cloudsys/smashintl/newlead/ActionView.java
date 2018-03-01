@@ -59,5 +59,5 @@ public interface ActionView extends AppBaseActionView {
 
     void setPlacePickerLocation(LatLng mLocation);
 
-
+    boolean isExistingCustomer();
 }

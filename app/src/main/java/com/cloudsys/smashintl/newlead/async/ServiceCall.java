@@ -43,6 +43,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                 data.getCollecting(),
                 data.getBill(),
                 data.getToken(),
+                data.getStatus(),
                 data.getLat(),
                 data.getLon()).enqueue(new Callback<JsonObject>() {
             @Override
