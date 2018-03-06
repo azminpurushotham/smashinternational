@@ -83,7 +83,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.getPhoneTextView().setText(mPojo.getResult().get(0).getPhoneNumber());
         mView.getSmsPhoneTextView().setText(mPojo.getResult().get(0).getPhoneNumber());
         mView.getAmountTextView().setText(mPojo.getResult().get(0).getAmount() + " " + mPojo.getResult().get(0).getCurrency());
-        mView.getCurrencyEditText().setText(mPojo.getResult().get(0).getCurrency());
 
         Location mLocation = null;
         if (mPojo.getResult().get(0).getLat() != null) {
@@ -160,6 +159,9 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setTelephone_no(mPojo.getResult().get(0).getPhoneNumber());
                 data.setCollection_amount(mView.getAmount() + "");
                 data.setReason(mView.getReason());
+                if (mView.getinvoiceEditText().getText().toString().length() != 0) {
+                    data.setInvoice(mView.getinvoiceEditText().getText().toString());
+                }
                 int temp = 0;
                 try {
                     temp = Integer.parseInt(mPojo.getResult().get(0).getAmount()) - mView.getAmount();
@@ -170,7 +172,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
                 data.setBill_id(mView.getBillId());
                 mView.showWait(R.string.loading);
-                if (isAgentInRange()) {
+                if (mPojo.getResult().get(0).getLat()==null || isAgentInRange()) {
                     mServiceCall.postUpdateWorkStatus(data);
                 } else {
                     mView.removeWait(R.string.not_on_the_premises);
@@ -184,30 +186,33 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     private boolean isAgentInRange() {
         Location startPoint = new Location("locationA");
-        startPoint.setLatitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLat()));//9.9666543
-        startPoint.setLongitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLon())); //76.3168134
+        if (mView.getPojo().getResult().get(0).getLat()!=null) {
+            startPoint.setLatitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLat()));//9.9666543
+            startPoint.setLongitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLon())); //76.3168134
 
-        Location endPoint = new Location("locationB");
+            Location endPoint = new Location("locationB");
 
-        if (mView.getCurrentLocation() != null) {
-            endPoint.setLatitude(mView.getCurrentLocation().getLatitude());
-            endPoint.setLongitude(mView.getCurrentLocation().getLongitude());
-        } else if (mView.getCurrentLatLng() != null) {
-            endPoint.setLatitude(mView.getCurrentLatLng().longitude);
-            endPoint.setLongitude(mView.getCurrentLatLng().longitude);
+            if (mView.getCurrentLocation() != null) {
+                endPoint.setLatitude(mView.getCurrentLocation().getLatitude());
+                endPoint.setLongitude(mView.getCurrentLocation().getLongitude());
+            } else if (mView.getCurrentLatLng() != null) {
+                endPoint.setLatitude(mView.getCurrentLatLng().longitude);
+                endPoint.setLongitude(mView.getCurrentLatLng().longitude);
+            }
+
+
+            Log.v("Location Range",
+                    "Location START  lat " + startPoint.getLatitude() + " -- " + startPoint.getLongitude()
+                            + "\n" + " Location END lat " + endPoint.getLatitude() + " -- " + endPoint.getLongitude());
+
+            double distance = startPoint.distanceTo(endPoint);
+            if (distance > getViewActivity().getResources().getInteger(R.integer.maximum_permises)) {
+                return false;
+            } else {
+                return true;
+            }
         }
-
-
-        Log.v("Location Range",
-                "Location START  lat " + startPoint.getLatitude() + " -- " + startPoint.getLongitude()
-                        + "\n" + " Location END lat " + endPoint.getLatitude() + " -- " + endPoint.getLongitude());
-
-        double distance = startPoint.distanceTo(endPoint);
-        if (distance > getViewActivity().getResources().getInteger(R.integer.maximum_permises)) {
-            return false;
-        } else {
-            return true;
-        }
+        return false;
     }
 
     @Override

@@ -101,8 +101,8 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
     EditText EDTreason;
     @BindView(R.id.TVSmsMobile)
     TextView TVSmsMobile;
-    @BindView(R.id.ETcurrency)
-    EditText ETcurrency;
+    @BindView(R.id.ETinvoice)
+    EditText ETinvoice;
 
 
     private GoogleMap googleMap;
@@ -310,7 +310,7 @@ public class WorkDetailViewFragment extends AppBaseFragment implements ActionVie
 
     @Override
     public EditText getCurrencyEditText() {
-        return ETcurrency;
+        return ETinvoice;
     }
 
     @Override

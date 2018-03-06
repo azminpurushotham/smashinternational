@@ -162,6 +162,7 @@ public interface APIs {
                                       @Query("collection_amount") String collection_amount,
                                       @Query("pending_amount") String pending_amount,
                                       @Query("reason") String reason,
+                                      @Query("invoice") String invoice,
                                       @Query("bill_id") String bill_id);
 
     @POST("api/smash/api/customer/customer_location/")

@@ -91,5 +91,6 @@
     <string name="shops">SHOPS</string>
     <string name="shop_details">shop details</string>
     <string name="do_you_update_customer_location">Do you want to update customer location.</string>
+    <string name="invoice">Invoice</string>
 
 </resources>

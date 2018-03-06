@@ -102,8 +102,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     EditText EDTreason;
     @BindView(R.id.TVSmsMobile)
     TextView TVSmsMobile;
-    @BindView(R.id.ETcurrency)
-    EditText ETcurrency;
+    @BindView(R.id.ETinvoice)
+    EditText ETinvoice;
 
 
     private GoogleMap googleMap;
@@ -330,8 +330,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public EditText getCurrencyEditText() {
-        return ETcurrency;
+    public EditText getinvoiceEditText() {
+        return ETinvoice;
     }
 
     @Override

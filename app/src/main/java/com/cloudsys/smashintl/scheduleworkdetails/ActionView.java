@@ -84,7 +84,7 @@ public interface ActionView extends AppBaseActionView {
 
     LinearLayout getReasonLinearLay();
 
-    EditText getCurrencyEditText();
+    EditText getinvoiceEditText();
 
     WorkDetailsPojo getPojo();
 

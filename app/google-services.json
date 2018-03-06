@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "622562252558",
+    "firebase_url": "https://smashinternational-f5789.firebaseio.com",
+    "project_id": "smashinternational-f5789",
+    "storage_bucket": "smashinternational-f5789.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622562252558:android:4f91fdf7f68bf82a",
+        "android_client_info": {
+          "package_name": "com.cloudsys.smashintl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "622562252558-ncnm01qqpvvucgmrpn2sv1r5apsgh43q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cloudsys.smashintl",
+            "certificate_hash": "8c3f0e11a0dd42360a528f3a6615d700fcad7832"
+          }
+        },
+        {
+          "client_id": "622562252558-t8m7mqu2jc4ju8comm0r4i4c5u3kuedr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBzhnNnougQVEobx2xZrO0WsSkrmO7Od8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "622562252558-t8m7mqu2jc4ju8comm0r4i4c5u3kuedr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -291,24 +291,6 @@
                                     android:paddingTop="5dp" />
 
                                 <EditText
-                                    android:id="@+id/ETcurrency"
-                                    style="@style/EdittextPrimary"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/edit_text_height"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginRight="5dp"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/shape_gray_with_stroke"
-                                    android:hint="@string/currency"
-                                    android:inputType="textCapCharacters"
-                                    android:paddingBottom="5dp"
-                                    android:paddingLeft="10dp"
-                                    android:paddingRight="10dp"
-                                    android:paddingTop="5dp"
-                                    android:textAllCaps="true" />
-
-
-                                <EditText
                                     android:id="@+id/ETbillId"
                                     style="@style/EdittextPrimary"
                                     android:layout_width="match_parent"
@@ -317,16 +299,35 @@
                                     android:background="@drawable/shape_gray_with_stroke"
                                     android:hint="@string/bill_id"
                                     android:paddingBottom="5dp"
+                                    android:layout_marginLeft="5dp"
                                     android:paddingLeft="10dp"
                                     android:paddingRight="10dp"
                                     android:paddingTop="5dp" />
                             </LinearLayout>
 
+
+                            <EditText
+                                android:id="@+id/ETinvoice"
+                                style="@style/EdittextPrimary"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edit_text_height"
+                                android:layout_weight="1"
+                                android:background="@drawable/shape_gray_with_stroke"
+                                android:hint="@string/invoice"
+                                android:inputType="numberDecimal"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_below="@+id/Lay3"
+                                android:paddingTop="5dp"
+                                android:textAllCaps="true" />
+
                             <LinearLayout
                                 android:id="@+id/Layreason"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/Lay3"
+                                android:layout_below="@+id/ETinvoice"
                                 android:layout_marginTop="10dp"
                                 android:orientation="vertical"
                                 android:visibility="visible">

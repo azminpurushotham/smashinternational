@@ -4,7 +4,16 @@ package com.cloudsys.smashintl.scheduleworkdetails.model;
  * Created by azmin on 18/1/18.
  */
 public class scheduleWorkPojo {
-    String userId, token, branch_id, email, sms_no, branch_name, address1, address2, telephone_no, pendingAmount,status, collection_amount, reason, bill_id;
+    String userId, token, branch_id, email, sms_no, branch_name, address1, address2, telephone_no, pendingAmount, status,
+            collection_amount, reason, bill_id,invoice;
+
+    public String getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(String invoice) {
+        this.invoice = invoice;
+    }
 
     public String getAddress2() {
         return address2;

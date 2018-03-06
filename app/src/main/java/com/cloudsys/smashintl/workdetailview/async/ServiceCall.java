@@ -74,6 +74,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                 data.getCollection_amount(),
                 data.getPendingAmount(),
                 data.getReason(),
+                "",
                 data.getBill_id()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
