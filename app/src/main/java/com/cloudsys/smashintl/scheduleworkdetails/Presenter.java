@@ -85,24 +85,21 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.getAmountTextView().setText(mPojo.getResult().get(0).getAmount() + " " + mPojo.getResult().get(0).getCurrency());
         mView.getCurrencyEditText().setText(mPojo.getResult().get(0).getCurrency());
 
-        mView.setPlacePickerLocation(new LatLng(
-                Double.parseDouble(mPojo.getResult().get(0).getLat()),
-                Double.parseDouble(mPojo.getResult().get(0).getLon())));
+        Location mLocation = null;
+        if (mPojo.getResult().get(0).getLat() != null) {
+            mView.setPlacePickerLocation(new LatLng(
+                    Double.parseDouble(mPojo.getResult().get(0).getLat()),
+                    Double.parseDouble(mPojo.getResult().get(0).getLon())));
 
-        Location mLocation = new Location("");
-        mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
-        mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
-
-        mView.setPlacePickerLocation(mLocation);
-
-//        if (mPojo.getResult().get(0).getWorkstatus().equals("pending")) {
-//            mView.getPendingStatus().setChecked(true);
-//        } else {
-//            mView.getCompleteStatus().setChecked(true);
-//        }
+            mLocation = new Location("");
+            mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
+            mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
+            mView.setPlacePickerLocation(mLocation);
+        } else {
+            mLocationPresenter.initLocation();
+        }
 
         mView.setPojo(mPojo);
-
         mView.getDateTextView().setText(
                 Utilities.getFormatedDate(
                         mPojo.getResult().get(0).getDate(), Utilities.REQ_FORMAT, Utilities.SERVER_DATE_FORMAT));
@@ -163,6 +160,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 data.setTelephone_no(mPojo.getResult().get(0).getPhoneNumber());
                 data.setCollection_amount(mView.getAmount() + "");
                 data.setReason(mView.getReason());
+                int temp = 0;
+                try {
+                    temp = Integer.parseInt(mPojo.getResult().get(0).getAmount()) - mView.getAmount();
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                data.setPendingAmount(temp + "");
+
                 data.setBill_id(mView.getBillId());
                 mView.showWait(R.string.loading);
                 if (isAgentInRange()) {
@@ -460,8 +465,8 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void showWait(int message) {
+        mView.showWait(message);
         mView.showSnackBar(message);
-        mView.removeWait();
     }
 
 

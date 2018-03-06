@@ -53,6 +53,7 @@ public class AppBaseFragment extends BaseFragment implements AppBaseActionView {
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getString(R.string.loading));
         }
+        Utilities.hideKeyboard(getActivity());
     }
 
     @Nullable

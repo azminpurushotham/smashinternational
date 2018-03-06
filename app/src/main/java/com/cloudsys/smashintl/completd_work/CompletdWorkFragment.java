@@ -31,8 +31,8 @@ import butterknife.ButterKnife;
  * Created by User on 11/30/2017.
  */
 
-public class CompletdWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener ,
-        MainActivity.SearchQueryCompletedWork{
+public class CompletdWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener,
+        MainActivity.SearchQueryCompletedWork {
 
     private static final String TAG = "CompletdWork";
     //// DEFAULT///////
@@ -51,6 +51,13 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
 
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.TVpendingAmount)
+    TextView TVpendingAmount;
+    @BindView(R.id.TVcompletedAmount)
+    TextView TVcompletedAmount;
+    @BindView(R.id.TVtotalAmount)
+    TextView TVtotalAmount;
+    String currency = "";
 
 
     @Override
@@ -65,7 +72,7 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
     }
 
     private View initView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        View mView = inflater.inflate(R.layout.fragment_scheduledwork, container, false);
+        View mView = inflater.inflate(R.layout.fragment_collection, container, false);
         ButterKnife.bind(this, mView);
         return mView;
     }
@@ -98,6 +105,31 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
     }
 
     @Override
+    public void setPendingAmount(String value) {
+        TVpendingAmount.setText(value +" "+currency);
+    }
+
+    @Override
+    public void setCompletedAmount(String value) {
+        TVcompletedAmount.setText(value+" "+currency);
+    }
+
+    @Override
+    public void setTotalAmount(String value) {
+        TVtotalAmount.setText(value+" "+currency);
+    }
+
+    @Override
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    @Override
+    public String getCurrency() {
+        return currency;
+    }
+
+    @Override
     public void onSearchQueryCompletedWork(String query) {
         mPresenter.searchItems(query);
     }
@@ -108,44 +140,6 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
     }
 
     @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
-    @Override
-    public Context getViewContext() {
-        return getActivity();
-    }
-
-    @Override
     public AppBaseActivity getViewActivity() {
         return (AppBaseActivity) getActivity();
     }
@@ -153,21 +147,6 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
     @Override
     public AppBaseFragment getViewFragment() {
         return CompletdWorkFragment.this;
-    }
-
-    @Override
-    public AppBaseFragment getBaseFragment() {
-        return this;
-    }
-
-    @Override
-    public AppBaseActivity getBaseActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
     }
 
     @Override
@@ -188,31 +167,6 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
     @Override
     public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
         return null;
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-
     }
 
     @Override

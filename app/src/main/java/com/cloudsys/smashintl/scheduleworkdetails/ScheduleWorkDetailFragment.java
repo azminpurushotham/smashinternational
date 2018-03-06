@@ -434,22 +434,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         return BitmapDescriptorFactory.fromBitmap(bm);
     }
 
-    private void setGoogleMapMarker(final LatLng location) {
-        MVmap.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-                // For zooming automatically to the location of the marker
-                mPresenter.setLocationOfShop();
-                googleMap.addMarker(new MarkerOptions().position(
-                        new LatLng(24.2282003, 55.7466362)));
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(location.latitude, location.longitude)).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
-    }
-
     @Override
     public void setPlacePickerLocation(Location mLocation) {
         this.mLocationSelected = mLocation;

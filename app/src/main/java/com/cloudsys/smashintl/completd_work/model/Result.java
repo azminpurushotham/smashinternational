@@ -15,7 +15,7 @@ public class Result {
     @SerializedName("list")
     private java.util.List<Item> mList;
     @SerializedName("pending_amount")
-    private Object mPendingAmount;
+    private String mPendingAmount;
     @SerializedName("total_amount")
     private String mTotalAmount;
 
@@ -43,11 +43,11 @@ public class Result {
         mList = list;
     }
 
-    public Object getPendingAmount() {
+    public String getPendingAmount() {
         return mPendingAmount;
     }
 
-    public void setPendingAmount(Object pendingAmount) {
+    public void setPendingAmount(String pendingAmount) {
         mPendingAmount = pendingAmount;
     }
 

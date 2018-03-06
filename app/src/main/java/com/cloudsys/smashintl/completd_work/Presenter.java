@@ -77,6 +77,10 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         list = mPojo.getResult().getList();
         adapter = new ListItemAdapter(list, mView.getViewContext(), listner);
         mView.getRecyclerView().setAdapter(adapter);
+        mView.setTotalAmount(mPojo.getResult().getTotalAmount());
+        mView.setCompletedAmount(mPojo.getResult().getCompletedAmount());
+        mView.setPendingAmount(mPojo.getResult().getPendingAmount());
+        mView.setCurrency(mPojo.getResult().getCurrency());
     }
 
     @Override
