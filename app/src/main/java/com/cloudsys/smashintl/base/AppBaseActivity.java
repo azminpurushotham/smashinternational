@@ -128,26 +128,7 @@ public class AppBaseActivity extends BaseActivity implements AppBaseActionView {
         if (fragment != null && fragment instanceof BaseFragment) {
             mFragmenntSwitchListner = (OnFragmentSwitchListener) fragment.getActivity();
         }
-
         hideKeyboard(fragment.getActivity());
-
-    }
-
-
-    public void initLogout(Class<?> destinationClass) {
-        if (sharedPreferenceHelper == null) {
-            sharedPreferenceHelper = new SharedPreferenceHelper(this);
-        }
-        sharedPreferenceHelper.clearPreferences();
-        Intent azIntent = null;
-        if (destinationClass != null) {
-            azIntent = new Intent(this, destinationClass);
-        } else {
-//            azIntent = new Intent(this, LoginActivity.class);
-        }
-        azIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        this.finish();
-        startActivity(azIntent);
     }
 
     public String getVisibleFragmentTag() {

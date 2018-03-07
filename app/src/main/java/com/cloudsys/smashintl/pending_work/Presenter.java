@@ -105,7 +105,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         fragment.setArguments(bundle);
         onFragmentSwitchListener.onFragmentSwitch(fragment,
                 true,
-                getViewContext().getString(R.string.tag_sheduled_work_detail),
+                getViewContext().getString(R.string.title_sheduled_work_detail),
                 true,
                 getViewContext().getString(R.string.title_sheduled_work_detail));
     }

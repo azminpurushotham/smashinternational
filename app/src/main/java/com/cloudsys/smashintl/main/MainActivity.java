@@ -155,7 +155,7 @@ public class MainActivity extends AppBaseActivity
 
         mPresenter = new Presenter(this, getBaseInstence());
 //        onFragmentSwitch(new CollectionFragment(), true, getString(R.string.tag_home), false, getString(R.string.title_home));
-        onFragmentSwitch(new ScheduledWorkFragment(), true, getString(R.string.tag_sheduled_work),
+        onFragmentSwitch(new ScheduledWorkFragment(), true, getString(R.string.title_sheduled_work),
                 false, getString(R.string.title_sheduled_work));
 
         mPresenter.checkRunTimePermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -196,7 +196,7 @@ public class MainActivity extends AppBaseActivity
         String tag = getVisibleFragmentTag();
         Log.v("tag", " onPrepareOptionsMenu " + tag);
 
-        if (tag.equalsIgnoreCase(getString(R.string.tag_sheduled_work))) {
+        if (tag.equalsIgnoreCase(getString(R.string.title_sheduled_work))) {
             action_search.setVisible(true);
         } else {
             action_search.setVisible(false);
@@ -281,9 +281,9 @@ public class MainActivity extends AppBaseActivity
             case R.id.ic_collection:
                 onFragmentSwitch(new CompletdWorkFragment(),
                         true,
-                        getString(R.string.tag_collection),
+                        getString(R.string.title_completed_works),
                         true,
-                        getString(R.string.tag_collection));
+                        getString(R.string.title_completed_works));
                 break;
             case R.id.ic_about_smash:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
@@ -291,14 +291,14 @@ public class MainActivity extends AppBaseActivity
             case R.id.ic_new_lead:
                 onFragmentSwitch(new NewLeadFragment(),
                         true,
-                        getString(R.string.tag_new_lead),
+                        getString(R.string.title_new_lead),
                         true,
                         getString(R.string.title_new_lead));
                 break;
             case R.id.ic_sheduled_work:
                 onFragmentSwitch(new ScheduledWorkFragment(),
                         true,
-                        getString(R.string.tag_sheduled_work),
+                        getString(R.string.title_sheduled_work),
                         true,
                         getString(R.string.title_sheduled_work));
                 break;
@@ -320,7 +320,7 @@ public class MainActivity extends AppBaseActivity
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START);
         } else {
-            if (getVisibleFragmentTag().equalsIgnoreCase(getString(R.string.tag_home))) {
+            if (getVisibleFragmentTag().equalsIgnoreCase(getString(R.string.title_home))) {
                 if (doubleBackToExitPressedOnce) {
                     super.onBackPressed();
                     finish();
@@ -339,7 +339,13 @@ public class MainActivity extends AppBaseActivity
                 }, 2000);
             } else {
                 getSupportFragmentManager().popBackStack();
-                TVtitle.setText(getVisibleFragmentTag());
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        TVtitle.setText(getVisibleFragmentTag());
+                    }
+                }, 500);
+
                 invalidateMenuWithDelay();
             }
         }
@@ -535,9 +541,9 @@ public class MainActivity extends AppBaseActivity
                     }
                 }
 
-                if (backStackTag.equalsIgnoreCase(getString(R.string.tag_sheduled_work))) {
+                if (backStackTag.equalsIgnoreCase(getString(R.string.title_sheduled_work))) {
                     mSearchQueryScheduledWork = (SearchQueryScheduledWork) mFragment;
-                } else if (backStackTag.equalsIgnoreCase(getString(R.string.tag_collection))) {
+                } else if (backStackTag.equalsIgnoreCase(getString(R.string.title_completed_works))) {
                     mSearchQueryCompletedWork = (SearchQueryCompletedWork) mFragment;
                 }
 
