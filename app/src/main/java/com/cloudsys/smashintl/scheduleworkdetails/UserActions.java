@@ -13,7 +13,7 @@ import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
  */
 
-public interface UserActions extends AppBaseAction{
+public interface UserActions extends AppBaseAction {
 
     void getScheduledWorkDetails();
 
@@ -26,5 +26,7 @@ public interface UserActions extends AppBaseAction{
     void setLocation(Location location);
 
     void setLocationOfShop();
+
+    void getCurrentLocation();
 
 }

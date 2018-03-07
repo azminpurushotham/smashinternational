@@ -65,18 +65,11 @@ public interface ActionView extends AppBaseActionView {
 
     void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker);
 
-    void setCurrentLocation(Location mLocation);
-
-    void setPlacePickerLocation(Location mLocation);
+    void setPlacePickerLocation(LatLng mLocation);
 
     void setCurrentLocation(LatLng mLocation);
 
     LatLng getCurrentLatLng();
-
-    Location getCurrentLocation();
-
-
-    void setPlacePickerLocation(LatLng mLocation);
 
     TextView getSmsPhoneTextView();
 
@@ -90,4 +83,5 @@ public interface ActionView extends AppBaseActionView {
 
     void setPojo(WorkDetailsPojo mPojo);
 
+    void setMarker(LatLng currentLatLng);
 }

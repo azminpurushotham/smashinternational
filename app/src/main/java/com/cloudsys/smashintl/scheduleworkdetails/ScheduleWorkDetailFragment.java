@@ -51,6 +51,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static com.cloudsys.smashintl.scheduleworkdetails.Presenter.REQUEST_PERMISSIONS_LOCATION;
+import static com.cloudsys.smashintl.scheduleworkdetails.Presenter.REQUEST_PLACE_PICKER;
 
 public class ScheduleWorkDetailFragment extends AppBaseFragment implements ActionView, View.OnClickListener {
 
@@ -112,12 +114,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
 
     LatLng latLngCurrent;
-    private Location mLocationCurrent;
     LatLng latLngSelected;
-    private Location mLocationSelected;
-
-    public static final int REQUEST_PLACE_PICKER = 666;
-    private static final int REQUEST_PERMISSIONS_LOCATION = 6;
+    private LatLng mLocationSelected;
     WorkDetailsPojo mPojo = new WorkDetailsPojo();
 
 
@@ -153,7 +151,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        checkPermission();
+        buscinessLogic();
     }
 
     private void buscinessLogic() {
@@ -189,7 +187,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         });
 
         mPresenter = new Presenter(this, getBaseInstence());
-        mPresenter.getScheduledWorkDetails();
         mPresenter.initSpinner();
         BTNupdateStatus.setOnClickListener(this);
         BTN_try.setOnClickListener(this);
@@ -199,25 +196,12 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         RBpending.setEnabled(false);
     }
 
-
-    private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(getViewActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQUEST_PERMISSIONS_LOCATION);
-        } else {
-            buscinessLogic();
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         MVmap.onResume();
         if (mPresenter != null) {
-            mPresenter.enableLocation();
+            mPresenter.mLocationPresenter.enableLocation();
         }
     }
 
@@ -345,14 +329,13 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker) {
-        startActivityForResult(intent, requestPlacePicker);
+    public void setMarker(LatLng currentLatLng) {
+        setGoogleMapMarker(currentLatLng,true);
     }
 
     @Override
-    public void setCurrentLocation(Location mLocation) {
-        mLocationCurrent = mLocation;
-        setGoogleMapMarker(mLocationCurrent, true);
+    public void startActivityForResultPlacePicker(Intent intent, int requestPlacePicker) {
+        startActivityForResult(intent, requestPlacePicker);
     }
 
     private void setGoogleMapMarker(final Location location, final boolean isCurrentLocation) {
@@ -435,24 +418,13 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     }
 
     @Override
-    public void setPlacePickerLocation(Location mLocation) {
-        this.mLocationSelected = mLocation;
-        setGoogleMapMarker(mLocationSelected, false);
-    }
-
-    @Override
     public void setCurrentLocation(LatLng mLocation) {
         latLngCurrent = mLocation;
     }
 
     @Override
     public LatLng getCurrentLatLng() {
-        return latLngSelected;
-    }
-
-    @Override
-    public Location getCurrentLocation() {
-        return mLocationCurrent;
+        return latLngCurrent;
     }
 
     @Override
@@ -476,9 +448,9 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         return Layreason;
     }
 
-    private void setShopLocation(Location mLocationSelected) {
+    private void setShopLocation(LatLng mLocationSelected) {
         this.mLocationSelected = mLocationSelected;
-        setGoogleMapMarker(mLocationCurrent, false);
+        setGoogleMapMarker(mLocationSelected, false);
     }
 
     @Override
@@ -499,7 +471,6 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         switch (requestCode) {
             case REQUEST_PERMISSIONS_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -507,7 +478,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    buscinessLogic();
+                    mPresenter.getCurrentLocation();
                 } else {
                     showSnackBar(getString(R.string.permission_required));
                     getFragmentManager().popBackStack();
@@ -533,11 +504,8 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                 Place place = PlacePicker.getPlace(getActivity(), data);
                 String toastMsg = String.format("Place: %s", place.getName());
                 showSnackBar(toastMsg);
-                mLocationSelected = new Location("dummyprovider");
-                mLocationSelected.setLongitude(place.getLatLng().longitude);
-                mLocationSelected.setLatitude(place.getLatLng().latitude);
+                mLocationSelected = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
                 setShopLocation(mLocationSelected);
-
 //                TVlocation.setText(place.getName());
                 TVlocation.setText(place.getAddress());
             }
@@ -565,9 +533,9 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                 if (latLngCurrent != null && latLngSelected != null) {
                     gmmIntentUri = Uri.parse(google_nav +
                             +latLngSelected.latitude + "," + latLngSelected.longitude);
-                } else if (mLocationCurrent != null && mLocationSelected != null) {
+                } else if (mLocationSelected != null) {
                     gmmIntentUri = Uri.parse(google_nav
-                            + mLocationSelected.getLatitude() + "," + mLocationSelected.getLongitude());
+                            + mLocationSelected.latitude + "," + mLocationSelected.longitude);
                 }
 
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);

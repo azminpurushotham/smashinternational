@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 
 /**
@@ -16,13 +17,13 @@ public interface LocationView {
 
     AppBaseFragment getViewBaseContext();
 
-    void setCurrentLocation(Location mLocation);
+    void setCurrentLocation(LatLng mLocation);
 
     void showSnackBar(int no_location_detected);
 
     void showWait(int message);
 
-    void enableLocation();
-
     void removeWaiteLocation();
+
+    void locationEnabled(boolean isLocationEnabled);
 }

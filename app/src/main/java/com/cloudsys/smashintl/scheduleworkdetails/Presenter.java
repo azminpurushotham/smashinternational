@@ -1,21 +1,14 @@
 package com.cloudsys.smashintl.scheduleworkdetails;
 
+import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cloudsys.smashintl.R;
@@ -34,6 +27,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
@@ -53,10 +47,8 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     CustomSpinnerAdapter customSpinnerAdapter;
     ArrayList<String> reasons = new ArrayList();
     public static final int REQUEST_PLACE_PICKER = 666;
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    private Location mLocation;
-    private LocationPresenter mLocationPresenter;
-    Dialog dialougeGps = null;
+    public static final int REQUEST_PERMISSIONS_LOCATION = 6;
+    public LocationPresenter mLocationPresenter;
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -68,9 +60,8 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         super(mView, baseInstence);
         this.mView = mView;
         mLocationPresenter = new LocationPresenter(this, baseInstence);
-        mLocationPresenter.initLocation();
         mServiceCall = new ServiceCall(this);
-
+        mLocationPresenter.enableLocation();
     }
 
     @Override
@@ -84,18 +75,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.getSmsPhoneTextView().setText(mPojo.getResult().get(0).getPhoneNumber());
         mView.getAmountTextView().setText(mPojo.getResult().get(0).getAmount() + " " + mPojo.getResult().get(0).getCurrency());
 
-        Location mLocation = null;
         if (mPojo.getResult().get(0).getLat() != null) {
             mView.setPlacePickerLocation(new LatLng(
                     Double.parseDouble(mPojo.getResult().get(0).getLat()),
                     Double.parseDouble(mPojo.getResult().get(0).getLon())));
-
-            mLocation = new Location("");
-            mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
-            mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
-            mView.setPlacePickerLocation(mLocation);
-        } else {
+        } else if(mView.getCurrentLatLng()==null){
             mLocationPresenter.initLocation();
+        }else {
+            mView.setMarker(mView.getCurrentLatLng());
         }
 
         mView.setPojo(mPojo);
@@ -146,7 +133,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 //                if (mView.getCompleteStatus().isChecked()) {
 //                    data.setStatus("pending");
 //                } else {
-//                    data.setStatus("completed");
+//                    data.setStatus("completed");initLocation
 //                }
                 data.setStatus(mView.getStringRes(R.string.completed_));
 
@@ -172,7 +159,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
                 data.setBill_id(mView.getBillId());
                 mView.showWait(R.string.loading);
-                if (mPojo.getResult().get(0).getLat()==null || isAgentInRange()) {
+                if (mPojo.getResult().get(0).getLat() == null || isAgentInRange()) {
                     mServiceCall.postUpdateWorkStatus(data);
                 } else {
                     mView.removeWait(R.string.not_on_the_premises);
@@ -186,20 +173,16 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     private boolean isAgentInRange() {
         Location startPoint = new Location("locationA");
-        if (mView.getPojo().getResult().get(0).getLat()!=null) {
+        if (mView.getPojo().getResult().get(0).getLat() != null) {
             startPoint.setLatitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLat()));//9.9666543
             startPoint.setLongitude(Double.parseDouble(mView.getPojo().getResult().get(0).getLon())); //76.3168134
 
             Location endPoint = new Location("locationB");
 
-            if (mView.getCurrentLocation() != null) {
-                endPoint.setLatitude(mView.getCurrentLocation().getLatitude());
-                endPoint.setLongitude(mView.getCurrentLocation().getLongitude());
-            } else if (mView.getCurrentLatLng() != null) {
-                endPoint.setLatitude(mView.getCurrentLatLng().longitude);
+            if (mView.getCurrentLatLng() != null) {
+                endPoint.setLatitude(mView.getCurrentLatLng().latitude);
                 endPoint.setLongitude(mView.getCurrentLatLng().longitude);
             }
-
 
             Log.v("Location Range",
                     "Location START  lat " + startPoint.getLatitude() + " -- " + startPoint.getLongitude()
@@ -252,6 +235,11 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     }
 
+    @Override
+    public void getCurrentLocation() {
+        mLocationPresenter.initLocation();
+    }
+
     /////////////DEFAULTS///////////////////////
 
 
@@ -266,8 +254,9 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void setCurrentLocation(Location location) {
+    public void setCurrentLocation(LatLng location) {
         mView.setCurrentLocation(location);
+        getScheduledWorkDetails();
     }
 
     @Override
@@ -275,66 +264,18 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.showSnackBar(message);
     }
 
-
-    @Override
-    public void enableLocation() {
-        LocationManager lm = (LocationManager) mView.getViewContext().getSystemService(Context.LOCATION_SERVICE);
-        boolean gps_enabled = false;
-        boolean network_enabled = false;
-        try {
-            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception ex) {
-        }
-
-        try {
-            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch (Exception ex) {
-        }
-
-        if (!gps_enabled && !network_enabled) {
-            Button BTNclose, BTNok;
-            TextView TVtitle, TVmessage;
-
-            dialougeGps = new Dialog(mView.getViewActivity());
-            dialougeGps.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialougeGps.setContentView(R.layout.dialouge_message_with_positive_and_negative_button);
-
-            TVtitle = (TextView) dialougeGps.findViewById(R.id.TVtitle);
-            TVmessage = (TextView) dialougeGps.findViewById(R.id.TVmessage);
-            BTNclose = (Button) dialougeGps.findViewById(R.id.BTNclose);
-            BTNok = (Button) dialougeGps.findViewById(R.id.BTNok);
-
-            BTNclose.setVisibility(View.GONE);
-
-            BTNok.setText(mView.getStringRes(R.string.open_location_settings));
-            TVtitle.setText(mView.getStringRes(R.string.enabe_gps));
-            TVmessage.setText(mView.getStringRes(R.string.gps_network_not_enabled));
-
-            BTNok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    mView.getViewContext().startActivity(myIntent);
-                    dialougeGps.dismiss();
-                }
-            });
-
-            dialougeGps.setCancelable(false);
-            dialougeGps.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            dialougeGps.show();
-        } else {
-            if (dialougeGps != null && dialougeGps.isShowing()) {
-                dialougeGps.dismiss();
-                mLocationPresenter.initLocation();
-            } else {
-                mLocationPresenter.initLocation();
-            }
-        }
-    }
-
     @Override
     public void removeWaiteLocation() {
         mView.removeWait();
+    }
+
+    @Override
+    public void locationEnabled(boolean isLocationEnabled) {
+        if (isLocationEnabled) {
+            checkRunTimePermission(mView.getBaseActivity(), Manifest.permission.ACCESS_COARSE_LOCATION);
+        } else {
+            mLocationPresenter.enableLocation();
+        }
     }
 
     public void initReason() {
@@ -487,26 +428,14 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void checkRunTimePermission(AppBaseActivity activity, String permission) {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(activity, permission)
+        if (ContextCompat.checkSelfPermission(getViewActivity(), permission)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{permission},
-                        REQUEST_PERMISSIONS_REQUEST_CODE);
-                // REQUEST_PERMISSIONS_REQUEST_CODE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{permission},
+                    REQUEST_PERMISSIONS_LOCATION);
         } else {
-
+            mLocationPresenter.initLocation();
         }
     }
 

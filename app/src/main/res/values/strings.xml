@@ -60,7 +60,7 @@
     </string>
     <string name="remove_location_updates">remove location updates</string>
     <string name="currency">Currency</string>
-    <string name="gps_network_not_enabled">Gps network not enabled</string>
+    <string name="gps_network_not_enabled">Please enable location services on your device ? </string>
     <string name="open_location_settings">Open location settings</string>
     <string name="permission_required">Permission required</string>
     <string name="enabe_gps">Enabe gps</string>
