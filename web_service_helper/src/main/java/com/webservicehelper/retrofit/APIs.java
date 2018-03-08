@@ -97,6 +97,12 @@ public interface APIs {
     Call<JsonObject> getScheduledWorks(@Path("user_id") String user_id,
                                        @Path("token") String token);
 
+    @GET("/api/smash/api/work/work_list/{user_id}/{token}/{cal_date}")
+    Call<JsonObject> getScheduledWorksDateVice(@Path("user_id") String user_id,
+                                               @Path("token") String token,
+                                               @Path("cal_date") String cal_date);
+
+
     @GET("api/smash/api/shop/shop_list/{user_id}/{token}")
     Call<JsonObject> getShopList(@Path("user_id") String user_id,
                                  @Path("token") String token);
@@ -118,6 +124,14 @@ public interface APIs {
                                              @Query("token") String token,
                                              @Query("worktype") String worktype,
                                              @Query("query") String query);
+
+
+    @GET("api/smash/api/search/search_list")
+    Call<JsonObject> getSearchCompletedWorksDateVice(@Query("user_id") String user_id,
+                                             @Query("token") String token,
+                                             @Query("worktype") String worktype,
+                                             @Query("query") String query,
+                                             @Query("cal_date") String cal_date);
 
 
     @GET("api/work/work_list/{path}")
@@ -167,10 +181,10 @@ public interface APIs {
 
     @POST("api/smash/api/customer/customer_location/")
     Call<JsonObject> updateShopLocation(@Query("user_id") String user_id,
-                                      @Query("token") String token,
-                                      @Query("customer_id") String customer_id,
-                                      @Query("address1") String address1,
-                                      @Query("address2") String address2,
-                                      @Query("latitude") String latitude,
-                                      @Query("longitude") String longitude);
+                                        @Query("token") String token,
+                                        @Query("customer_id") String customer_id,
+                                        @Query("address1") String address1,
+                                        @Query("address2") String address2,
+                                        @Query("latitude") String latitude,
+                                        @Query("longitude") String longitude);
 }

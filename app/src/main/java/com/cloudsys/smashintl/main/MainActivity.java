@@ -34,6 +34,7 @@ import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.about_status.AboutActivity;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
+import com.cloudsys.smashintl.calender_view_for_pending_works.CalenderViewForPendingWorksFragment;
 import com.cloudsys.smashintl.completd_work.CompletdWorkFragment;
 import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.newlead.NewLeadFragment;
@@ -180,7 +181,6 @@ public class MainActivity extends AppBaseActivity
         MenuItem action_search = menu.findItem(R.id.action_search);
         MenuItem action_notification = menu.findItem(R.id.action_notification);
 
-
         SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = null;
         if (action_search != null) {
@@ -301,6 +301,14 @@ public class MainActivity extends AppBaseActivity
                         getString(R.string.title_sheduled_work),
                         true,
                         getString(R.string.title_sheduled_work));
+
+            case R.id.ic_date_vice_pending_work:
+                onFragmentSwitch(new CalenderViewForPendingWorksFragment(),
+                        true,
+                        getString(R.string.date_vice_pending_work),
+                        true,
+                        getString(R.string.date_vice_pending_work));
+
                 break;
             case R.id.ic_update_customer_location:
                 Intent mIntent = new Intent(MainActivity.this, ShopListActivity.class);

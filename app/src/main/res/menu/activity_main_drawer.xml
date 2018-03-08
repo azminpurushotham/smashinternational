@@ -18,6 +18,11 @@
             android:id="@+id/ic_update_customer_location"
             android:title="@string/update_customer_location" />
 
+
+        <item
+            android:id="@+id/ic_date_vice_pending_work"
+            android:title="@string/date_vice_pending_work" />
+
         <item
             android:id="@+id/ic_about_smash"
             android:title="@string/about_smash" />

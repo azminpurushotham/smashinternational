@@ -9,7 +9,7 @@ android {
         minSdkVersion "${MIN_SDK_VERSION}"
         targetSdkVersion "${target}"
         versionCode 1
-        versionName '1.1.8'
+        versionName '1.1.9'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -45,5 +45,6 @@ dependencies {
     compile project(':base')
     compile project(':web_service_helper')
     compile project(':circleimageview')
+    implementation project(':calender_view')
 }
 apply plugin: 'com.google.gms.google-services'

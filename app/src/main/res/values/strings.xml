@@ -92,5 +92,6 @@
     <string name="shop_details">shop details</string>
     <string name="do_you_update_customer_location">Do you want to update customer location.</string>
     <string name="invoice">Invoice</string>
+    <string name="date_vice_pending_work">Pending Woks Date Vise</string>
 
 </resources>
