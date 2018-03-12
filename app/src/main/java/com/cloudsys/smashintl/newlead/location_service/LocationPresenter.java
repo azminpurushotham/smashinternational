@@ -5,8 +5,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.newlead.Presenter;
@@ -14,6 +14,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import static com.cloudsys.smashintl.newlead.NewLeadFragment.TAG;
 
 
 /**
@@ -55,7 +57,7 @@ public class LocationPresenter implements LocationAction {
                             // GPS location can be null if GPS is switched off
                             if (location != null) {
                                 mLocation = location;
-                                Log.v("Location", mLocation.getLatitude() + "" + mLocation.getLongitude());
+                                LogUtils.v("Location", mLocation.getLatitude() + "" + mLocation.getLongitude());
                                 if (mLocation != null) {
                                     mView.setCurrentLocation(mLocation);
                                     mView.removeWaiteLocation();
@@ -69,8 +71,8 @@ public class LocationPresenter implements LocationAction {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d("MapDemoActivity", "Error trying to get last GPS location");
-                            e.printStackTrace();
+                            LogUtils.d("MapDemoActivity", "Error trying to get last GPS location");
+                             LogUtils.v(TAG, e.getMessage());
                             mView.showSnackBar(R.string.no_location_detected);
                             mView.enableLocation();
                             mView.removeWaiteLocation();

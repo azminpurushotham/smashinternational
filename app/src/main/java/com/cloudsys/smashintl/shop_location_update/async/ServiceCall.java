@@ -1,7 +1,6 @@
 package com.cloudsys.smashintl.shop_location_update.async;
 
-import android.util.Log;
-
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.shop_location_update.Presenter;
@@ -45,7 +44,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                             }
                         } catch (JSONException e) {
                             if (e != null) {
-                                e.printStackTrace();
+                                 LogUtils.v(TAG, e.getMessage());
                             }
                             mServiceCallBack.onExceptionCallBack(R.string.api_default_error);
                         }
@@ -53,7 +52,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
+                        LogUtils.v("onFailure", t.getMessage());
                         mServiceCallBack.onFailerCallBack(R.string.api_default_error);
                     }
                 });
@@ -87,7 +86,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                     }
                 } catch (JSONException e) {
                     if (e != null) {
-                        e.printStackTrace();
+                         LogUtils.v(TAG, e.getMessage());
                     }
                     mServiceCallBack.onExceptionCallBack(R.string.api_default_error);
                 }
@@ -95,7 +94,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.v("onFailure", t.getMessage());
+                LogUtils.v("onFailure", t.getMessage());
                 mServiceCallBack.onFailerCallBack(R.string.api_default_error);
             }
         });

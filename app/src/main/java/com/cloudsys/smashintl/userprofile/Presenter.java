@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.bumptech.glide.Glide;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
@@ -14,7 +14,6 @@ import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.userprofile.async.ServiceCall;
 import com.cloudsys.smashintl.userprofile.async.ServiceCallBack;
 import com.cloudsys.smashintl.utiliti.ImageUtility;
-import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -46,7 +45,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             if (isValidate()) {
                 showWait(mView.getViewContext().getString(R.string.updating));
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                Log.d(TAG, "Refreshed token: " + refreshedToken);
+                LogUtils.d(TAG, "Refreshed token: " + refreshedToken);
                 if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
                     getSharedPreference().putString(mView.getStringRes(R.string.tocken), refreshedToken);
                     mServiceCall.postUpdatePassword(
@@ -71,7 +70,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             if (isValidate()) {
                 showWait(mView.getViewContext().getString(R.string.updating));
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                Log.d(TAG, "Refreshed token: " + refreshedToken);
+                LogUtils.d(TAG, "Refreshed token: " + refreshedToken);
                 if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
                     getSharedPreference().putString(mView.getStringRes(R.string.tocken), refreshedToken);
                     mServiceCall.postUpdatePassword(
@@ -213,7 +212,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(message.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         mView.removeWait();
         mView.loadHomePage();
@@ -241,7 +240,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(message.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         mView.removeWait();
         mView.loadHomePage();
@@ -257,7 +256,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(message.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         mView.removeWait();
         mView.loadHomePage();
@@ -303,7 +302,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onFailerCallBack(String message) {
-        Log.v("exception", message);
+        LogUtils.v("exception", message);
         mView.showSnackBar(message);
         mView.removeWait();
     }
@@ -342,7 +341,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showSnackBar(mJsonObject.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 

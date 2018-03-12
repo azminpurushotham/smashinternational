@@ -1,5 +1,6 @@
 package com.cloudsys.smashintl.userprofile.async;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.userprofile.Presenter;
@@ -12,6 +13,8 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.cloudsys.smashintl.userprofile.UserProfileActivity.TAG;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 35.
@@ -46,7 +49,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                     }
                 } catch (JSONException e) {
                     if (e != null) {
-                        e.printStackTrace();
+                         LogUtils.v(TAG, e.getMessage());
                     }
                     mServiceCallBack.onExceptionCallBack(R.string.api_default_error);
                 }
@@ -79,7 +82,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 //                    }
 //                } catch (JSONException e) {
 //                    if (e != null) {
-//                        e.printStackTrace();
+//                         LogUtils.v(TAG, e.getMessage());
 //                    }
 //                    mServiceCallBack.onExceptionCallBack(R.string.api_default_error);
 //                }

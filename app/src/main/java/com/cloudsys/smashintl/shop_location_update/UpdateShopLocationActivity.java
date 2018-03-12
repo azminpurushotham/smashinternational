@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.shop_location_update.model.ShopDetail;
@@ -92,6 +92,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
     public static final int REQUEST_PLACE_PICKER = 666;
     private static final int REQUEST_PERMISSIONS_LOCATION = 6;
     ShopDetail mPojo = new ShopDetail();
+    public static String TAG = "UpdateShopL";
 
 
     @Override
@@ -107,7 +108,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         try {
             MapsInitializer.initialize(UpdateShopLocationActivity.this.getApplicationContext());
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.v(TAG, e.getMessage());
         }
         checkPermission();
     }
@@ -209,7 +210,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         Location mLocation = new Location("");
         if (mLocationShop != null) {
             return mLocationShop;
-        }else if(mLocationCurrent!=null){
+        } else if (mLocationCurrent != null) {
             return mLocationCurrent;
         }
         return mLocation;
@@ -314,7 +315,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
 
     @Override
     public void setMarkerFromDb(Location mLocation) {
-        setGoogleMapMarker(mLocationCurrent,mLocation);
+        setGoogleMapMarker(mLocationCurrent, mLocation);
     }
 
     @Override
@@ -325,7 +326,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
 
     private void setShopLocation(Location mLocationSelected) {
         mLocationShop = mLocationSelected;
-        setGoogleMapMarker(mLocationCurrent,mLocationSelected);
+        setGoogleMapMarker(mLocationCurrent, mLocationSelected);
     }
 
     @Override
@@ -373,13 +374,13 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(UpdateShopLocationActivity.this, data);
                 String toastMsg = String.format("Place: %s", place.getName());
-                Log.v("location", toastMsg);
+                LogUtils.v("location", toastMsg);
                 showSnackBar(toastMsg);
                 mLocationShop = new Location("dummyprovider");
                 mLocationShop.setLongitude(place.getLatLng().longitude);
                 mLocationShop.setLatitude(place.getLatLng().latitude);
 
-                if(ETAddress1.getText().toString().equalsIgnoreCase("")){
+                if (ETAddress1.getText().toString().equalsIgnoreCase("")) {
                     ETAddress1.setText(toastMsg);
                 }
 
@@ -430,7 +431,7 @@ public class UpdateShopLocationActivity extends AppBaseActivity implements Actio
         return UpdateShopLocationActivity.this;
     }
 
-  @Override
+    @Override
     public void showInternetAlertLogic(boolean isInternet) {
         if (isInternet == false) {
             LAYnointernet.setVisibility(View.VISIBLE);

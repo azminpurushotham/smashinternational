@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
@@ -54,7 +55,7 @@ import static com.cloudsys.smashintl.userprofile.Presenter.userChoosenTask;
 
 public class UserProfileActivity extends AppBaseActivity implements ActionView, View.OnClickListener {
 
-    private static final String TAG = "UserProfileActivity";
+    public static final String TAG = "UserProfile";
     @BindView(R.id.BTNsubmit)
     Button BTNsubmit;
     @BindView(R.id.parent)
@@ -328,7 +329,7 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
             try {
                 bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtils.v(TAG, e.getMessage());
             }
             selectedImage = getRealPathFromURI(data.getData());
         }
@@ -367,9 +368,9 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
             fo.write(bytes.toByteArray());
             fo.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LogUtils.v(TAG, e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtils.v(TAG, e.getMessage());
         }
         mCircleImageView.setImageBitmap(thumbnail);
     }

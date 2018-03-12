@@ -8,9 +8,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
@@ -21,13 +21,11 @@ import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationPrese
 import com.cloudsys.smashintl.scheduleworkdetails.location_service.LocationView;
 import com.cloudsys.smashintl.scheduleworkdetails.model.WorkDetailsPojo;
 import com.cloudsys.smashintl.scheduleworkdetails.model.scheduleWorkPojo;
-import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
@@ -35,6 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment.TAG;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
@@ -99,7 +99,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showSnackBar(mJsonObject.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 
@@ -153,7 +153,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 try {
                     temp = Integer.parseInt(mPojo.getResult().get(0).getAmount()) - mView.getAmount();
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                     LogUtils.v(TAG, e.getMessage());
                 }
                 data.setPendingAmount(temp + "");
 
@@ -184,7 +184,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                 endPoint.setLongitude(mView.getCurrentLatLng().longitude);
             }
 
-            Log.v("Location Range",
+            LogUtils.v("Location Range",
                     "Location START  lat " + startPoint.getLatitude() + " -- " + startPoint.getLongitude()
                             + "\n" + " Location END lat " + endPoint.getLatitude() + " -- " + endPoint.getLongitude());
 
@@ -305,7 +305,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showSnackBar(mJsonObject.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         mView.removeWait();
     }
@@ -340,7 +340,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onFailerCallBack(String message) {
-        Log.v("exception", message);
+        LogUtils.v("exception", message);
         mView.showSnackBar(message);
         mView.removeWait();
     }
@@ -379,7 +379,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showSnackBar(mJsonObject.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 
@@ -394,7 +394,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(message.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 

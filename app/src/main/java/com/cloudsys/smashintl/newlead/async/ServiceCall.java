@@ -1,7 +1,6 @@
 package com.cloudsys.smashintl.newlead.async;
 
-import android.util.Log;
-
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.newlead.Presenter;
@@ -67,7 +66,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.v("onFailure", t.getMessage());
+                LogUtils.v("onFailure", t.getMessage());
                 mServiceCallBack.onFailerCallBack(R.string.api_default_error);
             }
         });

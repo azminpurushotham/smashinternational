@@ -1,5 +1,6 @@
 package com.cloudsys.smashintl.login.async;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.login.Presenter;
@@ -10,6 +11,8 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.cloudsys.smashintl.login.LoginActivity.TAG;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 35.
@@ -41,7 +44,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                 } catch (Exception e) {
                     if (e != null) {
-                        e.printStackTrace();
+                         LogUtils.v(TAG, e.getMessage());
                     }
                     mServiceCallBack.onExceptionCallBack(mServiceCallBack.getViewContext().getString(R.string.api_default_error));
                 }

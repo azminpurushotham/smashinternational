@@ -99,6 +99,8 @@ public class NewLeadFragment extends AppBaseFragment implements ActionView, View
     private double lat;
     private double lon;
 
+    public static final String TAG = "NewLeadFragment";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

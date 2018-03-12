@@ -2,6 +2,7 @@ package com.cloudsys.smashintl.pending_work.async;
 
 import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.pending_work.Presenter;
@@ -14,6 +15,8 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.cloudsys.smashintl.pending_work.PendingWorkFragment.TAG;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 35.
@@ -45,7 +48,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                         } catch (Exception e) {
                             if (e != null) {
-                                e.printStackTrace();
+                                 LogUtils.v(TAG, e.getMessage());
                             }
                             mServiceCallBack.onExceptionCallBack(e.getMessage());
                         }
@@ -83,7 +86,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                         } catch (Exception e) {
                             if (e != null) {
-                                e.printStackTrace();
+                                 LogUtils.v(TAG, e.getMessage());
                             }
                             mServiceCallBack.onExceptionCallBack(e.getMessage());
                         }

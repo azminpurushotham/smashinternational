@@ -9,9 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cloudsys.smashintl.R;
-import com.cloudsys.smashintl.base.AppBaseActionView;
 import com.cloudsys.smashintl.base.AppBaseFragment;
-import com.cloudsys.smashintl.sheduledwork_datevice.ScheduledWorkDateViceFragment;
+import com.cloudsys.smashintl.scheduledwork_datevice.ScheduledWorkDateViceFragment;
 import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
 

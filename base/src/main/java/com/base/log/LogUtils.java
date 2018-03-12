@@ -4,7 +4,7 @@ package com.base.log;
  * Created by azmin on 12/3/18.
  */
 
-public class LogMessage {
+public class LogUtils {
     // Grabbing the native values from Android's native logging facilities,
     // to make for easy migration and interop.
     public static final int NONE = -1;

@@ -1,7 +1,6 @@
 package com.cloudsys.smashintl.shoplist.async;
 
-import android.util.Log;
-
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.shoplist.Presenter;
@@ -46,7 +45,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                         } catch (Exception e) {
                             if (e != null) {
-                                e.printStackTrace();
+                                 LogUtils.v(TAG, e.getMessage());
                             }
                             mServiceCallBack.onExceptionCallBack(e.getMessage());
                         }
@@ -54,7 +53,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
+                        LogUtils.v("onFailure", t.getMessage());
                         mServiceCallBack.onFailerCallBack(t.getMessage());
                     }
                 });
@@ -81,7 +80,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                         } catch (Exception e) {
                             if (e != null) {
-                                e.printStackTrace();
+                                 LogUtils.v(TAG, e.getMessage());
                             }
                             mServiceCallBack.onExceptionCallBack(e.getMessage());
                         }
@@ -89,7 +88,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
+                        LogUtils.v("onFailure", t.getMessage());
                         mServiceCallBack.onFailerCallBack(t.getMessage());
                     }
                 });

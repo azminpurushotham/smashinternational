@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 
 public class ShopListActivity extends AppBaseActivity implements ActionView, View.OnClickListener, MainActivity.SearchQueryScheduledWork {
 
-    private static final String TAG = "ShopListActivity";
+    public static final String TAG = "ShopListActivity";
     //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;

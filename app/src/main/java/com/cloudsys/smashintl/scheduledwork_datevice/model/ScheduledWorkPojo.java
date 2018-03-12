@@ -1,5 +1,5 @@
 
-package com.cloudsys.smashintl.sheduledwork_datevice.model;
+package com.cloudsys.smashintl.scheduledwork_datevice.model;
 
 import com.google.gson.annotations.SerializedName;
 

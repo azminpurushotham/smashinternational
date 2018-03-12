@@ -1,7 +1,6 @@
 package com.cloudsys.smashintl.fcm;
 
-import android.util.Log;
-
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -29,7 +28,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         mSharedPreferenceHelper = new SharedPreferenceHelper(getApplicationContext());
         if (mSharedPreferenceHelper.getString(getString(R.string.tocken), null) == null) {
             refreshedToken = FirebaseInstanceId.getInstance().getToken();
-            Log.d(TAG, "Refreshed token: " + refreshedToken);
+            LogUtils.d(TAG, "Refreshed token: " + refreshedToken);
             if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
                 mSharedPreferenceHelper.putString(getString(R.string.tocken), refreshedToken);
             }

@@ -1,16 +1,17 @@
 package com.cloudsys.smashintl.main;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.main.async.ServiceCall;
 import com.cloudsys.smashintl.main.async.ServiceCallBack;
-import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.cloudsys.smashintl.main.MainActivity.TAG;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
@@ -51,7 +52,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(mJsonObject.getString("Value"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         getSharedPreferenceHelper().clearPreferences();
         mView.dismissLogOut();
@@ -66,7 +67,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onFailerCallBack(String message) {
-        Log.v("exception", message);
+        LogUtils.v("exception", message);
         mView.showSnackBar(message);
     }
 
@@ -87,7 +88,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onCallfailerFromServerside(String message) {
-        Log.v("exception", message);
+        LogUtils.v("exception", message);
         mView.showSnackBar(message);
 
     }
@@ -102,7 +103,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(mJsonObject.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 

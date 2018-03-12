@@ -11,13 +11,13 @@ import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
@@ -39,6 +39,8 @@ import org.json.JSONObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.cloudsys.smashintl.newlead.NewLeadFragment.TAG;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
@@ -350,7 +352,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onFailerCallBack(String message) {
-        Log.v("exception", message);
+        LogUtils.v("exception", message);
         mView.showSnackBar(message);
     }
 
@@ -390,7 +392,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showSnackBar(mJsonObject.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 
@@ -405,7 +407,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(message.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 

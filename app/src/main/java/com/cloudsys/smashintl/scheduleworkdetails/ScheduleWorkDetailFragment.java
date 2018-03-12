@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
@@ -117,6 +118,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
     LatLng latLngSelected;
     private LatLng mLocationSelected;
     WorkDetailsPojo mPojo = new WorkDetailsPojo();
+    public static String TAG = "ScheduleWorkD";
 
 
     @Override
@@ -142,7 +144,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
 
         return mView;
@@ -180,7 +182,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
                         SPreason.setVisibility(View.GONE);
                     }
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                     LogUtils.v(TAG, e.getMessage());
                     SPreason.setVisibility(View.GONE);
                 }
             }

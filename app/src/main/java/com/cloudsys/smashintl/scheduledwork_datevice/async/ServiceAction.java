@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.sheduledwork_datevice.async;
+package com.cloudsys.smashintl.scheduledwork_datevice.async;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 54.

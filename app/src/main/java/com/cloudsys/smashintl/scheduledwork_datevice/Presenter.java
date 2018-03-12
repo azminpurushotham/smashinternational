@@ -1,20 +1,19 @@
-package com.cloudsys.smashintl.sheduledwork_datevice;
+package com.cloudsys.smashintl.scheduledwork_datevice;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBaseFragment;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.itemdecorator.SpacesItemDecoration;
-import com.cloudsys.smashintl.sheduledwork_datevice.async.ServiceCall;
-import com.cloudsys.smashintl.sheduledwork_datevice.async.ServiceCallBack;
-import com.cloudsys.smashintl.sheduledwork_datevice.model.Result;
-import com.cloudsys.smashintl.sheduledwork_datevice.model.ScheduledWorkPojo;
 import com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment;
-import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
+import com.cloudsys.smashintl.scheduledwork_datevice.async.ServiceCall;
+import com.cloudsys.smashintl.scheduledwork_datevice.async.ServiceCallBack;
+import com.cloudsys.smashintl.scheduledwork_datevice.model.Result;
+import com.cloudsys.smashintl.scheduledwork_datevice.model.ScheduledWorkPojo;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.Gson;
 
@@ -23,6 +22,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.cloudsys.smashintl.scheduleworkdetails.ScheduleWorkDetailFragment.TAG;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
@@ -170,7 +171,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
     @Override
     public void onFailerCallBack(String message) {
-        Log.v("exception", message);
+        LogUtils.v("exception", message);
         mView.showSnackBar(message);
         mView.removeWait();
     }
@@ -209,7 +210,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showSnackBar(mJsonObject.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
     }
 

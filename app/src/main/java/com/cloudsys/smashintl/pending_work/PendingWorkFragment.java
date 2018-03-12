@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 
 public class PendingWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener, MainActivity.SearchQueryScheduledWork {
 
-    private static final String TAG = "PendingWorkFragment";
     //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;
@@ -44,6 +43,7 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
 
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
+    public static final String TAG = "PendingWork";
 
 
     @Override

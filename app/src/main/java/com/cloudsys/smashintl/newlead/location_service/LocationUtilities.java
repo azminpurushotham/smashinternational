@@ -4,8 +4,8 @@ import android.content.Context;
 import android.location.Location;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -68,7 +68,7 @@ public class LocationUtilities {
                         if (task.isSuccessful() && task.getResult() != null) {
                             mLastLocation = task.getResult();
                         } else {
-                            Log.w("LocationUtilities", "getLastLocation:exception", task.getException());
+                            LogUtils.w("LocationUtilities", "getLastLocation:exception", task.getException());
                         }
                     }
                 });

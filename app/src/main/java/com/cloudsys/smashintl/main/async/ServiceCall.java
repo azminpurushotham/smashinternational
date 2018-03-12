@@ -2,12 +2,12 @@ package com.cloudsys.smashintl.main.async;
 
 import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCall;
 import com.cloudsys.smashintl.main.Presenter;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.gson.JsonObject;
-import com.webservicehelper.retrofit.RetrofitHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +15,8 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.cloudsys.smashintl.main.MainActivity.TAG;
 
 /**
  * Created by AzminPurushotham on 11/13/2017 time 12 : 35.
@@ -50,7 +52,7 @@ public class ServiceCall extends AppBaseServiceCall implements ServiceAction {
                             }
                         } catch (JSONException e) {
                             if (e != null) {
-                                e.printStackTrace();
+                                 LogUtils.v(TAG, e.getMessage());
                             }
                             mServiceCallBack.onExceptionCallBack(R.string.api_default_error);
                         }

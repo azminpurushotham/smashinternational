@@ -3,25 +3,21 @@ package com.cloudsys.smashintl.base;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 import com.base.BaseActivity;
 import com.base.BaseFragment;
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
-import com.cloudsys.smashintl.login.LoginActivity;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
@@ -33,6 +29,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class AppBaseActivity extends BaseActivity implements AppBaseActionView {
 
+    private static String TAG = "AppBaseActivity";
     private SharedPreferenceHelper sharedPreferenceHelper;
     private OnFragmentSwitchListener mFragmenntSwitchListner;
     Dialog mLoading;
@@ -108,7 +105,7 @@ public class AppBaseActivity extends BaseActivity implements AppBaseActionView {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         return class_name;
     }
@@ -138,9 +135,9 @@ public class AppBaseActivity extends BaseActivity implements AppBaseActionView {
                     getSupportFragmentManager()
                             .getBackStackEntryCount() - 1)
                     .getName();
-            Log.v("fragment_tag", tag);
+            LogUtils.v("fragment_tag", tag);
         } catch (Exception e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         return tag;
     }
@@ -158,7 +155,7 @@ public class AppBaseActivity extends BaseActivity implements AppBaseActionView {
             inputManager.hideSoftInputFromWindow(context.getCurrentFocus()
                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.v(TAG, e.getMessage());
         }
     }
 

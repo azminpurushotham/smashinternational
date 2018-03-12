@@ -19,8 +19,8 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.splash.SplashActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -140,7 +140,7 @@ public class GoogleLocationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "Service started");
+        LogUtils.i(TAG, "Service started");
         boolean startedFromNotification = intent.getBooleanExtra(EXTRA_STARTED_FROM_NOTIFICATION,
                 false);
 
@@ -164,7 +164,7 @@ public class GoogleLocationService extends Service {
         // Called when a client (AboutActivity in case of this sample) comes to the foreground
         // and binds with this service. The service should cease to be a foreground service
         // when that happens.
-        Log.i(TAG, "in onBind()");
+        LogUtils.i(TAG, "in onBind()");
         stopForeground(true);
         mChangingConfiguration = false;
         return mBinder;
@@ -175,7 +175,7 @@ public class GoogleLocationService extends Service {
         // Called when a client (AboutActivity in case of this sample) returns to the foreground
         // and binds once again with this service. The service should cease to be a foreground
         // service when that happens.
-        Log.i(TAG, "in onRebind()");
+        LogUtils.i(TAG, "in onRebind()");
         stopForeground(true);
         mChangingConfiguration = false;
         super.onRebind(intent);
@@ -183,13 +183,13 @@ public class GoogleLocationService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        Log.i(TAG, "Last client unbound from service");
+        LogUtils.i(TAG, "Last client unbound from service");
 
         // Called when the last client (AboutActivity in case of this sample) unbinds from this
         // service. If this method is called due to a configuration change in AboutActivity, we
         // do nothing. Otherwise, we make this service a foreground service.
         if (!mChangingConfiguration && LocationUtilities.requestingLocationUpdates(this)) {
-            Log.i(TAG, "Starting foreground service");
+            LogUtils.i(TAG, "Starting foreground service");
             /*
             // TODO(developer). If targeting O, use the following code.
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
@@ -214,7 +214,7 @@ public class GoogleLocationService extends Service {
      * {@link SecurityException}.
      */
     public void requestLocationUpdates() {
-        Log.i(TAG, "Requesting location updates");
+        LogUtils.i(TAG, "Requesting location updates");
         LocationUtilities.setRequestingLocationUpdates(this, true);
         startService(new Intent(getApplicationContext(), GoogleLocationService.class));
         try {
@@ -222,7 +222,7 @@ public class GoogleLocationService extends Service {
                     mLocationCallback, Looper.myLooper());
         } catch (SecurityException unlikely) {
             LocationUtilities.setRequestingLocationUpdates(this, false);
-            Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
+            LogUtils.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
         }
     }
 
@@ -231,14 +231,14 @@ public class GoogleLocationService extends Service {
      * {@link SecurityException}.
      */
     public void removeLocationUpdates() {
-        Log.i(TAG, "Removing location updates");
+        LogUtils.i(TAG, "Removing location updates");
         try {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
             LocationUtilities.setRequestingLocationUpdates(this, false);
             stopSelf();
         } catch (SecurityException unlikely) {
             LocationUtilities.setRequestingLocationUpdates(this, true);
-            Log.e(TAG, "Lost location permission. Could not remove updates. " + unlikely);
+            LogUtils.e(TAG, "Lost location permission. Could not remove updates. " + unlikely);
         }
     }
 
@@ -291,17 +291,17 @@ public class GoogleLocationService extends Service {
                             if (task.isSuccessful() && task.getResult() != null) {
                                 mLocation = task.getResult();
                             } else {
-                                Log.w(TAG, "Failed to get location.");
+                                LogUtils.w(TAG, "Failed to get location.");
                             }
                         }
                     });
         } catch (SecurityException unlikely) {
-            Log.e(TAG, "Lost location permission." + unlikely);
+            LogUtils.e(TAG, "Lost location permission." + unlikely);
         }
     }
 
     private void onNewLocation(Location location) {
-        Log.i(TAG, "New location: " + location);
+        LogUtils.i(TAG, "New location: " + location);
 
         mLocation = location;
 

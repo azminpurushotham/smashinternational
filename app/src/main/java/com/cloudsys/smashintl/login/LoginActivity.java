@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppBaseActivity implements ActionView, View.OnClickListener {
 
-    private static final String TAG = "LoginActivity";
     @BindView(R.id.EDTUserName)
     EditText EDTUserName;
     @BindView(R.id.EDTPassword)
@@ -38,7 +37,7 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     @BindView(R.id.BTN_try)
     Button BTN_try;
     Presenter mPresenter;
-
+    public static String TAG = "Login";
 
     public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);

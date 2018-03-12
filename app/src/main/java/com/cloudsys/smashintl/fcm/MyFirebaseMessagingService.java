@@ -4,8 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -24,7 +24,7 @@ public class MyFirebaseMessagingService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
+        LogUtils.d(TAG, "Refreshed token: " + refreshedToken);
         mSharedPreferenceHelper = new SharedPreferenceHelper(getApplicationContext());
         if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
             mSharedPreferenceHelper.putString(getString(R.string.tocken), refreshedToken);

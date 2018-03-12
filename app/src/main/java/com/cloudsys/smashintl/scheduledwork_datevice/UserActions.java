@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.sheduledwork_datevice;
+package com.cloudsys.smashintl.scheduledwork_datevice;
 
 import com.cloudsys.smashintl.base.AppBaseAction;
 

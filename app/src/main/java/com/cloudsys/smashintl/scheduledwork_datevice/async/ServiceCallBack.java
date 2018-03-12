@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.sheduledwork_datevice.async;
+package com.cloudsys.smashintl.scheduledwork_datevice.async;
 
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCallBack;
 

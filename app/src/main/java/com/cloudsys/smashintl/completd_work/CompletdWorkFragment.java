@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 public class CompletdWorkFragment extends AppBaseFragment implements ActionView, View.OnClickListener,
         MainActivity.SearchQueryCompletedWork {
 
-    private static final String TAG = "CompletdWork";
+    public static final String TAG = "CompletdWork";
     //// DEFAULT///////
     @BindView(R.id.parent)
     RelativeLayout parent;
@@ -106,17 +106,17 @@ public class CompletdWorkFragment extends AppBaseFragment implements ActionView,
 
     @Override
     public void setPendingAmount(String value) {
-        TVpendingAmount.setText(value +" "+currency);
+        TVpendingAmount.setText(value + " " + currency);
     }
 
     @Override
     public void setCompletedAmount(String value) {
-        TVcompletedAmount.setText(value+" "+currency);
+        TVcompletedAmount.setText(value + " " + currency);
     }
 
     @Override
     public void setTotalAmount(String value) {
-        TVtotalAmount.setText(value+" "+currency);
+        TVtotalAmount.setText(value + " " + currency);
     }
 
     @Override

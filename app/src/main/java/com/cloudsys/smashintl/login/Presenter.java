@@ -1,21 +1,22 @@
 package com.cloudsys.smashintl.login;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.cloudsys.smashintl.base.AppBaseActivity;
 import com.cloudsys.smashintl.base.AppBasePresenter;
 import com.cloudsys.smashintl.login.async.ServiceCall;
 import com.cloudsys.smashintl.login.async.ServiceCallBack;
 import com.cloudsys.smashintl.login.model.LoginPojo;
-import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 import com.cloudsys.smashintl.utiliti.Utilities;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.cloudsys.smashintl.login.LoginActivity.TAG;
 
 /**
  * Created by AzminPurushotham on 10/31/2017 time 15 : 58.
@@ -24,7 +25,6 @@ import org.json.JSONObject;
 public class Presenter extends AppBasePresenter implements UserActions, ServiceCallBack {
     ActionView mView;
     ServiceCall mServiceCall;
-    private String TAG = "LoginP";
 
     public Presenter(ActionView mView, AppBaseActivity baseInstence) {
         super(mView, baseInstence);
@@ -38,7 +38,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             if (isValidate()) {
                 mView.showWait(mView.getViewContext().getString(R.string.loading));
                 String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                Log.d(TAG, "Refreshed token: " + refreshedToken);
+                LogUtils.d(TAG, "Refreshed token: " + refreshedToken);
                 if (refreshedToken != null && !refreshedToken.equalsIgnoreCase("")) {
                     getSharedPreference().putString(mView.getStringRes(R.string.tocken), refreshedToken);
                     mServiceCall.postLogin(
@@ -192,7 +192,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         try {
             mView.showWait(message.getString("message"));
         } catch (JSONException e) {
-            e.printStackTrace();
+             LogUtils.v(TAG, e.getMessage());
         }
         mView.loadHomePage();
     }

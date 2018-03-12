@@ -7,11 +7,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.R;
 import com.google.gson.JsonObject;
 
@@ -74,7 +74,7 @@ public class Utilities {
             inputManager.hideSoftInputFromWindow(context.getCurrentFocus()
                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.v(TAG,e.getMessage());
         }
     }
 
@@ -166,7 +166,7 @@ public class Utilities {
             for (String s : children) {
                 File f = new File(appDir, s);
                 if (deleteDir(f))
-                    Log.i(TAG, String.format("**************** DELETED -> (%s) *******************", f.getAbsolutePath()));
+                    LogUtils.i(TAG, String.format("**************** DELETED -> (%s) *******************", f.getAbsolutePath()));
             }
         }
     }
@@ -278,7 +278,7 @@ public class Utilities {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.v("date", "getFormatedDate : " + formattedDate + "parse_date : " + parse_date + "reqFormat : " + curentFormat + "reqFormat : " + curentFormat);
+        LogUtils.v("date", "getFormatedDate : " + formattedDate + "parse_date : " + parse_date + "reqFormat : " + curentFormat + "reqFormat : " + curentFormat);
         return formattedDate;
     }
 
@@ -309,11 +309,11 @@ public class Utilities {
         try {
             if (data.body() != null) {
                 responce = data.body().toString();
-                Log.v("responce", responce);
+                LogUtils.v("responce", responce);
                 return responce;
             } else {
                 responce = data.errorBody().string();
-                Log.v("responce", " ERROR ### " + responce);
+                LogUtils.v("responce", " ERROR ### " + responce);
                 return responce;
             }
         } catch (Exception e) {

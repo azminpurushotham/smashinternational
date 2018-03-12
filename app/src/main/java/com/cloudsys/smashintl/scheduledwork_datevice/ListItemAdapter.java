@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.sheduledwork_datevice;
+package com.cloudsys.smashintl.scheduledwork_datevice;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cloudsys.smashintl.R;
-import com.cloudsys.smashintl.sheduledwork_datevice.model.Result;
+import com.cloudsys.smashintl.scheduledwork_datevice.model.Result;
 import com.cloudsys.smashintl.utiliti.Utilities;
 
 import java.util.ArrayList;

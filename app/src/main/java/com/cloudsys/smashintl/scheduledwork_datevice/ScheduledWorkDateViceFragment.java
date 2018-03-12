@@ -1,4 +1,4 @@
-package com.cloudsys.smashintl.sheduledwork_datevice;
+package com.cloudsys.smashintl.scheduledwork_datevice;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -33,7 +33,6 @@ import butterknife.ButterKnife;
 
 public class ScheduledWorkDateViceFragment extends AppBaseFragment implements ActionView, View.OnClickListener, MainActivity.SearchQueryScheduledWork {
 
-    private static final String TAG = "ScheduledWorkDateViceFragment";
     @BindView(R.id.parent)
     RelativeLayout parent;
     @Nullable
@@ -50,6 +49,7 @@ public class ScheduledWorkDateViceFragment extends AppBaseFragment implements Ac
     RecyclerView mRecyclerView;
     String date = "";
 
+    public static final String TAG = "ScheduledWDate";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -2,8 +2,8 @@ package com.cloudsys.smashintl.base;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
+import com.base.log.LogUtils;
 import com.cloudsys.smashintl.base.asynck.AppBaseServiceCallBack;
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
 
@@ -116,7 +116,7 @@ public class AppBasePresenter implements AppBaseServiceCallBack {
 
     @Override
     public void onFailerCallBack(int message) {
-        Log.v("exception", mView.getStringRes(message));
+        LogUtils.v("exception", mView.getStringRes(message));
         mView.showSnackBar(message);
     }
 

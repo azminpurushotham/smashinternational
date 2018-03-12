@@ -58,7 +58,7 @@ public class MainActivity extends AppBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActionView, View.OnClickListener,
         AppBaseActivity.OnFragmentSwitchListener, DrawerLayout.DrawerListener, SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
-    private static final String TAG = "MainActivity";
+    public static final String TAG = "MainActivity";
 
     @BindView(R.id.mToolbar)
     Toolbar mToolbar;
