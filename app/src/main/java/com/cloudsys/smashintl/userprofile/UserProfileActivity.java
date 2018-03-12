@@ -238,31 +238,6 @@ public class UserProfileActivity extends AppBaseActivity implements ActionView, 
     }
 
     @Override
-    public AppBaseActivity getViewActivity() {
-        return UserProfileActivity.this;
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return null;
-    }
-
-    @Override
-    public AppBaseFragment getBaseFragment() {
-        return null;
-    }
-
-    @Override
-    public AppBaseActivity getBaseActivity() {
-        return this;
-    }
-
-    @Override
-    public RelativeLayout getParentView() {
-        return parent;
-    }
-
-    @Override
     public void onBackPressed() {
         onBackPressedLogic();
     }

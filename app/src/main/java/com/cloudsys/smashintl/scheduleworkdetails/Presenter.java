@@ -79,9 +79,9 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
             mView.setPlacePickerLocation(new LatLng(
                     Double.parseDouble(mPojo.getResult().get(0).getLat()),
                     Double.parseDouble(mPojo.getResult().get(0).getLon())));
-        } else if(mView.getCurrentLatLng()==null){
+        } else if (mView.getCurrentLatLng() == null) {
             mLocationPresenter.initLocation();
-        }else {
+        } else {
             mView.setMarker(mView.getCurrentLatLng());
         }
 
@@ -371,11 +371,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     public void onCallfailerFromServerside(int message) {
         mView.showSnackBar(message);
         mView.removeWait();
-    }
-
-    @Override
-    public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return super.getSharedPreference();
     }
 
     @Override

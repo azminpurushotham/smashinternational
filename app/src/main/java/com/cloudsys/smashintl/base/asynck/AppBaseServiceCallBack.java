@@ -4,6 +4,7 @@ import android.content.Context;
 
 
 import com.cloudsys.smashintl.utiliti.SharedPreferenceHelper;
+
 import org.json.JSONObject;
 
 /**
@@ -51,5 +52,7 @@ public interface AppBaseServiceCallBack {
     void onCallfailerFromServerside(JSONObject mJsonObject);
 
     SharedPreferenceHelper getSharedPreferenceHelper();
+
+    String getStringRes(int string);
 
 }

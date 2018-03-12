@@ -65,18 +65,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void showWait(int message) {
-        mView.showWait(message);
-    }
-
-
-    @Override
-    public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return getSharedPreference();
-    }
-
-
-    @Override
     public void onFailerCallBack(String message) {
         Log.v("exception", message);
         mView.showSnackBar(message);
@@ -118,20 +106,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         }
     }
 
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-    @Override
-    public void showWait(JSONObject mJsonObject) {
-        try {
-            mView.showWait(mJsonObject.getString("Value"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onSuccessCallBack(String message) {

@@ -68,7 +68,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.removeWait();
         mPojo = new Gson().fromJson(mJsonObject.toString(), ShopDetail.class);
         mView.setData(mPojo);
-        if (mPojo.getResult().get(0).getLat()!=null && Integer.parseInt(mPojo.getResult().get(0).getLat())>0) {
+        if (mPojo.getResult().get(0).getLat() != null && Integer.parseInt(mPojo.getResult().get(0).getLat()) > 0) {
             Location mLocation = new Location("");
             mLocation.setLatitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
             mLocation.setLongitude(Double.parseDouble(mPojo.getResult().get(0).getLat()));
@@ -138,6 +138,7 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
                     .show();
         }
     }
+
     @Override
     public AppBaseActivity getViewActivity() {
         return mView.getViewActivity();
@@ -320,33 +321,11 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         }
     }
 
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-    @Override
-    public void showWait(JSONObject message) {
-        try {
-            mView.showWait(message.getString("message"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onSuccessCallBack(String message) {
         mView.showSnackBar(message);
         mView.removeWait();
     }
-
-    @Override
-    public void showWait(int message) {
-        mView.showSnackBar(message);
-        mView.removeWait();
-    }
-
 
     @Override
     public void permissionGranded(String permission) {

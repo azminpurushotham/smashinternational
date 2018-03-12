@@ -240,11 +240,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return super.getSharedPreference();
-    }
-
-    @Override
     public void onCallfailerFromServerside(JSONObject mJsonObject) {
         mView.removeWait();
         try {
@@ -254,29 +249,8 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         }
     }
 
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-    @Override
-    public void showWait(JSONObject message) {
-        try {
-            mView.showWait(message.getString("message"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onSuccessCallBack(String message) {
-        mView.showSnackBar(message);
-        mView.removeWait();
-    }
-
-    @Override
-    public void showWait(int message) {
         mView.showSnackBar(message);
         mView.removeWait();
     }

@@ -75,7 +75,7 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     }
 
     private void buscinessLogic() {
-        mPresenter = new Presenter(this, getBaseInstence());
+        mPresenter = new Presenter(this, ScheduledWorkFragment.this);
         if (mLoading == null) {
             mLoading = Utilities.showProgressBar(getActivity(), getActivity().getString(R.string.loading));
         }
@@ -101,66 +101,9 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     }
 
 
-    public AppBaseFragment getBaseInstence() {
-        return ScheduledWorkFragment.this;
-    }
-
-    @Override
-    public void showWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.show();
-    }
-
-    @Override
-    public void showWait(int string_id) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(string_id));
-        mLoading.show();
-    }
-
-    @Override
-    public void removeWait(String message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(message);
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait(int message) {
-        TextView TVmessage = (TextView) mLoading.findViewById(R.id.TVmessage);
-        TVmessage.setText(getString(message));
-        mLoading.dismiss();
-    }
-
-    @Override
-    public void removeWait() {
-        mLoading.dismiss();
-    }
-
     @Override
     public Context getViewContext() {
         return getActivity();
-    }
-
-    @Override
-    public AppBaseActivity getViewActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return ScheduledWorkFragment.this;
-    }
-
-    @Override
-    public AppBaseFragment getBaseFragment() {
-        return this;
-    }
-
-    @Override
-    public AppBaseActivity getBaseActivity() {
-        return (AppBaseActivity) getActivity();
     }
 
     @Override
@@ -186,42 +129,6 @@ public class ScheduledWorkFragment extends AppBaseFragment implements ActionView
     @Override
     public AppBaseActivity.OnFragmentSwitchListener getFragmentSwitch() {
         return null;
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        textView.setMaxLines(3);
-        snackbar.setActionTextColor(ContextCompat.getColor(getViewContext(), R.color.snack_bar_text_color));
-        snackbar.show();
-
-    }
-
-    @Override
-    public void onFinishActivity() {
-        getActivity().finish();
-    }
-
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
     }
 
     @Override

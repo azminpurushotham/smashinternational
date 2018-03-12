@@ -186,7 +186,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
             }
         });
 
-        mPresenter = new Presenter(this, getBaseInstence());
+        mPresenter = new Presenter(this, ScheduleWorkDetailFragment.this);
         mPresenter.initSpinner();
         BTNupdateStatus.setOnClickListener(this);
         BTN_try.setOnClickListener(this);
@@ -330,7 +330,7 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     @Override
     public void setMarker(LatLng currentLatLng) {
-        setGoogleMapMarker(currentLatLng,true);
+        setGoogleMapMarker(currentLatLng, true);
     }
 
     @Override
@@ -551,25 +551,11 @@ public class ScheduleWorkDetailFragment extends AppBaseFragment implements Actio
 
     /////////////*******************
 
-
-    public AppBaseFragment getBaseInstence() {
-        return ScheduleWorkDetailFragment.this;
-    }
-
     @Override
     public Context getViewContext() {
         return getActivity();
     }
 
-    @Override
-    public AppBaseActivity getViewActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return ScheduleWorkDetailFragment.this;
-    }
 
     @Override
     public void showInternetAlertLogic(boolean isInternet) {

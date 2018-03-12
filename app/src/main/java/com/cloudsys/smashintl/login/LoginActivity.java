@@ -126,11 +126,6 @@ public class LoginActivity extends AppBaseActivity implements ActionView, View.O
     }
 
     @Override
-    public AppBaseActivity getBaseActivity() {
-        return this;
-    }
-
-    @Override
     public void onBackPressed() {
         onBackPressedLogic();
     }

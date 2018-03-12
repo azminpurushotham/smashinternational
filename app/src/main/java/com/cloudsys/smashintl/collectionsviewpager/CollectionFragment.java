@@ -101,11 +101,6 @@ public class CollectionFragment extends AppBaseFragment implements ActionView {
     }
 
     @Override
-    public void onFinishActivity() {
-        getActivity().finish();
-    }
-
-    @Override
     public void showInternetAlertLogic(boolean isInternet) {
 
     }
@@ -120,46 +115,6 @@ public class CollectionFragment extends AppBaseFragment implements ActionView {
         return null;
     }
 
-
-    @Override
-    public void showWait(String mesage) {
-
-    }
-
-    @Override
-    public void showWait(int mesage) {
-
-    }
-
-    @Override
-    public void removeWait(String message) {
-
-    }
-
-    @Override
-    public void removeWait(int message) {
-
-    }
-
-    @Override
-    public void removeWait() {
-
-    }
-
-    @Override
-    public void showSnackBar(String message) {
-
-    }
-
-    @Override
-    public void showSnackBar(int message) {
-
-    }
-
-    @Override
-    public String getStringRes(int string_id) {
-        return getString(string_id);
-    }
 
     /////////////DEFAULTS///////////////////////
 }

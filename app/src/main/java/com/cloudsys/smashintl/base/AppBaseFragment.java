@@ -250,7 +250,7 @@ public class AppBaseFragment extends BaseFragment implements AppBaseActionView {
 
     @Override
     public void onFinishActivity() {
-
+        getActivity().finish();
     }
 
     @Override

@@ -449,16 +449,6 @@ public class MainActivity extends AppBaseActivity
     }
 
     @Override
-    public AppBaseFragment getBaseFragment() {
-        return null;
-    }
-
-    @Override
-    public AppBaseActivity getBaseActivity() {
-        return MainActivity.this;
-    }
-
-    @Override
     public void showInternetAlertLogic(boolean isInternet) {
         if (isInternet == false) {
             LAYnointernet.setVisibility(View.VISIBLE);

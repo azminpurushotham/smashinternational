@@ -155,12 +155,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         mView.removeWait();
     }
 
-
-    @Override
-    public SharedPreferenceHelper getSharedPreferenceHelper() {
-        return super.getSharedPreference();
-    }
-
     @Override
     public Context getViewContext() {
         return mView.getViewContext();
@@ -172,35 +166,11 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
     }
 
     @Override
-    public void showWait(int message) {
-        mView.showSnackBar(message);
-    }
-
-    @Override
-    public String getStringRes(int string_id) {
-        return mView.getStringRes(string_id);
-    }
-
-    @Override
     public void userNamePasswordinCorrect(int username_or_password_incorrect) {
         mView.showSnackBar(username_or_password_incorrect);
         mView.removeWait();
     }
 
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-    @Override
-    public void showWait(JSONObject message) {
-        try {
-            mView.showWait(message.getString("message"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onSuccessCallBack(String message) {

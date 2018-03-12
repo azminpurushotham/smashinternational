@@ -71,7 +71,7 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
     }
 
     private void buscinessLogic() {
-        mPresenter = new Presenter(this, getBaseInstence());
+        mPresenter = new Presenter(this, PendingWorkFragment.this);
         mPresenter.initRecyclerView();
         mPresenter.getScheduledWork();
         BTN_try.setOnClickListener(this);
@@ -94,24 +94,9 @@ public class PendingWorkFragment extends AppBaseFragment implements ActionView, 
     }
 
 
-    public AppBaseFragment getBaseInstence() {
-        return PendingWorkFragment.this;
-    }
-
-
     @Override
     public Context getViewContext() {
         return getActivity();
-    }
-
-    @Override
-    public AppBaseActivity getViewActivity() {
-        return (AppBaseActivity) getActivity();
-    }
-
-    @Override
-    public AppBaseFragment getViewFragment() {
-        return PendingWorkFragment.this;
     }
 
 

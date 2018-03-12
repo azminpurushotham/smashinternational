@@ -126,10 +126,6 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
 
 
     @Override
-    public void setJson(JSONObject mJsonObject) {
-    }
-
-    @Override
     public void onSuccessCallBack(JSONObject mJsonObject) {
         mView.removeWait();
         mPojo = new Gson().fromJson(mJsonObject.toString(), CompletedWorkPojo.class);
@@ -207,29 +203,9 @@ public class Presenter extends AppBasePresenter implements UserActions, ServiceC
         }
     }
 
-
-    @Override
-    public void showWait(String message) {
-        mView.showWait(message);
-    }
-
-    @Override
-    public void showWait(JSONObject message) {
-        try {
-            mView.showWait(message.getString("message"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onSuccessCallBack(String message) {
 
-    }
-
-    @Override
-    public void showWait(int message_id) {
-        mView.showWait(message_id);
     }
 
     @Override
